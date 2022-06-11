@@ -1,0 +1,172 @@
+.glasium {
+    position: relative;
+
+    color: var(--color);
+
+
+    &__background {
+        position: absolute;
+        inset: 0;
+
+        width: 100%;
+        height: 100%;
+
+        background-color: var(--background-color);
+
+        border-radius: inherit;
+
+        z-index: -2;
+
+        pointer-events: none;
+
+        overflow: hidden;
+
+        transition: 200ms background-color ease-out;
+    }
+
+
+    &__shape {
+
+        &--circle,
+        &--square,
+        &--triangle,
+        &--hexagon {
+            position: absolute;
+            top: calc(100%);
+
+            min-width: 80px;
+            min-height: 80px;
+            width: var(--size);
+            height: var(--size);
+
+            background-color: var(--shape-color);
+
+            filter: brightness(var(--brightness));
+
+            transition: 200ms background-color ease-out;
+
+            animation-name: glasium-shape;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+
+            will-change: transform, animation-delay, animation-duration;
+
+            transform: translateY(0%) rotate(0deg);
+        }
+
+
+        &--circle {
+            border-radius: 50%;
+            width: var(--size);
+            height: var(--size);
+        }
+
+
+        &--square {
+            width: var(--size);
+            height: var(--size);
+        }
+
+
+        &--triangle {
+            width: var(--size);
+            height: var(--size);
+            clip-path: polygon(50% 0, 0% 100%, 100% 100%);
+        }
+
+
+        &--hexagon {
+            width: var(--size);
+            height: var(--size);
+            clip-path: polygon(25% 6%, 75% 6%, 100% 50%, 75% 94%, 25% 94%, 0% 50%);
+        }
+    }
+
+
+    &[data-disabled],
+    &[disabled] {
+        .glasium__background {
+            filter: brightness(0.8);
+        }
+    }
+}
+
+
+@keyframes glasium-shape {
+    0% {
+        transform: translateY(calc(100% + var(--size))) rotate(0deg);
+    }
+
+
+    100% {
+        --translate: calc((100% + var(--background-height)) * -1);
+        transform: translateY(var(--translate)) rotate(var(--rotation));
+    }
+}
+
+
+// custom elements
+button.glasium {
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+
+    gap: 0.5em;
+
+    place-items: center;
+    place-content: center;
+
+    min-height: 45px;
+
+    padding-inline-start: 14px;
+    padding-inline-end: 14px;
+
+    font-family: var(--font-secondary), "Open Sans", sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    text-transform: uppercase;
+    text-align: center;
+
+    transition: 150ms transform ease-out;
+
+    border-radius: 4px;
+
+    z-index: 0;
+
+
+    i {
+        font-size: 1.215em;
+    }
+
+
+    div {
+        display: inline-block;
+    }
+
+
+    .glasium__background {
+        transition-property: filter;
+        transition-duration: 170ms;
+        transition-timing-function: linear;
+    }
+
+    &:active {
+        transform: scale(0.9);
+
+        .glasium__background {
+            filter: brightness(125%);
+        }
+    }
+}
+
+
+@media (hover: hover) {
+    button.glasium:hover {
+        .glasium__background {
+            filter: brightness(115%);
+        }
+    }
+}

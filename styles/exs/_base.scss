@@ -1,0 +1,162 @@
+*,
+*:after,
+*:before,
+*:active,
+*:focus,
+*:visited {
+    -webkit-tap-highlight-color: transparent;
+
+    scroll-behavior: smooth;
+
+    outline: none;
+}
+
+
+body {
+    background-color: whitesmoke;
+    --global-bg: whitesmoke;
+
+    min-height: 100vh;
+    min-width: 100vw;
+
+    color: rgb(28, 28, 28);
+    --global-color: rgb(28, 28, 28);
+}
+
+body.dark,
+body[data-theme="dark"] {
+    color: whitesmoke;
+    --global-color: whitesmoke;
+
+    background-color: rgb(24, 24, 24);
+    --global-bg: rgb(24, 24, 24);
+}
+
+*::-webkit-scrollbar {
+    width: 0.5vw;
+    height: 0.5vw;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-idle-color);
+
+    border-radius: 10vw;
+}
+
+*:hover::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-show-color);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scrollbar-hover-color);
+}
+
+*::-webkit-scrollbar-thumb:active {
+    background-color: var(--scrollbar-active-color);
+}
+
+*::-webkit-scrollbar-track {
+    background-color: inherit;
+}
+
+:root {
+    --flat-color-green: #a8cc8c;
+    --flat-color-red: #e88388;
+    --flat-color-blue: #71bef2;
+    --flat-color-aqua: #66c2cd;
+    --flat-color-yellow: #dbab79;
+    --flat-color-orange: #e67e22;
+    --flat-color-gray: #6b737e;
+    --flat-color-magenta: #d290e4;
+    --flat-color-black: #282d35;
+    --flat-color-pink: #f368e0;
+
+    --osc-color-whitesmoke: #f6f6f6;
+    --osc-color-pink: #ff66aa;
+    --osc-color-green: #88b400;
+    --osc-color-blue: #44aadd;
+    --osc-color-yellow: #f6c21c;
+    --osc-color-orange: #ffa502;
+    --osc-color-red: #dd2d44;
+    --osc-color-brown: #3f313d;
+    --osc-color-gray: #485e74;
+    --osc-color-dark: #1e1e1e;
+    --osc-color-purple: #593790;
+    --osc-color-darkGreen: #0c4207;
+    --osc-color-darkBlue: #032b3d;
+    --osc-color-darkYellow: #444304;
+    --osc-color-darkRed: #440505;
+    --osc-color-lightBlue: #daf3ff;
+    --osc-color-navyBlue: #333d79;
+
+    --color-green: rgb(147, 252, 173);
+    --color-green-dark: rgb(26, 233, 77);
+    --color-blue: rgb(166, 225, 252);
+    --color-blue-dark: rgb(57, 190, 252);
+    --color-yellow: rgb(253, 240, 141);
+    --color-yellow-dark: rgb(255, 209, 27);
+    --color-red: rgb(255, 181, 201);
+    --color-red-dark: rgb(255, 75, 123);
+    --color-pink: rgb(255, 198, 250);
+    --color-pink-dark: rgb(255, 79, 240);
+    --color-orange: rgb(255, 211, 190);
+    --color-orange-dark: rgb(255, 135, 79);
+    --color-gray: rgb(157, 152, 152);
+
+    --font-primary: "Segoe UI";
+    --font-secondary: "Nunito";
+    --font-code: "Consolas";
+}
+
+a {
+    all: unset;
+    text-decoration: none;
+}
+
+
+i {
+    position: relative;
+
+    background-color: transparent;
+
+    pointer-events: none;
+
+    &:before {
+        position: static;
+
+        width: 100%;
+        height: 100%;
+
+        display: flex;
+
+        place-items: center;
+        place-content: center;
+    }
+}
+
+
+button {
+    *+i {
+        margin-inline-start: auto;
+    }
+
+
+    i+* {
+        margin-inline-start: auto;
+    }
+
+
+    i {
+        height: 100%;
+    }
+}
+
+
+.expander {
+    position: absolute;
+    inset: 0;
+
+    border-radius: inherit;
+
+    z-index: 50;
+}
