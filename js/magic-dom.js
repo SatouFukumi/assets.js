@@ -32,6 +32,9 @@ export const magicDOM = {
             container.append(...children);
         return container;
     },
+    /**
+     * @warn there is no advanced type checking for this
+     */
     createTree(tag, classList = [], attribute = {}, children = []) {
         let container = magicDOM.createElement(tag, { classList, attribute });
         if (children === undefined)

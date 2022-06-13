@@ -1,2 +1,13 @@
-# client-side-libraries
-This is a libraries which is only used on client side rendering of a framework
+# 📦 JS-Assets 🌟
+
+> It's recommended to wrap functions inside a `window.setTimeout` block
+>
+> ```ts
+> import * from '*'
+> 
+> if (typeof window !== 'undefined') {
+>   window.setTimeout(():void => {
+>     /** your code here */
+>   })
+> }
+> ```

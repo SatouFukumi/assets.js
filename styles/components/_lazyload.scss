@@ -1,0 +1,49 @@
+body {
+    .lazyload {
+        --cover-bg: rgba(245, 245, 245, 0.8);
+    }
+}
+
+
+body[data-theme='dark'] {
+    .lazyload {
+        --cover-bg: rgba(14, 14, 14, 0.8);
+    }
+}
+
+
+.lazyload {
+    position: relative;
+
+    overflow: hidden;
+
+
+    img {
+        width: 100%;
+        height: 100%;
+
+        overflow: hidden;
+    }
+
+
+    &__cover {
+        position: absolute;
+        inset: 0;
+
+        margin: auto;
+
+        width: 100%;
+        height: 100%;
+
+        background-color: var(--cover-bg);
+
+        overflow: hidden;
+
+
+        &[data-loaded] {
+            display: none;
+
+            opacity: 0;
+        }
+    }
+}

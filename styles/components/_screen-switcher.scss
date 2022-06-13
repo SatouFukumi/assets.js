@@ -1,11 +1,15 @@
 body {
-    --bg: rgb(100, 100, 100);
-    --op: 0.3;
+    .screen {
+        --bg: rgb(100, 100, 100);
+        --op: 0.3;
+    }
 }
 
 
 body[data-theme="dark"] {
-    --op: 0.5;
+    .screen {
+        --op: 0.5;
+    }
 }
 
 

@@ -6,6 +6,7 @@ declare global {
             attribute?: Record<string, string | number>;
             children?: Record<string, TreeLeave> | string | HTMLElement | HTMLElement[];
         }
+        type HTMLTree = any;
     }
 }
 export declare const magicDOM: {
@@ -24,9 +25,10 @@ export declare const magicDOM: {
         attribute?: Record<string, string | number>;
         children?: string | HTMLElement | HTMLElement[];
     }): HTMLElementTagNameMap[K];
-    createTree<K_1 extends keyof HTMLElementTagNameMap>(tag: K_1, classList?: string | string[], attribute?: Record<string, string | number>, children?: string | HTMLElement | HTMLElement[] | Record<string, MagicDOM.TreeLeave | HTMLElement>): HTMLElementTagNameMap[K_1] & {
-        [key: string]: HTMLElement;
-    };
+    /**
+     * @warn there is no advanced type checking for this
+     */
+    createTree<K_1 extends keyof HTMLElementTagNameMap>(tag: K_1, classList?: string | string[], attribute?: Record<string, string | number>, children?: string | HTMLElement | HTMLElement[] | Record<string, MagicDOM.TreeLeave | HTMLElement>): MagicDOM.HTMLTree;
     /**
     * empty node
     * @param { HTMLElement } node node to empty

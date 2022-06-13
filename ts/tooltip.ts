@@ -27,7 +27,7 @@ declare global {
 
 
         interface Interface {
-            readonly initialized: boolean
+            get initialized(): boolean
             glowing: boolean
             hideId: number
             deactivateId: number
@@ -48,6 +48,12 @@ declare global {
             hooks: Array<Hook>
             init: () => void
             scan: () => void
+            /**
+             * @example 
+             * ```ts
+             * navigation.addHook('attribute', 'title')
+             * ```
+             */
             addHook: (on: Hook['on'], key: Hook['key'], hookAssets?: AddHook) => void
             pointerenter(target: HTMLElement, hook: Hook): void
             pointerleave(hook: Hook): void

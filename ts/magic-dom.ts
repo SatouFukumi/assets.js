@@ -6,6 +6,9 @@ declare global {
             attribute?: Record<string, string | number>,
             children?: Record<string, TreeLeave> | string | HTMLElement | HTMLElement[]
         }
+
+
+        type HTMLTree = any
     }
 }
 
@@ -59,14 +62,15 @@ export const magicDOM = {
     },
 
 
+    /** 
+     * @warn there is no advanced type checking for this
+     */
     createTree<K extends keyof HTMLElementTagNameMap>(
         tag: K,
         classList: string | string[] = [],
         attribute: Record<string, string | number> = {},
         children: string | HTMLElement | HTMLElement[] | Record<string, MagicDOM.TreeLeave | HTMLElement> = []
-    ): HTMLElementTagNameMap[K] & {
-        [key: string]: HTMLElement
-    } {
+    ): MagicDOM.HTMLTree {
         let container: HTMLElementTagNameMap[K] & {
             [key: string]: any
         } = magicDOM.createElement(tag, { classList, attribute })
@@ -102,9 +106,7 @@ export const magicDOM = {
             const attribute_: Record<string, string | number> | undefined = child.attribute
             const children_: MagicDOM.TreeLeave['children'] = child.children
 
-            const child_: HTMLElement & {
-                [key: string]: HTMLElement
-            } = magicDOM.createTree(
+            const child_: any = magicDOM.createTree(
                 tag_,
                 classList_,
                 attribute_,

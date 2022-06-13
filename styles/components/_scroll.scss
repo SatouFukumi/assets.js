@@ -1,16 +1,20 @@
 body {
-    --scrollbar-idle-color: transparent;
-    --scrollbar-show-color: rgba(140, 140, 140, 0.5);
-    --scrollbar-hover-color: rgba(90, 90, 90, 0.5);
-    --scrollbar-active-color: rgba(75, 75, 75, 0.6);
+    .scroll {
+        --scrollbar-idle-color: transparent;
+        --scrollbar-show-color: rgba(140, 140, 140, 0.5);
+        --scrollbar-hover-color: rgba(90, 90, 90, 0.5);
+        --scrollbar-active-color: rgba(75, 75, 75, 0.6);
+    }
 }
 
 
 body[data-theme='dark'] {
-    --scrollbar-idle-color: transparent;
-    --scrollbar-show-color: rgba(213, 204, 204, 0.5);
-    --scrollbar-hover-color: rgba(235, 235, 235, 0.6);
-    --scrollbar-active-color: rgba(255, 255, 255, 0.8);
+    .scroll {
+        --scrollbar-idle-color: transparent;
+        --scrollbar-show-color: rgba(213, 204, 204, 0.5);
+        --scrollbar-hover-color: rgba(235, 235, 235, 0.6);
+        --scrollbar-active-color: rgba(255, 255, 255, 0.8);
+    }
 }
 
 
