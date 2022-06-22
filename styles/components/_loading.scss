@@ -4,7 +4,7 @@ body {
         &--small,
         &--big,
         &--cover {
-            --background: rgba(245, 245, 245, 0.8);
+            --background: rgba(245, 245, 245, 0.4);
         }
     }
 }
@@ -16,7 +16,7 @@ body[data-theme="dark"] {
         &--small,
         &--big,
         &--cover {
-            --background: rgba(14, 14, 14, 0.8);
+            --background: rgba(14, 14, 14, 0.4);
             --small-loading-bg: white;
             --big-loading-bg: rgba(194, 194, 194, 0.6);
             --big-spinner-bg: rgb(24, 24, 24);
@@ -86,7 +86,7 @@ body[data-theme="dark"] {
 
 
     &--cover {
-        --size: 5.5em;
+        --size: clamp(6rem, 75%, 15rem);
 
         position: absolute;
         inset: 0;
@@ -100,6 +100,8 @@ body[data-theme="dark"] {
 
         background-color: var(--background);
 
+        backdrop-filter: blur(6px);
+
 
         &:after {
             content: '';
@@ -111,8 +113,18 @@ body[data-theme="dark"] {
 
             width: calc(var(--size) / 1.5);
             max-width: calc(var(--size) / 6);
-            height: calc(var(--size) / 1.5);
-            max-height: calc(var(--size) / 6);
+
+
+            @media (max-width: 600px) {
+                width: unset;
+                max-width: unset;
+
+                height: calc(var(--size) / 1.5);
+                max-height: calc(var(--size) / 6);
+            }
+
+
+            aspect-ratio: 1;
 
             border: 3px solid var(--big-spinner-bg, white);
             border-right-color: transparent;
@@ -136,8 +148,18 @@ body[data-theme="dark"] {
 
             width: var(--size);
             max-width: calc(var(--size) / 2.5);
-            height: var(--size);
-            max-height: calc(var(--size) / 2.5);
+
+
+            @media (max-width: 600px) {
+                width: unset;
+                max-width: unset;
+
+                height: var(--size);
+                max-height: calc(var(--size) / 2.5);
+            }
+
+
+            aspect-ratio: 1;
 
             background-color: var(--big-loading-bg, rgba(165, 165, 165, 0.6));
 

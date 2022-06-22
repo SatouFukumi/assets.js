@@ -13,7 +13,10 @@ import magicDOM from './magic-dom.js';
 export class Lazyload {
     constructor(source, { objectFit = 'cover', classList = [] } = {}) {
         this.component = magicDOM.createElement('div', { classList: 'lazyload' });
-        this.image = magicDOM.createElement('img');
+        this.image = magicDOM.createElement('img', {
+            attribute: { alt: '' },
+            classList: 'lazyload__image'
+        });
         this.loadCover = magicDOM.createElement('div', {
             classList: 'lazyload__cover',
             children: [magicDOM.createElement('div', { classList: 'loading--cover' })]
@@ -22,7 +25,7 @@ export class Lazyload {
         this.updateSize();
         new ResizeObserver(() => this.updateSize())
             .observe(this.component);
-        $(this.image).css('object-fit', objectFit);
+        $(this.image).css('--object-fit', objectFit);
         if (typeof classList == 'string')
             this.component.classList.add(classList);
         else
@@ -39,7 +42,7 @@ export class Lazyload {
         let image = this.image;
         let loadCover = this.loadCover;
         $(loadCover).dataset('loaded', null);
-        function load() {
+        function __l() {
             return __awaiter(this, void 0, void 0, function* () {
                 let response = yield fetch(src, { method: 'GET' });
                 if (response.status === 200) {
@@ -48,9 +51,11 @@ export class Lazyload {
                     image.src = imageObjectURL;
                     $(loadCover).dataset('loaded', '');
                 }
+                else
+                    $(loadCover).dataset('loaded', null);
             });
         }
-        load();
+        __l();
     }
     get source() {
         return this.__src ? this.__src : '';

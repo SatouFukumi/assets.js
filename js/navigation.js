@@ -226,11 +226,16 @@ export const navigation = {
                 tooltip,
                 clicker,
                 subWindow,
+                get icon() { return icon; },
+                get text() { return text; },
+                get image() { return image ? image : ''; },
+                get color() { return color; },
                 set icon(iconName) {
                     $(iconNode).css('display', null);
                     $(imageNode.component).css('display', 'none');
                     iconNode.className = '';
                     iconNode.classList.add('fa-solid', `fa-${iconName}`);
+                    icon = iconName;
                 },
                 set text(textContent) {
                     if (textContent) {
@@ -239,16 +244,19 @@ export const navigation = {
                         return;
                     }
                     $(textNode).css('display', '');
+                    text = textContent ? textContent : '';
                 },
                 set image(imageSrc) {
                     $(iconNode).css('display', 'none');
                     $(imageNode.component).css('display', null);
                     imageNode.source = imageSrc;
+                    image = imageSrc;
                 },
                 set color(colorName) {
                     Glasium.change(container, {
                         color: typeof colorName === 'string' ? COLOR[colorName] : colorName
                     });
+                    color = colorName;
                 }
             };
         },
@@ -266,6 +274,15 @@ export const navigation = {
                 tooltip,
                 clicker,
                 subWindow,
+                get avatar() {
+                    return button.image;
+                },
+                get username() {
+                    return button.text;
+                },
+                get color() {
+                    return button.color;
+                },
                 set avatar(avatar) {
                     button.image = avatar;
                 },

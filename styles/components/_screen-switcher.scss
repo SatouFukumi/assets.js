@@ -187,5 +187,10 @@ body[data-theme="dark"] {
         margin-block-end: 15px;
 
         overflow: hidden;
+
+
+        >*:not([data-viewing]) {
+            display: none;
+        }
     }
 }

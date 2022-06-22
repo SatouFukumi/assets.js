@@ -16,7 +16,7 @@ export class Lazyload {
             .observe(this.component)
 
 
-        $(this.image).css('object-fit', objectFit)
+        $(this.image).css('--object-fit', objectFit)
 
 
         if (typeof classList == 'string')
@@ -35,7 +35,10 @@ export class Lazyload {
     public component: HTMLElement = magicDOM.createElement('div', { classList: 'lazyload' })
 
 
-    private image: HTMLImageElement = magicDOM.createElement('img')
+    private image: HTMLImageElement = magicDOM.createElement('img', {
+        attribute: { alt: '' },
+        classList: 'lazyload__image'
+    })
 
     private loadCover: HTMLElement = magicDOM.createElement('div', {
         classList: 'lazyload__cover',
@@ -56,9 +59,8 @@ export class Lazyload {
 
         $(loadCover).dataset('loaded', null)
 
-        async function load(): Promise<void> {
+        async function __l(): Promise<void> {
             let response: Response = await fetch(src, { method: 'GET' })
-
 
             if (response.status === 200) {
                 const imageBlob: Blob = await response.blob()
@@ -67,9 +69,9 @@ export class Lazyload {
                 image.src = imageObjectURL
 
                 $(loadCover).dataset('loaded', '')
-            }
-        }
-        load()
+            } else
+                $(loadCover).dataset('loaded', null)
+        } __l()
     }
 
 

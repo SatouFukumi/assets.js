@@ -370,6 +370,16 @@ export const navigation: Nav.Interface = {
                 clicker,
                 subWindow,
 
+
+                get icon(): string { return icon },
+
+                get text(): string { return text },
+
+                get image(): string { return image ? image : '' },
+
+                get color(): Glasium.Color | keyof typeof COLOR { return color },
+
+
                 set icon(iconName: string) {
                     $(iconNode).css('display', null)
                     $(imageNode.component).css('display', 'none')
@@ -377,6 +387,8 @@ export const navigation: Nav.Interface = {
                     iconNode.className = ''
 
                     iconNode.classList.add('fa-solid', `fa-${iconName}`)
+
+                    icon = iconName
                 },
 
                 set text(textContent: string | null) {
@@ -389,6 +401,8 @@ export const navigation: Nav.Interface = {
                     }
 
                     $(textNode).css('display', '')
+
+                    text = textContent ? textContent : ''
                 },
 
                 set image(imageSrc: string) {
@@ -396,6 +410,8 @@ export const navigation: Nav.Interface = {
                     $(imageNode.component).css('display', null)
 
                     imageNode.source = imageSrc
+
+                    image = imageSrc
                 },
 
 
@@ -403,6 +419,8 @@ export const navigation: Nav.Interface = {
                     Glasium.change(container, {
                         color: typeof colorName === 'string' ? COLOR[colorName] : colorName
                     })
+
+                    color = colorName
                 }
             }
         },
@@ -430,6 +448,18 @@ export const navigation: Nav.Interface = {
                 tooltip,
                 clicker,
                 subWindow,
+
+                get avatar(): string {
+                    return button.image
+                },
+
+                get username(): string {
+                    return button.text
+                },
+
+                get color(): Glasium.Color | keyof typeof COLOR {
+                    return button.color
+                },
 
                 set avatar(avatar: string) {
                     button.image = avatar
@@ -861,6 +891,10 @@ declare global {
 
 
         interface ButtonComponent extends Component {
+            get icon(): string
+            get text(): string
+            get image(): string
+            get color(): Glasium.Color | keyof typeof COLOR
             set icon(icon: string)
             set text(text: string | null)
             set image(image: string)
@@ -869,6 +903,9 @@ declare global {
 
 
         interface AccountComponent extends Component {
+            get avatar(): string
+            get username(): string
+            get color(): Glasium.Color | keyof typeof COLOR
             set avatar(avatar: string)
             set username(username: string)
             set color(color: Glasium.Color | keyof typeof COLOR)

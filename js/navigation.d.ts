@@ -133,12 +133,19 @@ declare global {
             subWindow: SubWindow;
         }
         interface ButtonComponent extends Component {
+            get icon(): string;
+            get text(): string;
+            get image(): string;
+            get color(): Glasium.Color | keyof typeof COLOR;
             set icon(icon: string);
             set text(text: string | null);
             set image(image: string);
             set color(color: Glasium.Color | keyof typeof COLOR);
         }
         interface AccountComponent extends Component {
+            get avatar(): string;
+            get username(): string;
+            get color(): Glasium.Color | keyof typeof COLOR;
             set avatar(avatar: string);
             set username(username: string);
             set color(color: Glasium.Color | keyof typeof COLOR);
