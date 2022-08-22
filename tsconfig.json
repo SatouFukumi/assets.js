@@ -1,4 +1,8 @@
 {
+    "ts-node": {
+        "transpileOnly": true,
+        "require": ["tsconfig-paths/register"]
+    },
     "compilerOptions": {
         // Libraries
         "lib": ["es2021", "es7", "WebWorker", "dom", "DOM.Iterable"],
@@ -15,6 +19,5 @@
             "@tsx/*": ["tsx/*"]
         }
     },
-    "include": ["ts", "tsx"],
     "exclude": ["node_modules"]
 }
