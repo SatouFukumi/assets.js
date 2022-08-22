@@ -158,6 +158,10 @@ export const libraries = {
         return this.min(this.max(min, dynamic), max)
     },
 
+    randomColor() {
+        return Math.floor(Math.random() * 16777216)
+    },
+
     randomHexColor() {
         return `#${Math.floor(Math.random() * 16777215).toString(16)}`
     },
