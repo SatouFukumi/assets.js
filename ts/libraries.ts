@@ -113,7 +113,7 @@ export const libraries = {
         format = format.replace("Dth", postFix(date % 10).toLowerCase())
         format = format.replace("DTH", postFix(date % 10).toUpperCase())
 
-        format = format.replace("mo", indexedZero(month))
+        format = format.replace("mo", indexedZero(month + 1))
         format = format.replace("MO", shortMonth)
         format = format.replace("Mo", shortMonth.toLowerCase)
         format = format.replace("Month", fullMonth)
