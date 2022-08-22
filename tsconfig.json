@@ -1,12 +1,13 @@
 {
     "compilerOptions": {
         // Libraries
-        "lib": ["es2021", "es5", "es7", "WebWorker", "dom"],
+        "lib": ["es2021", "es7", "WebWorker", "dom", "DOM.Iterable"],
         // Options
         "allowJs": false,
         "alwaysStrict": true,
         "exactOptionalPropertyTypes": true,
         "strict": true,
+        "target": "ES2022",
         // Alias paths
         "baseUrl": ".",
         "paths": {
