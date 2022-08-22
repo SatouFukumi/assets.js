@@ -21,7 +21,7 @@ export const libraries = {
      * @param       data.time       input time
      * @param       data.format     format for the return
      */
-    prettyTime({ timestamp = new Date(), format = "hh:mi:ss dd Mo yyyy" } = {}) {
+    prettyTime({ timestamp = new Date(), format = "hh:mi:ss - dd Mo yyyy" } = {}) {
         const months = [
             "January",
             "February",
