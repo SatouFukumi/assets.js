@@ -158,6 +158,10 @@ export const libraries = {
         return this.min(this.max(min, dynamic), max)
     },
 
+    randomHexColor() {
+        return `#${Math.floor(Math.random() * 16777215).toString(16)}`
+    },
+
     hexToRgb(hex: string) {
         if (hex.charAt(0) === "#") hex = hex.substring(1)
 

@@ -1,5 +1,7 @@
 {
     "compilerOptions": {
+        // Libraries
+        "lib": ["es2021", "es5", "es7", "WebWorker", "dom"],
         // Options
         "allowJs": false,
         "alwaysStrict": true,
