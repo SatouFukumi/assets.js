@@ -1,11 +1,12 @@
 export class RecordAnimationFrame {
-    constructor(private callback: (...args: any[]) => any) { }
+    constructor(private callback: (...args: any[]) => any) {}
 
     private raf: number = -1
     private __running: boolean = false
 
-    public get running(): boolean { return this.__running }
-
+    public get running(): boolean {
+        return this.__running
+    }
 
     /** start the callback */
     public start(duration?: number): any {
@@ -14,10 +15,8 @@ export class RecordAnimationFrame {
 
         this.run()
 
-        if (duration)
-            window.setTimeout((): void => this.stop(), duration)
+        if (duration) setTimeout((): void => this.stop(), duration)
     }
-
 
     private run(): any {
         this.raf = window.requestAnimationFrame((): void => {
@@ -29,7 +28,6 @@ export class RecordAnimationFrame {
         })
     }
 
-
     /** stop the callback */
     public stop(): any {
         if (!this.__running) return
@@ -39,5 +37,5 @@ export class RecordAnimationFrame {
     }
 }
 
-
+/** */
 export default RecordAnimationFrame
