@@ -2,75 +2,27 @@ export const libraries = {
     /**
      * formatted time
      *
-     * `ap` - `am`
-     * `AP` - `AM`
-     * `hh` - `05`
-     * `HH` - `17`
-     * `MM` - `59`
-     * `mm` - `59`
-     * `ss` - `59`
-     * `SS` - `59`
-     * `dd` - `31`
-     * `dth` - `st`
-     * `Dth` - `St`
-     * `DTH` - `ST`
-     * `mo` - `12`
-     * `Mo` - `jan`
-     * `MO` - `Jan`
-     * `Month` - `January`
-     * `month` - `january`
-     * `year` - `2022`
-     * `YEAR` - `2022`
-     * `YE` - `22`
-     * `ye` - `22`
-     * `We` - `Fri`
-     * `we` - `fri`
-     * `Wd` - `Friday`
-     * `wd` - `friday`
+     * @docs `dd` - `31`
+     * @docs `WW` - `Monday`
+     * @docs `ww` - `monday`
+     * @docs `W` - `Mon`
+     * @docs `w` - `mon`
+     * @docs `Mo` - `Jan`
+     * @docs `mo` - `jan`
+     * @docs `MM` - `January`
+     * @docs `mm` - `january`
+     * @docs `o` - `am`
+     * @docs `yyyy` - `2022`
+     * @docs `hh` - `24`
+     * @docs `mi` - `60`
+     * @docs `ss` - `60`
      *
      * @param       data            time prop
      * @param       data.time       input time
      * @param       data.format     format for the return
      */
-    prettyTime({
-        time = new Date(),
-        format = "HH:mm:ss dd/mo/year",
-    }: {
-        time?: Date
-        format?: string
-    } = {}): string {
-        let hours = time.getHours()
-        let minutes = time.getMinutes()
-        let seconds = time.getSeconds()
-        let date = time.getDate()
-        let month = time.getMonth()
-        let year = time.getFullYear()
-        let weekday = time.getDay()
-
-        const indexedZero = (value: number): string => {
-            return (value < 10 ? "0" + value : value).toString()
-        }
-        const postFix = (lastIdx: number): string => {
-            return ["St", "Nd", "Rd", "Th"][
-                lastIdx - 1 >= 3 || lastIdx === 0 ? 3 : lastIdx - 1
-            ]
-        }
-
-        const shortMonth = [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-        ][month]
-        const fullMonth = [
+    prettyTime({ timestamp = new Date(), format = "hh:mi:ss dd Mo yyyy" } = {}) {
+        const months = [
             "January",
             "February",
             "March",
@@ -83,9 +35,8 @@ export const libraries = {
             "October",
             "November",
             "December",
-        ][month]
-        const shortWeekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][weekday]
-        const fullWeekday = [
+        ]
+        const weekDays = [
             "Sunday",
             "Monday",
             "Tuesday",
@@ -93,43 +44,31 @@ export const libraries = {
             "Thursday",
             "Friday",
             "Saturday",
-        ][weekday]
+        ]
+        const ordinal = ["Th", "St", "Nd", "Rd"]
 
-        format = format.replace("ap", hours < 12 ? "am" : "pm")
-        format = format.replace("AP", hours < 12 ? "AM" : "PM")
-
-        format = format.replace("hh", indexedZero(hours > 12 ? hours % 12 : hours))
-        format = format.replace("HH", indexedZero(hours))
-
-        format = format.replace("mm", indexedZero(minutes))
-        format = format.replace("MM", indexedZero(minutes))
-
-        format = format.replace("ss", indexedZero(seconds))
-        format = format.replace("SS", indexedZero(seconds))
-
-        format = format.replace("dd", indexedZero(date))
-
-        format = format.replace("dth", postFix(date % 10).toLowerCase())
-        format = format.replace("Dth", postFix(date % 10).toLowerCase())
-        format = format.replace("DTH", postFix(date % 10).toUpperCase())
-
-        format = format.replace("mo", indexedZero(month + 1))
-        format = format.replace("MO", shortMonth)
-        format = format.replace("Mo", shortMonth.toLowerCase)
-        format = format.replace("Month", fullMonth)
-        format = format.replace("month", fullMonth.toLowerCase())
-
-        format = format.replace("year", year.toString())
-        format = format.replace("YEAR", year.toString())
-        format = format.replace("ye", (year % 2000).toString())
-        format = format.replace("YE", (year % 2000).toString())
-
-        format = format.replace("We", shortWeekday)
-        format = format.replace("we", shortWeekday.toLowerCase())
-        format = format.replace("Wd", fullWeekday)
-        format = format.replace("wd", fullWeekday.toLowerCase())
+        const formats: Record<string, number | string> = {
+            dd: timestamp.getDate(),
+            WW: weekDays[timestamp.getDay()],
+            ww: weekDays[timestamp.getDay()].toLowerCase(),
+            Mo: months[timestamp.getMonth()].slice(0, 3),
+            mo: months[timestamp.getMonth()].slice(0, 3).toLowerCase(),
+            MM: months[timestamp.getMonth()],
+            mm: months[timestamp.getMonth()].toLowerCase(),
+            W: weekDays[timestamp.getDay()].slice(0, 3),
+            w: weekDays[timestamp.getDay()].slice(0, 3).toLowerCase(),
+            m: (timestamp.getMonth() + 1).toString().padStart(2, "0"),
+            o: ordinal[timestamp.getDate() % 10],
+        }
 
         return format
+            .replace(/YYYY|yyyy/g, timestamp.getFullYear().toString())
+            .replace(/hh/g, timestamp.getHours().toString().padStart(2, "0"))
+            .replace(/mi/g, timestamp.getMinutes().toString().padStart(2, "0"))
+            .replace(/ss/g, timestamp.getSeconds().toString().padStart(2, "0"))
+            .replace(/dd|WW|ww|Mo|mo|MM|mm|W|w|m|o/g, (match) =>
+                formats[match].toString()
+            )
     },
 
     /**
