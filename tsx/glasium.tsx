@@ -1,6 +1,6 @@
 import { $ } from "@ts/jquery"
-import { libraries } from "../ts/libraries"
-import magicDOM from "../ts/magic-dom"
+import { libraries } from "@ts/libraries"
+import magicDOM from "@ts/magic-dom"
 
 // export class Glasium {
 //     private static shape(

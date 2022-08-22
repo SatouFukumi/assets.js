@@ -32,9 +32,7 @@ export const cs = {
     /** this function parses cookie */
     parseCookie(name: string): string | undefined {
         const cookies = document.cookie.split(";")
-        const cookie = cookies.find((c) => {
-            c.trim().startsWith(name + "=")
-        })
+        const cookie = cookies.find((c) => c.trim().startsWith(name + "="))
 
         if (!cookie) return undefined
         return cookie.split("=")[1]
