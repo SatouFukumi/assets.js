@@ -2,8 +2,9 @@ import { $ } from "../ts/jquery"
 import RecordAnimationFrame from "../ts/record-animation-frame"
 import changeCase from "../ts/change-case"
 import cursor from "../ts/cursor"
-import { libraries, throttled } from "../ts/libraries"
+import { throttled } from "../ts/libraries"
 import magicDOM from "../ts/magic-dom"
+import cs from "@ts/client-side"
 
 const OFFSET: number = 135
 
@@ -26,8 +27,8 @@ declare global {
         interface Interface {
             get initialized(): boolean
             glowing: boolean
-            hideId: number
-            deactivateId: number
+            hideId?: NodeJS.Timeout
+            deactivateId?: NodeJS.Timeout
             container?: HTMLElement
             content?: HTMLElement
             processor: {
@@ -87,9 +88,6 @@ export const tooltip: Tooltip.Interface = {
     },
 
     glowing: false,
-
-    hideId: -1,
-    deactivateId: -1,
 
     processor: {
         attribute: {
@@ -181,8 +179,7 @@ export const tooltip: Tooltip.Interface = {
     ],
 
     init(): void {
-        if (typeof window === "undefined" || libraries.isMobile || this.initialized)
-            return
+        if (typeof window === "undefined" || cs.isMobile() || this.initialized) return
 
         /** watch cursor */
         cursor.watch(true)
