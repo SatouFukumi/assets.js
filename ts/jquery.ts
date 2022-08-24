@@ -1,4 +1,4 @@
-import changeCase from "@ts/case"
+import changeCase from "@ts/change-case"
 
 type ELoELO = EventListenerOrEventListenerObject
 

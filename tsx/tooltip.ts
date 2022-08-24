@@ -1,6 +1,6 @@
 import { $ } from "../ts/jquery"
 import RecordAnimationFrame from "../ts/record-animation-frame"
-import changeCase from "../ts/case"
+import changeCase from "../ts/change-case"
 import cursor from "../ts/cursor"
 import { libraries, throttled } from "../ts/libraries"
 import magicDOM from "../ts/magic-dom"
