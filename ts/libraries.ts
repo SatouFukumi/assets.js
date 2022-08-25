@@ -21,7 +21,10 @@ export const libraries = {
      * @param       data.time       input time
      * @param       data.format     format for the return
      */
-    prettyTime({ timestamp = new Date(), format = "hh:mi:ss - dd Mo yyyy" } = {}) {
+    prettyTime({
+        timestamp = new Date(),
+        format = "hh:mi:ss - dd Mo yyyy",
+    } = {}) {
         const months = [
             "January",
             "February",
@@ -129,9 +132,8 @@ export const libraries = {
      *
      * @param	{ Number }		    min		        Minimum Random Number
      * @param	{ Number }		    max		        Maximum Random Number
-     * @param   { object }	        opt             options
-     * @param   { boolean }         opt.toInt       by default is true
-     * @param   { Number[2] }       opt.outRange
+     * @param   { boolean }         toInt           by default is true
+     * @param   { Number[2] }       outRange
      */
     randomBetween(
         min: number,
@@ -186,7 +188,8 @@ export const libraries = {
             str += charSet.substring(p, p + 1)
         }
 
-        if (this.randomStringList.includes(str)) return this.randomString(len, charSet)
+        if (this.randomStringList.includes(str))
+            return this.randomString(len, charSet)
 
         this.randomStringList.push(str)
 
