@@ -1,6 +1,7 @@
 @import "Nunito";
 @import "Calibri";
 @import "OpenSans";
+@import "./../fonts/index";
 
 @font-face {
     font-family: "Segoe UI Semilight";
@@ -127,12 +128,14 @@
     font-display: swap;
     font-weight: normal;
 }
+
 @font-face {
     font-family: "Torus";
     src: url("./../fonts/Torus Bold.otf") format("woff");
     font-display: swap;
     font-weight: bold;
 }
+
 @font-face {
     font-family: "Torus";
     src: url("./../fonts/Torus Light.otf") format("woff");
@@ -146,12 +149,14 @@
     font-display: swap;
     font-weight: normal;
 }
+
 @font-face {
     font-family: "Ubuntu";
     src: url("./../fonts/Ubuntu-Bold.ttf") format("woff");
     font-display: swap;
     font-weight: bold;
 }
+
 @font-face {
     font-family: "Ubuntu";
     src: url("./../fonts/Ubuntu-BoldItalic.ttf") format("woff");
@@ -159,6 +164,7 @@
     font-weight: bold;
     font-style: italic;
 }
+
 @font-face {
     font-family: "Ubuntu";
     src: url("./../fonts/Ubuntu-Italic.ttf") format("woff");
@@ -166,6 +172,7 @@
     font-weight: normal;
     font-style: italic;
 }
+
 @font-face {
     font-family: "Ubuntu";
     src: url("./../fonts/Ubuntu-Light.ttf") format("woff");
@@ -173,6 +180,7 @@
     font-weight: lighter;
     font-style: italic;
 }
+
 @font-face {
     font-family: "Ubuntu";
     src: url("./../fonts/Ubuntu-LightItalic.ttf") format("woff");
@@ -180,12 +188,14 @@
     font-weight: lighter;
     font-style: italic;
 }
+
 @font-face {
     font-family: "Ubuntu";
     src: url("./../fonts/Ubuntu-Medium.ttf") format("woff");
     font-display: swap;
     font-weight: medium;
 }
+
 @font-face {
     font-family: "Ubuntu";
     src: url("./../fonts/Ubuntu-MediumItalic.ttf") format("woff");
