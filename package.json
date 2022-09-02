@@ -1,5 +1,32 @@
 {
-  "devDependencies": {
-    "tsconfig-paths": "^4.1.0"
-  }
+    "devDependencies": {
+        "@types/react": "^18.0.18",
+        "tsconfig-paths": "^4.1.0"
+    },
+    "name": "assets",
+    "version": "1.0.0",
+    "description": "This is my assets for almost anything 👾",
+    "directories": {
+        "doc": "docs"
+    },
+    "dependencies": {
+        "json5": "^2.2.1",
+        "minimist": "^1.2.6",
+        "react-custom-scrollbars-2": "^4.5.0",
+        "strip-bom": "^3.0.0"
+    },
+    "scripts": {},
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/satoufukumi/assets.git"
+    },
+    "keywords": [
+        "typescript"
+    ],
+    "author": "Fukumi",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/satoufukumi/assets/issues"
+    },
+    "homepage": "https://github.com/satoufukumi/assets#readme"
 }

@@ -27,8 +27,8 @@ declare global {
         interface Interface {
             get initialized(): boolean
             glowing: boolean
-            hideId?: NodeJS.Timeout
-            deactivateId?: NodeJS.Timeout
+            hideId?: number
+            deactivateId?: number
             container?: HTMLElement
             content?: HTMLElement
             processor: {

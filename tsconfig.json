@@ -10,13 +10,15 @@
         "allowJs": false,
         "alwaysStrict": true,
         "exactOptionalPropertyTypes": true,
+        "jsx": "react-native",
+        "moduleResolution": "nodenext",
         "strict": true,
         "target": "ES2022",
         // Alias paths
         "baseUrl": ".",
         "paths": {
             "@ts/*": ["ts/*"],
-            "@tsx/*": ["tsx/*"]
+            "@components/*": ["components/*"]
         }
     },
     "exclude": ["node_modules"]
