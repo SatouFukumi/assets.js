@@ -269,7 +269,7 @@ export function debounce(
     timeout: number,
     firstCall: boolean = false
 ): (...args: any[]) => any {
-    let timer: number | NodeJS.Timeout = -1
+    let timer: number = -1
     let toCall: boolean = false
     if (firstCall) toCall = true
 

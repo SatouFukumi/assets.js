@@ -5,7 +5,7 @@
     },
     "compilerOptions": {
         // Libraries
-        "lib": ["es2021", "es7", "WebWorker", "dom", "DOM.Iterable"],
+        "lib": ["es2022", "es7", "WebWorker", "dom", "ES2015.Iterable", "DOM.Iterable"],
         // Options
         "allowJs": false,
         "alwaysStrict": true,
@@ -17,8 +17,8 @@
         // Alias paths
         "baseUrl": ".",
         "paths": {
-            "@ts/*": ["ts/*"],
-            "@components/*": ["components/*"]
+            "@": ["./"],
+            "@*": ["./*"]
         }
     },
     "exclude": ["node_modules"]
