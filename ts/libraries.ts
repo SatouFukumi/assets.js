@@ -11,20 +11,32 @@ export const libraries = {
      * @docs `mo` - `jan`
      * @docs `MM` - `January`
      * @docs `mm` - `january`
-     * @docs `o` - `am`
-     * @docs `yyyy` - `2022`
+     * @docs `m` - `01`
+     * @docs `o` - `th`
+     * @docs `O` - `Th`
+     * @docs `P` - `AM`
+     * @docs `p` - `am`
+     * @docs `yyyy` | `YYYY` - `2022`
      * @docs `hh` - `24`
      * @docs `mi` - `60`
      * @docs `ss` - `60`
      *
-     * @param       data            time prop
-     * @param       data.time       input time
-     * @param       data.format     format for the return
+     * @param       data                    time prop
+     * @param       data.timestamp          input time
+     * @param       data.format             format for the return
+     * @param       data.timeZone           time zone for the time
      */
     prettyTime({
         timestamp = new Date(),
         format = "hh:mi:ss - dd Mo yyyy",
+        timeZone = undefined,
+    }: {
+        timestamp?: Date
+        format?: string
+        timeZone?: string
     } = {}) {
+        const workingTimestamp = this.newDate(timestamp, timeZone)
+
         const months = [
             "January",
             "February",
@@ -51,27 +63,34 @@ export const libraries = {
         const ordinal = ["Th", "St", "Nd", "Rd"]
 
         const formats: Record<string, number | string> = {
-            dd: timestamp.getDate(),
-            WW: weekDays[timestamp.getDay()],
-            ww: weekDays[timestamp.getDay()].toLowerCase(),
-            Mo: months[timestamp.getMonth()].slice(0, 3),
-            mo: months[timestamp.getMonth()].slice(0, 3).toLowerCase(),
-            MM: months[timestamp.getMonth()],
-            mm: months[timestamp.getMonth()].toLowerCase(),
-            W: weekDays[timestamp.getDay()].slice(0, 3),
-            w: weekDays[timestamp.getDay()].slice(0, 3).toLowerCase(),
-            m: (timestamp.getMonth() + 1).toString().padStart(2, "0"),
-            o: ordinal[timestamp.getDate() % 10],
+            dd: workingTimestamp.getDate(),
+            WW: weekDays[workingTimestamp.getDay()],
+            ww: weekDays[workingTimestamp.getDay()].toLowerCase(),
+            Mo: months[workingTimestamp.getMonth()].slice(0, 3),
+            mo: months[workingTimestamp.getMonth()].slice(0, 3).toLowerCase(),
+            MM: months[workingTimestamp.getMonth()],
+            mm: months[workingTimestamp.getMonth()].toLowerCase(),
+            W: weekDays[workingTimestamp.getDay()].slice(0, 3),
+            w: weekDays[workingTimestamp.getDay()].slice(0, 3).toLowerCase(),
+            m: (workingTimestamp.getMonth() + 1).toString().padStart(2, "0"),
+            O: ordinal[workingTimestamp.getDate() % 10],
+            o: ordinal[workingTimestamp.getDate() % 10].toLowerCase(),
+            mi: workingTimestamp.getMinutes().toString().padStart(2, "0"),
+            ss: workingTimestamp.getSeconds().toString().padStart(2, "0"),
+            hh: workingTimestamp.getHours().toString().padStart(2, "0"),
+            yyyy: workingTimestamp.getFullYear().toString(),
+            YYYY: workingTimestamp.getFullYear().toString(),
+            P: (workingTimestamp.getHours() >= 12 ? "pm" : "am").toUpperCase(),
+            p: workingTimestamp.getHours() >= 12 ? "pm" : "am",
         }
 
-        return format
-            .replace(/YYYY|yyyy/g, timestamp.getFullYear().toString())
-            .replace(/hh/g, timestamp.getHours().toString().padStart(2, "0"))
-            .replace(/mi/g, timestamp.getMinutes().toString().padStart(2, "0"))
-            .replace(/ss/g, timestamp.getSeconds().toString().padStart(2, "0"))
-            .replace(/dd|WW|ww|Mo|mo|MM|mm|W|w|m|o/g, (match) =>
-                formats[match].toString()
-            )
+        return format.replace(/dd|ss|hh|WW|ww|Mo|mo|MM|mm|mi|W|w|m|O|o|p|P/g, (match) =>
+            formats[match].toString()
+        )
+    },
+
+    newDate(date: Date, timeZone?: string) {
+        return new Date(date.toLocaleString(undefined, { timeZone }))
     },
 
     /**
@@ -108,9 +127,7 @@ export const libraries = {
         const hex = `#${Math.floor(Math.random() * 16777215).toString(16)}`
         if (hexLength === undefined) return hex
 
-        return hex.length - 1 === hexLength
-            ? hex
-            : this.randomHexColor(hexLength)
+        return hex.length - 1 === hexLength ? hex : this.randomHexColor(hexLength)
     },
 
     hexToRgb(hex: string) {
@@ -174,8 +191,6 @@ export const libraries = {
         return array[this.randomBetween(0, array.length - 1)]
     },
 
-    /** random string list */
-    randomStringList: [] as string[],
     /**
      *
      * @param       len             length of the returned string
@@ -192,11 +207,6 @@ export const libraries = {
             let p = Math.floor(Math.random() * charSet.length)
             str += charSet.substring(p, p + 1)
         }
-
-        if (this.randomStringList.includes(str))
-            return this.randomString(len, charSet)
-
-        this.randomStringList.push(str)
 
         return str
     },

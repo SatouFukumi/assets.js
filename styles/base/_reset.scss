@@ -83,7 +83,6 @@ video {
     padding: 0;
     border: 0;
 
-    font: inherit;
     font-size: 100%;
 
     vertical-align: baseline;
@@ -129,4 +128,20 @@ button {
     border: none;
     padding: 0;
     background-color: transparent;
+}
+
+a {
+    all: unset;
+
+    margin: 0;
+    padding: 0;
+    border: 0;
+
+    font-size: 100%;
+
+    vertical-align: baseline;
+
+    box-sizing: border-box;
+
+    text-decoration: none;
 }

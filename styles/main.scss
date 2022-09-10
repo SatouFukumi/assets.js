@@ -1,21 +1,10 @@
-@import "exs/reset";
-@import "exs/base";
-@import "exs/typography";
+@import "base/reset";
+@import "base/base";
 
-@import "utils/variables";
+@import "utils/typography";
 @import "utils/keyframes";
 
-@import "components/glasium";
-@import "components/tooltip";
-@import "components/anchor";
-@import "components/slider";
-@import "components/error";
-@import "components/loading";
-@import "components/setting";
-@import "components/screen-switcher";
-@import "components/scroll";
-@import "components/invisible";
-@import "components/select";
-@import "components/radio";
-@import "components/lazyload";
-@import "components/navigation";
+@import "themes/dark";
+@import "themes/light";
+
+@import "components/support";

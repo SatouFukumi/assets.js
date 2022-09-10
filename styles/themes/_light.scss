@@ -1,0 +1,13 @@
+:root {
+    --background-light: whitesmoke;
+    --color-light: rgb(28, 28, 28);
+}
+
+body.light,
+body[data-theme="light"] {
+    background-color: var(--background-light);
+    --global-background: var(--background-light);
+
+    color: var(--color-light);
+    --global-color: var(--color-light);
+}
