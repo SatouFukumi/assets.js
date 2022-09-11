@@ -43,6 +43,10 @@ export const cs = {
 
     preferLightColorScheme: (): boolean =>
         window.matchMedia("(prefers-color-scheme: light)").matches,
+
+    get preferColorScheme(): "light" | "dark" {
+        return this.preferDarkColorScheme() ? "dark" : "light"
+    },
 }
 
 export default cs

@@ -1,21 +1,31 @@
 {
-    "devDependencies": {
-        "@types/react": "^18.0.18",
-        "tsconfig-paths": "^4.1.0"
-    },
     "name": "assets",
     "version": "1.0.0",
     "description": "This is my assets for almost anything 👾",
     "directories": {
         "doc": "docs"
     },
+    "scripts": {},
     "dependencies": {
         "json5": "^2.2.1",
         "minimist": "^1.2.6",
         "react-custom-scrollbars-2": "^4.5.0",
-        "strip-bom": "^3.0.0"
+        "strip-bom": "^3.0.0",
+        "next": "12.3.0",
+        "react": "18.2.0",
+        "react-dom": "18.2.0",
+        "sass": "^1.54.9"
     },
-    "scripts": {},
+    "devDependencies": {
+        "tsconfig-paths": "^4.1.0",
+        "@types/node": "18.7.16",
+        "@types/react": "18.0.18",
+        "@types/react-dom": "18.0.6",
+        "eslint": "8.23.0",
+        "eslint-config-next": "12.3.0",
+        "typescript": "4.8.3",
+        "classnames": "^2.3.1"
+    },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/satoufukumi/assets.git"

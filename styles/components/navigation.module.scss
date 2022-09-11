@@ -1,0 +1,40 @@
+$height: 50px;
+
+
+body.light,
+body[data-theme='light'] {
+    .container {
+        --background-color: hsl(0, 0%, 100%);
+        --shadow-color: hsla(0, 0%, 100%, 0.9);
+    }
+}
+
+
+body.dark,
+body[data-theme='dark'] {
+    .container {
+        --background-color: hsl(0, 0%, 13%);
+        --shadow-color: hsla(0, 0%, 6%, 0.9);
+    }
+}
+
+
+.container {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-start: 0;
+
+    translate: 0 -100%;
+
+    width: 100%;
+    height: $height;
+
+    background-color: var(--background-color);
+
+    z-index: 99999;
+}
+
+
+:export {
+    height: $height;
+}

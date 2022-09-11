@@ -47,6 +47,10 @@
     --font-primary: "Segoe UI";
     --font-secondary: "Nunito";
     --font-code: "Consolas";
+
+
+    /** base 10 */
+    font-size: 10px;
 }
 
 *,
@@ -69,6 +73,8 @@
 body {
     min-height: 100vh;
     min-width: 100vw;
+
+    font-size: 1.6rem;
 }
 
 
@@ -95,17 +101,19 @@ i {
 
 
 button {
+    i {
+        margin-inline: auto;
+
+        height: 100%;
+    }
+
+
     *+i {
-        margin-inline-start: auto;
+        margin-inline: 0 auto;
     }
 
 
     i+* {
-        margin-inline-start: auto;
-    }
-
-
-    i {
-        height: 100%;
+        margin-inline: auto 0;
     }
 }

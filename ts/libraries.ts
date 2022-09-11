@@ -178,6 +178,7 @@ export const libraries = {
         let [minEdge, maxEdge] = outRange
         if (res > minEdge && res < maxEdge)
             return this.randomBetween(min, max, toInt, outRange)
+
         return res
     },
 
@@ -279,7 +280,7 @@ export function debounce(
     timeout: number,
     firstCall: boolean = false
 ): (...args: any[]) => any {
-    let timer: number = -1
+    let timer: number | NodeJS.Timeout = -1
     let toCall: boolean = false
     if (firstCall) toCall = true
 

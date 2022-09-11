@@ -1,5 +1,5 @@
 :root {
-    --background-dark: rgb(24, 24, 24);
+    --background-color-dark: rgb(24, 24, 24);
     --color-dark: whitesmoke;
 }
 
@@ -8,6 +8,6 @@ body[data-theme="dark"] {
     color: var(--color-dark);
     --global-color: var(--color-dark);
 
-    background-color: var(--background-dark);
-    --global-bg: var(--background-dark);
+    background-color: var(--background-color-dark);
+    --global-background-color: var(--background-color-dark);
 }

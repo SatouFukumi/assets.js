@@ -5,7 +5,15 @@
     },
     "compilerOptions": {
         // Libraries
-        "lib": ["es2022", "es7", "WebWorker", "dom", "ES2015.Iterable", "DOM.Iterable"],
+        "lib": [
+            "es2022",
+            "es7",
+            "WebWorker",
+            "dom",
+            "ES2015.Iterable",
+            "DOM.Iterable",
+            "esnext"
+        ],
         // Options
         "allowJs": false,
         "alwaysStrict": true,
@@ -16,10 +24,7 @@
         "target": "ES2022",
         // Alias paths
         "baseUrl": ".",
-        "paths": {
-            "@": ["./"],
-            "@*": ["./*"]
-        }
+        "paths": { "@": ["./"], "@*": ["./*"] }
     },
     "exclude": ["node_modules"]
 }
