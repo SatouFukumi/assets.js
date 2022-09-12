@@ -2,14 +2,23 @@ import { Component, createRef } from "react"
 
 import styles from "@styles/components/navigation.module.scss"
 
-export class Navigation extends Component {
+export class Navigation extends Component<
+    Fukumi.NavigationProps,
+    Fukumi.NavigationState
+> {
     private ref: Fukumi.NavigationRef = {
         container: createRef<HTMLDivElement>(),
     }
 
-    private CONSTANT = Object.freeze({
+    private CONSTANT: Fukumi.NavigationConstant = Object.freeze({
         height: styles.height,
     })
+
+    state: Fukumi.NavigationState = {}
+
+    public static getDerivedStateFromProps(): null | Partial<Fukumi.NavigationState> {
+        return {}
+    }
 
     public componentDidMount(): void {
         if (!this.ref.container) return
@@ -42,8 +51,16 @@ export class Navigation extends Component {
 
 declare global {
     namespace Fukumi {
+        interface NavigationProps {}
+
         interface NavigationRef {
             container: React.RefObject<HTMLDivElement>
         }
+
+        interface NavigationConstant {
+            readonly height: string
+        }
+
+        interface NavigationState {}
     }
 }
