@@ -9,6 +9,7 @@ import {
     useCallback,
     ReactElement,
     MouseEventHandler,
+    useLayoutEffect,
 } from "react"
 import classNames from "classnames"
 
@@ -37,13 +38,13 @@ export function Divider({
     const bodySections: Fukumi.SectionElement[] = useMemo(
         (): JSX.Element[] =>
             children.filter((child: JSX.Element): boolean => child.type === Section),
-        []
+        [children]
     )
 
     const buttons: Fukumi.ButtonElement[] = useMemo(
         (): JSX.Element[] =>
             children.filter((child: JSX.Element): boolean => child.type === Button),
-        []
+        [children]
     )
 
     return (
@@ -110,6 +111,17 @@ function DividerHead({
         sections[0].description ?? "\u2800"
     )
 
+    useLayoutEffect((): void => {
+        const targetedSection: Fukumi.DividerSection | undefined = sections.find(
+            (section: Fukumi.DividerSection): boolean => section.name === currentSection
+        )
+
+        if (targetedSection === undefined) return
+
+        setCurrentSectionIcon(targetedSection.icon)
+        setCurrentSectionDescription(targetedSection.description ?? "\u2800")
+    }, [sections, currentSectionDescription, currentSectionIcon])
+
     return (
         <div className={styles.head}>
             <Icon iconClass={currentSectionIcon} />
@@ -172,7 +184,7 @@ function Switch({
         setSection(name)
         setSectionIcon(icon)
         setSectionDescription(description ?? "\u2800")
-    }, [currentSection])
+    }, [currentSection, description, name, icon])
 
     return (
         <span
@@ -206,7 +218,7 @@ export function Button({
     onClick,
     icon,
     text,
-    backgroundOptions = {},
+    glasiumOptions = {},
 }: Fukumi.ButtonProps): JSX.Element {
     let iconClass = icon ?? "fa-solid fa-code"
 
@@ -218,7 +230,7 @@ export function Button({
             })}
             onClick={onClick}
         >
-            <Glasium {...backgroundOptions} />
+            <Glasium {...glasiumOptions} />
             <i
                 className={classNames({
                     [iconClass]: true,
@@ -275,7 +287,7 @@ declare global {
         interface ButtonProps {
             text?: string
             icon?: string
-            backgroundOptions?: Fukumi.GlasiumProps
+            glasiumOptions?: Fukumi.GlasiumProps
             forSection: string
             onClick: MouseEventHandler<HTMLButtonElement>
         }

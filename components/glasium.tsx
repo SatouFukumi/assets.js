@@ -1,6 +1,6 @@
 import type { Property } from "csstype"
 
-import { Component, createRef, useEffect, useLayoutEffect, useState } from "react"
+import { Component, createRef, useLayoutEffect, useState } from "react"
 
 import styles from "@styles/components/glasium.module.scss"
 
@@ -21,6 +21,23 @@ export default class Glasium extends Component<Fukumi.GlasiumProps, Fukumi.Glasi
         scale: this.props.scale ?? 2,
         shape: this.props.shape ?? "triangle",
         speed: this.props.speed ?? 6,
+    }
+
+    public static getDerivedStateFromProps(
+        nextProps: Fukumi.GlasiumProps,
+        prevState: Fukumi.GlasiumState
+    ): null | Fukumi.GlasiumState {
+        if (
+            nextProps.colorOptions === prevState.colorOptions &&
+            nextProps.count === prevState.count &&
+            nextProps.rotate === prevState.rotate &&
+            nextProps.scale === prevState.scale &&
+            nextProps.shape === prevState.shape &&
+            nextProps.speed === prevState.speed
+        )
+            return null
+
+        return { ...prevState, ...nextProps }
     }
 
     private observer?: ResizeObserver
@@ -245,7 +262,9 @@ declare global {
         interface GlasiumProps {
             shape?: GlasiumShape
             colorOptions?: GlasiumOptions
+            /** bigger scale is bigger shape */
             scale?: number
+            /** the speed means how many times do the shape travel down-up/up-down in 5 seconds */
             speed?: number
             count?: number
             rotate?: boolean
