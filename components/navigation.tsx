@@ -14,29 +14,16 @@ export class Navigation extends Component<
         height: styles.height,
     })
 
-    state: Fukumi.NavigationState = {}
+    state: Fukumi.NavigationState = {
+        mounted: false,
+    }
 
     public static getDerivedStateFromProps(): null | Partial<Fukumi.NavigationState> {
         return {}
     }
 
     public componentDidMount(): void {
-        if (!this.ref.container) return
-
-        const stylesheet = document.createElement("style")
-        stylesheet.textContent = `
-            #${this.ref.container.current?.parentElement?.id} {
-                position: absolute;
-                inset: 0;
-
-                width: auto;
-                height: auto;
-
-                margin-block-start: ${this.CONSTANT.height};
-            }
-        `
-
-        this.ref.container.current?.parentElement?.append(stylesheet)
+        this.setState({ mounted: true })
     }
 
     public render() {
@@ -44,7 +31,22 @@ export class Navigation extends Component<
             <div
                 className={styles.container}
                 ref={this.ref.container}
-            ></div>
+            >
+                {/** style dom */}
+                {!this.state.mounted || (
+                    <style>
+                        {`#${this.ref.container.current?.parentElement?.id} {
+                            position: absolute;
+                            inset: 0;
+
+                            width: auto;
+                            height: auto;
+
+                            margin-block-start: ${this.CONSTANT.height};
+                      }`}
+                    </style>
+                )}
+            </div>
         )
     }
 }
@@ -61,6 +63,8 @@ declare global {
             readonly height: string
         }
 
-        interface NavigationState {}
+        interface NavigationState {
+            mounted: boolean
+        }
     }
 }

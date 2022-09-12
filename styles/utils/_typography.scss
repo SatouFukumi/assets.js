@@ -2,6 +2,25 @@
 $font-path: './../../fonts';
 
 
+/** Font: Nerd Font */
+@font-face {
+    font-family: 'Nerd Font';
+    /* @TODO you need to adjust the path to the font: */
+    src: url("./../../fonts/Symbols-2048-em-Nerd-Font-Complete.ttf") format("woff2");
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+/** Font: Caskaydia Cove */
+@font-face {
+    font-family: "Caskaydia Cove";
+    src: url("./../../fonts/Caskaydia-Cove.ttf") format("woff2");
+    font-display: swap;
+    font-weight: normal;
+}
+
+
 /** Font: Cartograph CF Extra */
 @font-face {
     font-family: 'Cartograph CF Extra';

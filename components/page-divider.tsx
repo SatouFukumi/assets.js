@@ -63,6 +63,14 @@ export function Divider({
 
                 <DividerBody currentSection={currentSection}>{bodySections}</DividerBody>
             </div>
+
+            <style>
+                {`@media (max-width: calc(${maxWidth ?? "1200px"} / 1.05)) {
+                    .${styles.button} .${glasiumStyles.text} {
+                        display: none;
+                    }
+                  }`}
+            </style>
         </div>
     )
 }
@@ -220,7 +228,7 @@ export function Button({
     text,
     glasiumOptions = {},
 }: Fukumi.ButtonProps): JSX.Element {
-    let iconClass = icon ?? "fa-solid fa-code"
+    let iconClass = icon ?? "nfb nf-cod-code"
 
     return (
         <button
@@ -237,16 +245,7 @@ export function Button({
                     [glasiumStyles.icon]: true,
                 })}
             />
-            {!text ?? (
-                <span
-                    className={classNames({
-                        [glasiumStyles.text]: true,
-                        [styles.text]: true,
-                    })}
-                >
-                    {text}
-                </span>
-            )}
+            {!text || <span className={glasiumStyles.text}>{text}</span>}
         </button>
     )
 }
