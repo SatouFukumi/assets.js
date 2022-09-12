@@ -237,14 +237,16 @@ export function Button({
                     [glasiumStyles.icon]: true,
                 })}
             />
-            <span
-                className={classNames({
-                    [glasiumStyles.text]: true,
-                    [styles.text]: true,
-                })}
-            >
-                {text}
-            </span>
+            {!text ?? (
+                <span
+                    className={classNames({
+                        [glasiumStyles.text]: true,
+                        [styles.text]: true,
+                    })}
+                >
+                    {text}
+                </span>
+            )}
         </button>
     )
 }
