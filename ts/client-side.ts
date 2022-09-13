@@ -1,4 +1,6 @@
-export const cs = {
+import { useEffect, useLayoutEffect } from "react"
+
+export const clientSide = {
     /**
      * return whether the url exists
      * @param       url         url to check
@@ -49,4 +51,7 @@ export const cs = {
     },
 }
 
-export default cs
+export const useRenderEffect: (
+    effect: React.EffectCallback,
+    deps?: React.DependencyList | undefined
+) => void = typeof document === "undefined" ? useEffect : useLayoutEffect

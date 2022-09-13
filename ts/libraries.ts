@@ -34,10 +34,10 @@ export const libraries = {
         timestamp?: Date
         format?: string
         timeZone?: string
-    } = {}) {
-        const workingTimestamp = this.newDate(timestamp, timeZone)
+    } = {}): string {
+        const workingTimestamp: Date = this.newDate(timestamp, timeZone)
 
-        const months = [
+        const months: string[] = [
             "January",
             "February",
             "March",
@@ -51,7 +51,7 @@ export const libraries = {
             "November",
             "December",
         ]
-        const weekDays = [
+        const weekDays: string[] = [
             "Sunday",
             "Monday",
             "Tuesday",
@@ -60,7 +60,7 @@ export const libraries = {
             "Friday",
             "Saturday",
         ]
-        const ordinal = ["Th", "St", "Nd", "Rd"]
+        const ordinal: string[] = ["Th", "St", "Nd", "Rd"]
 
         const formats: Record<string, number | string> = {
             dd: workingTimestamp.getDate(),
@@ -89,7 +89,7 @@ export const libraries = {
         )
     },
 
-    newDate(date: Date, timeZone?: string) {
+    newDate(date: Date, timeZone?: string): Date {
         return new Date(date.toLocaleString(undefined, { timeZone }))
     },
 
@@ -119,18 +119,24 @@ export const libraries = {
         return this.min(this.max(min, dynamic), max)
     },
 
-    randomColor() {
+    randomColor(): number {
         return Math.floor(Math.random() * 16777216)
     },
 
-    randomHexColor(hexLength?: 3 | 6): string {
-        const hex = `#${Math.floor(Math.random() * 16777215).toString(16)}`
+    randomHexColor(hexLength?: 3 | 6): `#${string}` {
+        const hex: `#${string}` = `#${Math.floor(Math.random() * 16777215).toString(16)}`
         if (hexLength === undefined) return hex
 
         return hex.length - 1 === hexLength ? hex : this.randomHexColor(hexLength)
     },
 
-    hexToRgb(hex: string) {
+    hexToRgb(hex: string): {
+        red: number
+        green: number
+        blue: number
+        rgb: `rgb(${number}, ${number}, ${number})`
+    } {
+        this
         if (hex.charAt(0) === "#") hex = hex.substring(1)
 
         if (hex.length !== 3 && hex.length !== 6)
@@ -139,12 +145,12 @@ export const libraries = {
         if (hex.length === 3)
             hex = hex
                 .split("")
-                .map((c) => c.repeat(2))
+                .map((c: string): string => c.repeat(2))
                 .join("")
 
-        let red = parseInt(hex.substring(0, 2), 16)
-        let green = parseInt(hex.substring(2, 4), 16)
-        let blue = parseInt(hex.substring(4, 6), 16)
+        let red: number = parseInt(hex.substring(0, 2), 16)
+        let green: number = parseInt(hex.substring(2, 4), 16)
+        let blue: number = parseInt(hex.substring(4, 6), 16)
 
         return { red, green, blue, rgb: `rgb(${red}, ${green}, ${blue})` }
     },
@@ -164,12 +170,12 @@ export const libraries = {
         outRange: number[] = []
     ): number {
         if (max < min) {
-            let tmp = max
+            let tmp: number = max
             max = min
             min = tmp
         }
 
-        let res = toInt
+        let res: number = toInt
             ? Math.floor(Math.random() * (max - min + 1) + min)
             : Math.random() * (max - min) + min
 
@@ -202,10 +208,10 @@ export const libraries = {
         len: number = 16,
         charSet: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
     ): string {
-        let str = ""
+        let str: string = ""
 
-        for (let i = 0; i < len; i++) {
-            let p = Math.floor(Math.random() * charSet.length)
+        for (let i: number = 0; i < len; i++) {
+            let p: number = Math.floor(Math.random() * charSet.length)
             str += charSet.substring(p, p + 1)
         }
 
@@ -220,6 +226,31 @@ export const libraries = {
 }
 
 /** */
+
+/** attempt invoking a function */
+export function attempt<T extends (...args: any[]) => any>(
+    fallbackError: `Error : ${string}`,
+    fn: T,
+    ...args: any[]
+): Error | ReturnType<T> {
+    try {
+        return fn(...args)
+    } catch (e) {
+        return e instanceof Error ? e : new Error(fallbackError)
+    }
+}
+
+/** chain async */
+export async function chainAsync(
+    funcs: ((nextFunc: Function) => Fukumi.Awaitable<void>)[]
+): Promise<void> {
+    let curr: number = 0
+    const nextFunc: () => Promise<void> = async (): Promise<void> => {
+        if (curr === funcs.length) return
+        return funcs[curr++](nextFunc)
+    }
+    return nextFunc()
+}
 
 /**
  * throttle a function
@@ -240,7 +271,7 @@ export function throttle(
         if (throttler) return
         throttler = true
 
-        setTimeout(() => (throttler = false), throttleTime)
+        setTimeout((): boolean => (throttler = false), throttleTime)
 
         return fn.call(context, ...args)
     }
@@ -293,6 +324,15 @@ export function debounce(
         }
 
         clearTimeout(timer)
-        timer = setTimeout(() => fn.call(context, ...args), timeout)
+        timer = setTimeout((): void => fn.call(context, ...args), timeout)
+    }
+}
+
+/** */
+
+/** global */
+declare global {
+    namespace Fukumi {
+        type Awaitable<T extends any> = Promise<T> | T
     }
 }

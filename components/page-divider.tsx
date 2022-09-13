@@ -9,10 +9,10 @@ import {
     useCallback,
     ReactElement,
     MouseEventHandler,
-    useLayoutEffect,
 } from "react"
 import classNames from "classnames"
 
+import { useRenderEffect } from "@ts/client-side"
 import Glasium from "./glasium"
 import ScrollBox from "./scroll-box"
 
@@ -33,7 +33,10 @@ export function Divider({
     children,
     sections,
 }: Fukumi.DividerProps): JSX.Element {
-    const [currentSection, setCurrentSection] = useState(sections[0].name)
+    const [currentSection, setCurrentSection] =
+        useState<Fukumi.DividerSection["name"]>("")
+
+    useRenderEffect((): void => setCurrentSection(sections[0].name), [sections])
 
     const bodySections: Fukumi.SectionElement[] = useMemo(
         (): JSX.Element[] =>
@@ -119,7 +122,7 @@ function DividerHead({
         sections[0].description ?? "\u2800"
     )
 
-    useLayoutEffect((): void => {
+    useRenderEffect((): void => {
         const targetedSection: Fukumi.DividerSection | undefined = sections.find(
             (section: Fukumi.DividerSection): boolean => section.name === currentSection
         )
@@ -192,7 +195,7 @@ function Switch({
         setSection(name)
         setSectionIcon(icon)
         setSectionDescription(description ?? "\u2800")
-    }, [currentSection, description, name, icon])
+    }, [currentSection, description, icon])
 
     return (
         <span
