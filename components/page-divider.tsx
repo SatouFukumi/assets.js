@@ -40,13 +40,17 @@ export function Divider({
 
     const bodySections: Fukumi.SectionElement[] = useMemo(
         (): JSX.Element[] =>
-            children.filter((child: JSX.Element): boolean => child.type === Section),
+            children.filter(
+                (child: JSX.Element): boolean => child.type === Section
+            ),
         [children]
     )
 
     const buttons: Fukumi.ButtonElement[] = useMemo(
         (): JSX.Element[] =>
-            children.filter((child: JSX.Element): boolean => child.type === Button),
+            children.filter(
+                (child: JSX.Element): boolean => child.type === Button
+            ),
         [children]
     )
 
@@ -64,7 +68,9 @@ export function Divider({
                     {buttons}
                 </DividerHead>
 
-                <DividerBody currentSection={currentSection}>{bodySections}</DividerBody>
+                <DividerBody currentSection={currentSection}>
+                    {bodySections}
+                </DividerBody>
             </div>
 
             <style>
@@ -78,11 +84,14 @@ export function Divider({
     )
 }
 
-function DividerBody({ children, currentSection }: Fukumi.DividerBodyProps): JSX.Element {
+function DividerBody({
+    children,
+    currentSection,
+}: Fukumi.DividerBodyProps): JSX.Element {
     return (
         <div className={styles.body}>
             <ScrollBox>
-                <div data-role="wrapper">
+                <>
                     {Children.map(
                         children,
                         (
@@ -96,7 +105,7 @@ function DividerBody({ children, currentSection }: Fukumi.DividerBodyProps): JSX
                                 />
                             )
                     )}
-                </div>
+                </>
             </ScrollBox>
         </div>
     )
@@ -117,15 +126,19 @@ function DividerHead({
     setCurrentSection,
     children,
 }: Fukumi.DividerHeadProps): JSX.Element {
-    const [currentSectionIcon, setCurrentSectionIcon] = useState(sections[0].icon)
+    const [currentSectionIcon, setCurrentSectionIcon] = useState(
+        sections[0].icon
+    )
     const [currentSectionDescription, setCurrentSectionDescription] = useState(
         sections[0].description ?? "\u2800"
     )
 
     useRenderEffect((): void => {
-        const targetedSection: Fukumi.DividerSection | undefined = sections.find(
-            (section: Fukumi.DividerSection): boolean => section.name === currentSection
-        )
+        const targetedSection: Fukumi.DividerSection | undefined =
+            sections.find(
+                (section: Fukumi.DividerSection): boolean =>
+                    section.name === currentSection
+            )
 
         if (targetedSection === undefined) return
 
@@ -146,7 +159,9 @@ function DividerHead({
                     setSectionIcon={setCurrentSectionIcon}
                 />
 
-                <div className={styles.description}>{currentSectionDescription}</div>
+                <div className={styles.description}>
+                    {currentSectionDescription}
+                </div>
             </div>
 
             <Buttons currentSection={currentSection}>{children}</Buttons>
@@ -164,7 +179,10 @@ function Switches({
     return (
         <div className={styles.switches}>
             {sections.map(
-                (section: Fukumi.DividerSection, index: number): JSX.Element => (
+                (
+                    section: Fukumi.DividerSection,
+                    index: number
+                ): JSX.Element => (
                     <Switch
                         key={index}
                         {...section}
@@ -189,13 +207,13 @@ function Switch({
     setSectionDescription,
     setSectionIcon,
 }: Fukumi.SwitchProps): JSX.Element {
-    const onClick: () => void = useCallback((): void => {
+    const onClick: () => void = (): void => {
         if (currentSection === name) return
 
         setSection(name)
         setSectionIcon(icon)
         setSectionDescription(description ?? "\u2800")
-    }, [currentSection, description, icon])
+    }
 
     return (
         <span
@@ -208,12 +226,18 @@ function Switch({
     )
 }
 
-function Buttons({ children, currentSection }: Fukumi.ButtonsProps): JSX.Element {
+function Buttons({
+    children,
+    currentSection,
+}: Fukumi.ButtonsProps): JSX.Element {
     return (
         <div className={styles.buttons}>
             {Children.map(
                 children,
-                (Child: Fukumi.ButtonElement, index: number): JSX.Element | boolean =>
+                (
+                    Child: Fukumi.ButtonElement,
+                    index: number
+                ): JSX.Element | boolean =>
                     currentSection !== Child.props.forSection || (
                         <Child.type
                             {...Child.props}
@@ -227,24 +251,28 @@ function Buttons({ children, currentSection }: Fukumi.ButtonsProps): JSX.Element
 
 export function Button({
     onClick,
-    icon,
+    icon = "nfb nf-cod-code",
     text,
+    disabled = false,
+    title,
+    tooltipTitle,
     glasiumOptions = {},
 }: Fukumi.ButtonProps): JSX.Element {
-    let iconClass = icon ?? "nfb nf-cod-code"
-
     return (
         <button
             className={classNames({
                 [glasiumStyles.button]: true,
                 [styles.button]: true,
             })}
+            title={title}
+            data-title={tooltipTitle}
             onClick={onClick}
+            disabled={disabled}
         >
             <Glasium {...glasiumOptions} />
             <i
                 className={classNames({
-                    [iconClass]: true,
+                    [icon]: true,
                     [glasiumStyles.icon]: true,
                 })}
             />
@@ -284,7 +312,10 @@ declare global {
         }
 
         interface SwitchesProps
-            extends Omit<SwitchProps, "name" | "title" | "description" | "icon"> {
+            extends Omit<
+                SwitchProps,
+                "name" | "title" | "description" | "icon"
+            > {
             sections: DividerSection[]
         }
 
@@ -292,6 +323,9 @@ declare global {
             text?: string
             icon?: string
             glasiumOptions?: Fukumi.GlasiumProps
+            disabled?: boolean
+            title?: string
+            tooltipTitle?: string
             forSection: string
             onClick: MouseEventHandler<HTMLButtonElement>
         }

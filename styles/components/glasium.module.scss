@@ -15,16 +15,13 @@
 
     transition: 200ms background-color ease-out;
 
-
     .triangle {
         clip-path: polygon(50% 0, 0% 100%, 100% 100%);
     }
 
-
     .hexagon {
         clip-path: polygon(25% 6%, 75% 6%, 100% 50%, 75% 94%, 25% 94%, 0% 50%);
     }
-
 
     .triangle,
     .hexagon {
@@ -48,23 +45,31 @@
     }
 }
 
+.button {
+    --padding: calc(0.875em);
 
-:is(.button, button) {
-    display: inline-flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
+    @media (max-width: 650px) {
+        --padding: 0.8em;
 
-    gap: 0.5em;
+        font-size: 0.8em;
+    }
+
+    @media (max-width: 480px) {
+        --padding: 0.9em;
+
+        font-size: 0.6em;
+    }
+
+    display: flex;
+
+    column-gap: 0.5em;
+
+    padding: var(--padding);
 
     place-items: center;
     place-content: center;
 
-    min-height: 45px;
-
-    padding-inline-start: 14px;
-    padding-inline-end: 14px;
-
-    font-family: var(--font-secondary), "Open Sans", sans-serif;
+    font-family: var(--font-secondary), "Open Sans", "sans-serif";
     font-weight: 900;
     font-size: 13px;
     -webkit-font-smoothing: antialiased;
@@ -73,59 +78,67 @@
     text-transform: uppercase;
     text-align: center;
 
-    transition: 150ms transform ease-out;
+    transition: 150ms scale ease-out;
 
     border-radius: 4px;
-
 
     * {
         pointer-events: none;
         user-select: none;
-    }
 
+        vertical-align: center;
+        text-align: center;
+    }
 
     .icon,
     i {
-        font-size: 1.215em;
+        display: block;
     }
-
 
     .text,
     span,
     div {
-        display: inline-block;
+        display: block;
     }
 
-
-    >.container {
+    > .container {
         transition-property: filter;
         transition-duration: 170ms;
         transition-timing-function: linear;
     }
 
-
     @media (hover: hover) {
-        &:hover>.container {
+        &:hover > .container {
             filter: brightness(115%);
         }
     }
 
-
     &:active {
-        transform: scale(0.9);
+        scale: 0.9;
 
         .container {
             filter: brightness(125%);
         }
     }
-}
 
+    &[disabled] {
+        scale: 1;
+
+        filter: brightness(70%);
+
+        cursor: not-allowed;
+
+        &:hover,
+        &:active {
+            filter: brightness(70%);
+        }
+    }
+}
 
 @keyframes glasium-shape {
     0% {
         transform: translateY(calc(100% + var(--size))) rotate(0deg);
     }
-
 
     100% {
         --translate: calc((100% + var(--background-height)) * -1);

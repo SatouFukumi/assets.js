@@ -1,16 +1,175 @@
 /** font path */
-$font-path: './../../fonts';
+$font-path: "./../../fonts";
 
-
-/** Font: Nerd Font */
+/** Font: Noto Sans */
 @font-face {
-    font-family: 'Nerd Font';
-    /* @TODO you need to adjust the path to the font: */
-    src: url("./../../fonts/Symbols-2048-em-Nerd-Font-Complete.ttf") format("woff2");
+    font-family: "Noto Sans";
+    src: url("./../../fonts/NotoSans-Regular.ttf") format("woff2");
     font-weight: normal;
     font-style: normal;
 }
 
+@font-face {
+    font-family: "Noto Sans";
+    src: url("./../../fonts/NotoSans-Bold.ttf") format("woff2");
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Noto Sans";
+    src: url("./../../fonts/NotoSans-BoldItalic.ttf") format("woff2");
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Noto Sans";
+    src: url("./../../fonts/NotoSans-ExtraBoldItalic.ttf") format("woff2");
+    font-weight: 900;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Noto Sans";
+    src: url("./../../fonts/NotoSans-ExtraBold.ttf") format("woff2");
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Noto Sans";
+    src: url("./../../fonts/NotoSans-Italic.ttf") format("woff2");
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Noto Sans";
+    src: url("./../../fonts/NotoSans-LightItalic.ttf") format("woff2");
+    font-weight: light;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Noto Sans";
+    src: url("./../../fonts/NotoSans-Light.ttf") format("woff2");
+    font-weight: light;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Noto Sans";
+    src: url("./../../fonts/NotoSans-MediumItalic.ttf") format("woff2");
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Noto Sans";
+    src: url("./../../fonts/NotoSans-Medium.ttf") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Noto Sans";
+    src: url("./../../fonts/NotoSans-SemiBold.ttf") format("woff2");
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Noto Sans";
+    src: url("./../../fonts/NotoSans-SemiBoldItalic.ttf") format("woff2");
+    font-weight: 600;
+    font-style: italic;
+}
+
+/** Font: Asap */
+@font-face {
+    font-family: "Asap";
+    src: url("./../../fonts/Asap-Regular.otf") format("woff2");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Asap";
+    src: url("./../../fonts/Asap-Bold.otf") format("woff2");
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Asap";
+    src: url("./../../fonts/Asap-BoldItalic.otf") format("woff2");
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Asap";
+    src: url("./../../fonts/Asap-Medium.otf") format("woff2");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Asap";
+    src: url("./../../fonts/Asap-MediumItalic.otf") format("woff2");
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Asap";
+    src: url("./../../fonts/Asap-Symbol.otf") format("woff2");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Asap";
+    src: url("./../../fonts/Asap-Regular.otf") format("woff2");
+    font-weight: normal;
+    font-style: normal;
+}
+
+/** Font: Raleway */
+@font-face {
+    font-family: "Raleway";
+    src: url("./../../fonts/Raleway-VariableFont_wght.ttf") format("woff2");
+}
+
+/** Font: Neatly Printed */
+@font-face {
+    font-family: "Neatly Printed";
+    src: url("./../../fonts/NeatlyPrinted.ttf") format("woff2");
+}
+
+/** Font: Miss Kindergarten */
+@font-face {
+    font-family: "Miss Kindergarten";
+    src: url("./../../fonts/MissKindergarten.ttf") format("woff2");
+}
+
+/** Font: LuckiestGuy */
+@font-face {
+    font-family: "LuckiestGuy";
+    src: url("./../../fonts/LuckiestGuy-Regular.ttf") format("woff2");
+    font-weight: bold;
+    font-style: normal;
+}
+
+/** Font: Nerd Font */
+@font-face {
+    font-family: "Nerd Font";
+    src: url("./../../fonts/Symbols-2048-em-Nerd-Font-Complete.ttf")
+        format("woff2");
+    font-weight: normal;
+    font-style: normal;
+}
 
 /** Font: Caskaydia Cove */
 @font-face {
@@ -20,171 +179,171 @@ $font-path: './../../fonts';
     font-weight: normal;
 }
 
-
 /** Font: Cartograph CF Extra */
 @font-face {
-    font-family: 'Cartograph CF Extra';
-    src: local('Cartograph CF Extra Light Italic'), local('CartographCF-ExtraLightItalic'),
-        url('./../../fonts/CartographCF-ExtraLightItalic.woff') format('woff'),
-        url('./../../fonts/CartographCF-ExtraLightItalic.ttf') format('truetype');
+    font-family: "Cartograph CF Extra";
+    src: local("Cartograph CF Extra Light Italic"),
+        local("CartographCF-ExtraLightItalic"),
+        url("./../../fonts/CartographCF-ExtraLightItalic.woff") format("woff"),
+        url("./../../fonts/CartographCF-ExtraLightItalic.ttf")
+            format("truetype");
     font-weight: 200;
     font-style: italic;
 }
 
 @font-face {
-    font-family: 'Cartograph CF Extra';
-    src: local('Cartograph CF Extra Bold'), local('CartographCF-ExtraBold'),
-        url('./../../fonts/CartographCF-ExtraBold.woff2') format('woff2'),
-        url('./../../fonts/CartographCF-ExtraBold.woff') format('woff'),
-        url('./../../fonts/CartographCF-ExtraBold.ttf') format('truetype');
+    font-family: "Cartograph CF Extra";
+    src: local("Cartograph CF Extra Bold"), local("CartographCF-ExtraBold"),
+        url("./../../fonts/CartographCF-ExtraBold.woff2") format("woff2"),
+        url("./../../fonts/CartographCF-ExtraBold.woff") format("woff"),
+        url("./../../fonts/CartographCF-ExtraBold.ttf") format("truetype");
     font-weight: 800;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'Cartograph CF Extra';
-    src: local('Cartograph CF Extra Bold Italic'), local('CartographCF-ExtraBoldItalic'),
-        url('./../../fonts/CartographCF-ExtraBoldItalic.woff2') format('woff2'),
-        url('./../../fonts/CartographCF-ExtraBoldItalic.woff') format('woff'),
-        url('./../../fonts/CartographCF-ExtraBoldItalic.ttf') format('truetype');
+    font-family: "Cartograph CF Extra";
+    src: local("Cartograph CF Extra Bold Italic"),
+        local("CartographCF-ExtraBoldItalic"),
+        url("./../../fonts/CartographCF-ExtraBoldItalic.woff2") format("woff2"),
+        url("./../../fonts/CartographCF-ExtraBoldItalic.woff") format("woff"),
+        url("./../../fonts/CartographCF-ExtraBoldItalic.ttf") format("truetype");
     font-weight: 800;
     font-style: italic;
 }
 
 @font-face {
-    font-family: 'Cartograph CF Extra';
-    src: local('Cartograph CF Extra Light'), local('CartographCF-ExtraLight'),
-        url('./../../fonts/CartographCF-ExtraLight.woff2') format('woff2'),
-        url('./../../fonts/CartographCF-ExtraLight.woff') format('woff'),
-        url('./../../fonts/CartographCF-ExtraLight.ttf') format('truetype');
+    font-family: "Cartograph CF Extra";
+    src: local("Cartograph CF Extra Light"), local("CartographCF-ExtraLight"),
+        url("./../../fonts/CartographCF-ExtraLight.woff2") format("woff2"),
+        url("./../../fonts/CartographCF-ExtraLight.woff") format("woff"),
+        url("./../../fonts/CartographCF-ExtraLight.ttf") format("truetype");
     font-weight: 200;
     font-style: normal;
 }
-
 
 /** Font: Cartograph CF Demi */
 @font-face {
-    font-family: 'Cartograph CF Demi';
-    src: local('Cartograph CF Demi Bold Italic'), local('CartographCF-DemiBoldItalic'),
-        url('./../../fonts/CartographCF-DemiBoldItalic.woff2') format('woff2'),
-        url('./../../fonts/CartographCF-DemiBoldItalic.woff') format('woff'),
-        url('./../../fonts/CartographCF-DemiBoldItalic.ttf') format('truetype');
+    font-family: "Cartograph CF Demi";
+    src: local("Cartograph CF Demi Bold Italic"),
+        local("CartographCF-DemiBoldItalic"),
+        url("./../../fonts/CartographCF-DemiBoldItalic.woff2") format("woff2"),
+        url("./../../fonts/CartographCF-DemiBoldItalic.woff") format("woff"),
+        url("./../../fonts/CartographCF-DemiBoldItalic.ttf") format("truetype");
     font-weight: 600;
     font-style: italic;
 }
 
 @font-face {
-    font-family: 'Cartograph CF Demi';
-    src: local('Cartograph CF Demi Bold'), local('CartographCF-DemiBold'),
-        url('./../../fonts/CartographCF-DemiBold.woff2') format('woff2'),
-        url('./../../fonts/CartographCF-DemiBold.woff') format('woff'),
-        url('./../../fonts/CartographCF-DemiBold.ttf') format('truetype');
+    font-family: "Cartograph CF Demi";
+    src: local("Cartograph CF Demi Bold"), local("CartographCF-DemiBold"),
+        url("./../../fonts/CartographCF-DemiBold.woff2") format("woff2"),
+        url("./../../fonts/CartographCF-DemiBold.woff") format("woff"),
+        url("./../../fonts/CartographCF-DemiBold.ttf") format("truetype");
     font-weight: 600;
     font-style: normal;
 }
-
 
 /** Font: Cartograph CF */
 @font-face {
-    font-family: 'Cartograph CF';
-    src: local('Cartograph CF Bold Italic'), local('CartographCF-BoldItalic'),
-        url('./../../fonts/CartographCF-BoldItalic.woff2') format('woff2'),
-        url('./../../fonts/CartographCF-BoldItalic.woff') format('woff'),
-        url('./../../fonts/CartographCF-BoldItalic.ttf') format('truetype');
+    font-family: "Cartograph CF";
+    src: local("Cartograph CF Bold Italic"), local("CartographCF-BoldItalic"),
+        url("./../../fonts/CartographCF-BoldItalic.woff2") format("woff2"),
+        url("./../../fonts/CartographCF-BoldItalic.woff") format("woff"),
+        url("./../../fonts/CartographCF-BoldItalic.ttf") format("truetype");
     font-weight: bold;
     font-style: italic;
 }
 
 @font-face {
-    font-family: 'Cartograph CF';
-    src: local('Cartograph CF Thin'), local('CartographCF-Thin'),
-        url('./../../fonts/CartographCF-Thin.woff2') format('woff2'),
-        url('./../../fonts/CartographCF-Thin.woff') format('woff'),
-        url('./../../fonts/CartographCF-Thin.ttf') format('truetype');
+    font-family: "Cartograph CF";
+    src: local("Cartograph CF Thin"), local("CartographCF-Thin"),
+        url("./../../fonts/CartographCF-Thin.woff2") format("woff2"),
+        url("./../../fonts/CartographCF-Thin.woff") format("woff"),
+        url("./../../fonts/CartographCF-Thin.ttf") format("truetype");
     font-weight: 100;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'Cartograph CF';
-    src: local('Cartograph CF Bold'), local('CartographCF-Bold'),
-        url('./../../fonts/CartographCF-Bold.woff2') format('woff2'),
-        url('./../../fonts/CartographCF-Bold.woff') format('woff'),
-        url('./../../fonts/CartographCF-Bold.ttf') format('truetype');
+    font-family: "Cartograph CF";
+    src: local("Cartograph CF Bold"), local("CartographCF-Bold"),
+        url("./../../fonts/CartographCF-Bold.woff2") format("woff2"),
+        url("./../../fonts/CartographCF-Bold.woff") format("woff"),
+        url("./../../fonts/CartographCF-Bold.ttf") format("truetype");
     font-weight: bold;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'Cartograph CF';
-    src: local('Cartograph CF Light Italic'), local('CartographCF-LightItalic'),
-        url('./../../fonts/CartographCF-LightItalic.woff2') format('woff2'),
-        url('./../../fonts/CartographCF-LightItalic.woff') format('woff'),
-        url('./../../fonts/CartographCF-LightItalic.ttf') format('truetype');
+    font-family: "Cartograph CF";
+    src: local("Cartograph CF Light Italic"), local("CartographCF-LightItalic"),
+        url("./../../fonts/CartographCF-LightItalic.woff2") format("woff2"),
+        url("./../../fonts/CartographCF-LightItalic.woff") format("woff"),
+        url("./../../fonts/CartographCF-LightItalic.ttf") format("truetype");
     font-weight: 300;
     font-style: italic;
 }
 
 @font-face {
-    font-family: 'Cartograph CF';
-    src: local('Cartograph CF Light'), local('CartographCF-Light'),
-        url('./../../fonts/CartographCF-Light.woff2') format('woff2'),
-        url('./../../fonts/CartographCF-Light.woff') format('woff'),
-        url('./../../fonts/CartographCF-Light.ttf') format('truetype');
+    font-family: "Cartograph CF";
+    src: local("Cartograph CF Light"), local("CartographCF-Light"),
+        url("./../../fonts/CartographCF-Light.woff2") format("woff2"),
+        url("./../../fonts/CartographCF-Light.woff") format("woff"),
+        url("./../../fonts/CartographCF-Light.ttf") format("truetype");
     font-weight: 300;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'Cartograph CF';
-    src: local('Cartograph CF Heavy'), local('CartographCF-Heavy'),
-        url('./../../fonts/CartographCF-Heavy.woff2') format('woff2'),
-        url('./../../fonts/CartographCF-Heavy.woff') format('woff'),
-        url('./../../fonts/CartographCF-Heavy.ttf') format('truetype');
+    font-family: "Cartograph CF";
+    src: local("Cartograph CF Heavy"), local("CartographCF-Heavy"),
+        url("./../../fonts/CartographCF-Heavy.woff2") format("woff2"),
+        url("./../../fonts/CartographCF-Heavy.woff") format("woff"),
+        url("./../../fonts/CartographCF-Heavy.ttf") format("truetype");
     font-weight: 900;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'Cartograph CF';
-    src: local('Cartograph CF Italic'), local('CartographCF-RegularItalic'),
-        url('./../../fonts/CartographCF-RegularItalic.woff2') format('woff2'),
-        url('./../../fonts/CartographCF-RegularItalic.woff') format('woff'),
-        url('./../../fonts/CartographCF-RegularItalic.ttf') format('truetype');
+    font-family: "Cartograph CF";
+    src: local("Cartograph CF Italic"), local("CartographCF-RegularItalic"),
+        url("./../../fonts/CartographCF-RegularItalic.woff2") format("woff2"),
+        url("./../../fonts/CartographCF-RegularItalic.woff") format("woff"),
+        url("./../../fonts/CartographCF-RegularItalic.ttf") format("truetype");
     font-weight: normal;
     font-style: italic;
 }
 
 @font-face {
-    font-family: 'Cartograph CF';
-    src: local('Cartograph CF Thin Italic'), local('CartographCF-ThinItalic'),
-        url('./../../fonts/CartographCF-ThinItalic.woff2') format('woff2'),
-        url('./../../fonts/CartographCF-ThinItalic.woff') format('woff'),
-        url('./../../fonts/CartographCF-ThinItalic.ttf') format('truetype');
+    font-family: "Cartograph CF";
+    src: local("Cartograph CF Thin Italic"), local("CartographCF-ThinItalic"),
+        url("./../../fonts/CartographCF-ThinItalic.woff2") format("woff2"),
+        url("./../../fonts/CartographCF-ThinItalic.woff") format("woff"),
+        url("./../../fonts/CartographCF-ThinItalic.ttf") format("truetype");
     font-weight: 100;
     font-style: italic;
 }
 
 @font-face {
-    font-family: 'Cartograph CF';
-    src: local('Cartograph CF Heavy Italic'), local('CartographCF-HeavyItalic'),
-        url('./../../fonts/CartographCF-HeavyItalic.woff2') format('woff2'),
-        url('./../../fonts/CartographCF-HeavyItalic.woff') format('woff'),
-        url('./../../fonts/CartographCF-HeavyItalic.ttf') format('truetype');
+    font-family: "Cartograph CF";
+    src: local("Cartograph CF Heavy Italic"), local("CartographCF-HeavyItalic"),
+        url("./../../fonts/CartographCF-HeavyItalic.woff2") format("woff2"),
+        url("./../../fonts/CartographCF-HeavyItalic.woff") format("woff"),
+        url("./../../fonts/CartographCF-HeavyItalic.ttf") format("truetype");
     font-weight: 900;
     font-style: italic;
 }
 
 @font-face {
-    font-family: 'Cartograph CF';
-    src: local('Cartograph CF'), local('CartographCF-Regular'),
-        url('./../../fonts/CartographCF-Regular.woff2') format('woff2'),
-        url('./../../fonts/CartographCF-Regular.woff') format('woff'),
-        url('./../../fonts/CartographCF-Regular.ttf') format('truetype');
+    font-family: "Cartograph CF";
+    src: local("Cartograph CF"), local("CartographCF-Regular"),
+        url("./../../fonts/CartographCF-Regular.woff2") format("woff2"),
+        url("./../../fonts/CartographCF-Regular.woff") format("woff"),
+        url("./../../fonts/CartographCF-Regular.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
 }
-
 
 /** Font: Open Sans */
 @font-face {
@@ -205,14 +364,16 @@ $font-path: './../../fonts';
 
 @font-face {
     font-family: "Open Sans";
-    src: local("Open Sans Italic"), local("OpenSans-Italic"), url("./../../fonts/OpenSans-Italic.woff2") format("woff2");
+    src: local("Open Sans Italic"), local("OpenSans-Italic"),
+        url("./../../fonts/OpenSans-Italic.woff2") format("woff2");
     font-weight: normal;
     font-style: italic;
 }
 
 @font-face {
     font-family: "Open Sans";
-    src: local("Open Sans Bold"), local("OpenSans-Bold"), url("./../../fonts/OpenSans-Bold.woff2") format("woff2");
+    src: local("Open Sans Bold"), local("OpenSans-Bold"),
+        url("./../../fonts/OpenSans-Bold.woff2") format("woff2");
     font-weight: bold;
     font-style: normal;
 }
@@ -227,7 +388,8 @@ $font-path: './../../fonts';
 
 @font-face {
     font-family: "Open Sans";
-    src: local("Open Sans Light"), local("OpenSans-Light"), url("./../../fonts/OpenSans-Light.woff2") format("woff2");
+    src: local("Open Sans Light"), local("OpenSans-Light"),
+        url("./../../fonts/OpenSans-Light.woff2") format("woff2");
     font-weight: 300;
     font-style: normal;
 }
@@ -258,11 +420,11 @@ $font-path: './../../fonts';
 
 @font-face {
     font-family: "Open Sans";
-    src: local("Open Sans"), local("OpenSans"), url("./../../fonts/OpenSans.woff2") format("woff2");
+    src: local("Open Sans"), local("OpenSans"),
+        url("./../../fonts/OpenSans.woff2") format("woff2");
     font-weight: normal;
     font-style: normal;
 }
-
 
 /** Font: Nunito */
 @font-face {
@@ -283,21 +445,24 @@ $font-path: './../../fonts';
 
 @font-face {
     font-family: "Nunito";
-    src: local("Nunito Light"), local("Nunito-Light"), url("./../../fonts/Nunito-Light.woff2") format("woff2");
+    src: local("Nunito Light"), local("Nunito-Light"),
+        url("./../../fonts/Nunito-Light.woff2") format("woff2");
     font-weight: 300;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Nunito";
-    src: local("Nunito Regular"), local("Nunito-Regular"), url("./../../fonts/Nunito-Regular.woff2") format("woff2");
+    src: local("Nunito Regular"), local("Nunito-Regular"),
+        url("./../../fonts/Nunito-Regular.woff2") format("woff2");
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Nunito";
-    src: local("Nunito Italic"), local("Nunito-Italic"), url("./../../fonts/Nunito-Italic.woff2") format("woff2");
+    src: local("Nunito Italic"), local("Nunito-Italic"),
+        url("./../../fonts/Nunito-Italic.woff2") format("woff2");
     font-weight: normal;
     font-style: italic;
 }
@@ -328,14 +493,16 @@ $font-path: './../../fonts';
 
 @font-face {
     font-family: "Nunito";
-    src: local("Nunito Bold"), local("Nunito-Bold"), url("./../../fonts/Nunito-Bold.woff2") format("woff2");
+    src: local("Nunito Bold"), local("Nunito-Bold"),
+        url("./../../fonts/Nunito-Bold.woff2") format("woff2");
     font-weight: bold;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Nunito";
-    src: local("Nunito Black"), local("Nunito-Black"), url("./../../fonts/Nunito-Black.woff2") format("woff2");
+    src: local("Nunito Black"), local("Nunito-Black"),
+        url("./../../fonts/Nunito-Black.woff2") format("woff2");
     font-weight: 900;
     font-style: normal;
 }
@@ -350,14 +517,16 @@ $font-path: './../../fonts';
 
 @font-face {
     font-family: "Nunito";
-    src: local("Nunito ExtraBold"), local("Nunito-ExtraBold"), url("./../../fonts/Nunito-ExtraBold.woff2") format("woff2");
+    src: local("Nunito ExtraBold"), local("Nunito-ExtraBold"),
+        url("./../../fonts/Nunito-ExtraBold.woff2") format("woff2");
     font-weight: 800;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Nunito";
-    src: local("Nunito SemiBold"), local("Nunito-SemiBold"), url("./../../fonts/Nunito-SemiBold.woff2") format("woff2");
+    src: local("Nunito SemiBold"), local("Nunito-SemiBold"),
+        url("./../../fonts/Nunito-SemiBold.woff2") format("woff2");
     font-weight: 600;
     font-style: normal;
 }
@@ -370,7 +539,6 @@ $font-path: './../../fonts';
     font-style: italic;
 }
 
-
 /** Font: Calibri */
 @font-face {
     font-family: "Calibri";
@@ -381,18 +549,19 @@ $font-path: './../../fonts';
 
 @font-face {
     font-family: "Calibri";
-    src: local("Calibri Light"), local("Calibri-Light"), url("./../../fonts/Calibri-Light.woff") format("woff");
+    src: local("Calibri Light"), local("Calibri-Light"),
+        url("./../../fonts/Calibri-Light.woff") format("woff");
     font-weight: 300;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Calibri";
-    src: local("Calibri Bold"), local("Calibri-Bold"), url("./../../fonts/Calibri-Bold.woff") format("woff");
+    src: local("Calibri Bold"), local("Calibri-Bold"),
+        url("./../../fonts/Calibri-Bold.woff") format("woff");
     font-weight: bold;
     font-style: normal;
 }
-
 
 /** Font: Segoe UI */
 @font-face {
@@ -411,11 +580,11 @@ $font-path: './../../fonts';
     font-style: normal;
 }
 
-
 /** Font: Consolas */
 @font-face {
     font-family: "Consolas";
-    src: local("Consolas Italic"), local("Consolas-Italic"), url("./../../fonts/Consolas-Italic.woff2") format("woff2");
+    src: local("Consolas Italic"), local("Consolas-Italic"),
+        url("./../../fonts/Consolas-Italic.woff2") format("woff2");
     font-weight: normal;
     font-style: italic;
 }
@@ -430,7 +599,8 @@ $font-path: './../../fonts';
 
 @font-face {
     font-family: "Consolas";
-    src: local("Consolas Bold"), local("Consolas-Bold"), url("./../../fonts/Consolas-Bold.woff2") format("woff2");
+    src: local("Consolas Bold"), local("Consolas-Bold"),
+        url("./../../fonts/Consolas-Bold.woff2") format("woff2");
     font-weight: bold;
     font-style: normal;
 }
@@ -441,7 +611,6 @@ $font-path: './../../fonts';
     font-weight: normal;
     font-style: normal;
 }
-
 
 /** Font: Torus */
 @font-face {
@@ -464,7 +633,6 @@ $font-path: './../../fonts';
     font-display: swap;
     font-weight: lighter;
 }
-
 
 /** Font: Ubuntu */
 @font-face {

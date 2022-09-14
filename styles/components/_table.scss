@@ -1,0 +1,174 @@
+table {
+    font-size: 1rem;
+
+    width: 100%;
+
+    --padding-block: calc(0.25em);
+    --padding-inline: calc(0.5em);
+    --border-radius: calc(0.5em);
+
+    thead,
+    tbody {
+        @media (max-width: 660px) {
+            font-size: 0.8em;
+        }
+    }
+
+    tr {
+        border-radius: var(--border-radius);
+
+        td,
+        th {
+            vertical-align: middle;
+
+            transition: background-color 150ms
+                cubic-bezier(0.165, 0.84, 0.44, 1);
+
+            &:first-child {
+                border-top-left-radius: var(--border-radius);
+                border-bottom-left-radius: var(--border-radius);
+            }
+
+            &:last-child {
+                border-top-right-radius: var(--border-radius);
+                border-bottom-right-radius: var(--border-radius);
+            }
+
+            &[data-text="uppercase"] {
+                text-transform: uppercase;
+            }
+
+            &[data-text="lowercase"] {
+                text-transform: lowercase;
+            }
+
+            &[data-text="capitalize"] {
+                text-transform: capitalize;
+            }
+
+            &[data-align="left"] {
+                text-align: left;
+            }
+
+            &[data-align="right"] {
+                text-align: right;
+            }
+
+            &[data-align="center"] {
+                text-align: center;
+            }
+
+            &[data-align="justify"] {
+                text-align: justify;
+            }
+
+            &[data-bold="true"] {
+                font-weight: bold;
+            }
+        }
+
+        &[data-role="header"] {
+            display: flex;
+            flex-direction: rows;
+
+            color: var(--global-color-dimmed);
+
+            font-size: 1.5em;
+            font-family: var(--font-secondary);
+        }
+    }
+
+    thead {
+        position: sticky;
+        inset-block-start: 0;
+
+        border-radius: var(--border-radius);
+
+        background-color: var(--global-background-color);
+
+        tr {
+            position: sticky;
+            inset-block-start: 0;
+
+            background-color: var(--global-background-color);
+
+            color: var(--global-color-dimmed);
+
+            th {
+                padding: var(--padding-block) var(--padding-inline);
+
+                font-family: var(--font-title-hard);
+                font-weight: 700;
+                font-size: 1.2em;
+            }
+
+            &:last-child {
+                th {
+                    padding-block-end: 1em;
+                }
+            }
+        }
+    }
+
+    tbody {
+        border-radius: var(--border-radius);
+
+        tr {
+            td {
+                padding: var(--padding-block) var(--padding-inline);
+
+                color: var(--global-color);
+
+                font-size: 1.3em;
+                font-family: var(--font-primary);
+
+                white-space: nowrap;
+
+                &[data-primary="true"] {
+                    font-family: var(--font-secondary);
+                    font-weight: 700;
+                    font-size: 1.4em;
+                }
+            }
+
+            &:nth-child(odd) {
+                th,
+                td {
+                    background-color: var(--odd-background-color);
+                }
+            }
+
+            @media (hover: hover) {
+                &:hover {
+                    th,
+                    td {
+                        background-color: var(--odd-hover-background-color);
+                    }
+                }
+            }
+
+            &:active {
+                th,
+                td {
+                    background-color: var(--odd-hover-background-color);
+                }
+            }
+        }
+    }
+}
+
+body.dark,
+body[data-theme="dark"] {
+    table {
+        --odd-background-color: rgba(38, 38, 38, 0.8);
+        --odd-hover-background-color: rgb(46, 46, 46);
+    }
+}
+
+body.light,
+body[data-theme="light"] {
+    table {
+        --odd-background-color: rgba(250, 250, 250, 0.8);
+        --odd-hover-background-color: rgb(226, 226, 226);
+    }
+}

@@ -34,63 +34,82 @@ export const libraries = {
         timestamp?: Date
         format?: string
         timeZone?: string
-    } = {}): string {
-        const workingTimestamp: Date = this.newDate(timestamp, timeZone)
+    } = {}): string | "`libraries.prettyTime` : Invalid Date" {
+        try {
+            const workingTimestamp: Date = this.newDate(timestamp, timeZone)
 
-        const months: string[] = [
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-            "August",
-            "September",
-            "October",
-            "November",
-            "December",
-        ]
-        const weekDays: string[] = [
-            "Sunday",
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday",
-        ]
-        const ordinal: string[] = ["Th", "St", "Nd", "Rd"]
+            const months: string[] = [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December",
+            ]
+            const weekDays: string[] = [
+                "Sunday",
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday",
+            ]
+            const ordinal: string[] = ["Th", "St", "Nd", "Rd"]
 
-        const formats: Record<string, number | string> = {
-            dd: workingTimestamp.getDate(),
-            WW: weekDays[workingTimestamp.getDay()],
-            ww: weekDays[workingTimestamp.getDay()].toLowerCase(),
-            Mo: months[workingTimestamp.getMonth()].slice(0, 3),
-            mo: months[workingTimestamp.getMonth()].slice(0, 3).toLowerCase(),
-            MM: months[workingTimestamp.getMonth()],
-            mm: months[workingTimestamp.getMonth()].toLowerCase(),
-            W: weekDays[workingTimestamp.getDay()].slice(0, 3),
-            w: weekDays[workingTimestamp.getDay()].slice(0, 3).toLowerCase(),
-            m: (workingTimestamp.getMonth() + 1).toString().padStart(2, "0"),
-            O: ordinal[workingTimestamp.getDate() % 10],
-            o: ordinal[workingTimestamp.getDate() % 10].toLowerCase(),
-            mi: workingTimestamp.getMinutes().toString().padStart(2, "0"),
-            ss: workingTimestamp.getSeconds().toString().padStart(2, "0"),
-            hh: workingTimestamp.getHours().toString().padStart(2, "0"),
-            yyyy: workingTimestamp.getFullYear().toString(),
-            YYYY: workingTimestamp.getFullYear().toString(),
-            P: (workingTimestamp.getHours() >= 12 ? "pm" : "am").toUpperCase(),
-            p: workingTimestamp.getHours() >= 12 ? "pm" : "am",
+            const formats: Record<string, number | string> = {
+                dd: workingTimestamp.getDate().toString().padStart(2, "0"),
+                WW: weekDays[workingTimestamp.getDay()],
+                ww: weekDays[workingTimestamp.getDay()].toLowerCase(),
+                Mo: months[workingTimestamp.getMonth()].slice(0, 3),
+                mo: months[workingTimestamp.getMonth()]
+                    .slice(0, 3)
+                    .toLowerCase(),
+                MM: months[workingTimestamp.getMonth()],
+                mm: months[workingTimestamp.getMonth()].toLowerCase(),
+                W: weekDays[workingTimestamp.getDay()].slice(0, 3),
+                w: weekDays[workingTimestamp.getDay()]
+                    .slice(0, 3)
+                    .toLowerCase(),
+                m: (workingTimestamp.getMonth() + 1)
+                    .toString()
+                    .padStart(2, "0"),
+                O: ordinal[(workingTimestamp.getDate() % 10) % 4],
+                o: ordinal[(workingTimestamp.getDate() % 10) % 4].toLowerCase(),
+                mi: workingTimestamp.getMinutes().toString().padStart(2, "0"),
+                ss: workingTimestamp.getSeconds().toString().padStart(2, "0"),
+                hh: workingTimestamp.getHours().toString().padStart(2, "0"),
+                yyyy: workingTimestamp.getFullYear().toString(),
+                YYYY: workingTimestamp.getFullYear().toString(),
+                P: (workingTimestamp.getHours() >= 12
+                    ? "pm"
+                    : "am"
+                ).toUpperCase(),
+                p: workingTimestamp.getHours() >= 12 ? "pm" : "am",
+            }
+
+            return format.replace(
+                /yyyy|YYYY|dd|ss|hh|WW|ww|Mo|mo|MM|mm|mi|W|w|m|O|o|p|P/g,
+                (match: string): string => formats[match].toString()
+            )
+        } catch (e) {
+            console.log(e)
+            return "`libraries.prettyTime` : Invalid Date"
         }
-
-        return format.replace(/dd|ss|hh|WW|ww|Mo|mo|MM|mm|mi|W|w|m|O|o|p|P/g, (match) =>
-            formats[match].toString()
-        )
     },
 
-    newDate(date: Date, timeZone?: string): Date {
-        return new Date(date.toLocaleString(undefined, { timeZone }))
+    newDate(
+        date: Date,
+        timeZone?: Intl.DateTimeFormatOptions["timeZone"],
+        locales: Intl.LocalesArgument = "en-US"
+    ): Date {
+        return new Date(date.toLocaleString(locales, { timeZone }))
     },
 
     /**
@@ -124,10 +143,14 @@ export const libraries = {
     },
 
     randomHexColor(hexLength?: 3 | 6): `#${string}` {
-        const hex: `#${string}` = `#${Math.floor(Math.random() * 16777215).toString(16)}`
+        const hex: `#${string}` = `#${Math.floor(
+            Math.random() * 16777215
+        ).toString(16)}`
         if (hexLength === undefined) return hex
 
-        return hex.length - 1 === hexLength ? hex : this.randomHexColor(hexLength)
+        return hex.length - 1 === hexLength
+            ? hex
+            : this.randomHexColor(hexLength)
     },
 
     hexToRgb(hex: string): {

@@ -1,20 +1,18 @@
 body.light,
-body[data-theme='light'] {
+body[data-theme="light"] {
     .container {
         --opacity: 0.4;
         --background: var(--osc-color-blue);
     }
 }
 
-
 body.dark,
-body[data-theme='dark'] {
+body[data-theme="dark"] {
     .container {
         --opacity: 0.75;
         --background: var(--osc-color-blue);
     }
 }
-
 
 .container {
     display: flex;
@@ -25,7 +23,6 @@ body[data-theme='dark'] {
 
     padding-inline: 1em;
     padding-block-end: 1em;
-
 
     .wrapper {
         display: flex;
@@ -38,7 +35,6 @@ body[data-theme='dark'] {
     }
 }
 
-
 .head {
     $padding: 16px;
 
@@ -47,17 +43,22 @@ body[data-theme='dark'] {
 
     align-items: center;
 
-    padding-block-start: 2em;
-    padding-block-end: 0.625em;
+    padding-inline: 0.1em;
+    padding-block: 2em 0.625em;
+
+    color: var(--global-color-dimmed-lesser);
 
     overflow: hidden;
-
 
     @media (max-width: 650px) {
         padding-block-start: 1em;
         padding-block-end: 0.3125em;
     }
 
+    @media (max-width: 480px) {
+        padding-block-start: 0.75em;
+        padding-block-end: 0.2em;
+    }
 
     .icon {
         display: flex;
@@ -65,19 +66,19 @@ body[data-theme='dark'] {
         place-items: center;
         place-content: center;
 
-
         font-size: 2.75em;
-
 
         @media (max-width: 650px) {
             font-size: 2.1em;
         }
 
+        @media (max-width: 480px) {
+            font-size: 1.5em;
+        }
 
         width: 1.5em;
         height: 100%;
     }
-
 
     .switches {
         display: flex;
@@ -88,7 +89,6 @@ body[data-theme='dark'] {
         column-gap: 0.75em;
 
         padding-inline: $padding 0.5em;
-
 
         .switch {
             position: relative;
@@ -101,11 +101,13 @@ body[data-theme='dark'] {
 
             user-select: none;
 
-
             @media (max-width: 650px) {
                 font-size: 1.35em;
             }
 
+            @media (max-width: 480px) {
+                font-size: 1.1em;
+            }
 
             @media (hover: hover) {
                 &:hover:before {
@@ -113,9 +115,8 @@ body[data-theme='dark'] {
                 }
             }
 
-
             &:before {
-                content: '';
+                content: "";
 
                 position: absolute;
                 inset-block-end: 0;
@@ -128,16 +129,13 @@ body[data-theme='dark'] {
 
                 z-index: -1;
 
-                transition:
-                    400ms all cubic-bezier(0.87, 0, 0.13, 1),
+                transition: 400ms all cubic-bezier(0.87, 0, 0.13, 1),
                     400ms width cubic-bezier(0.16, 1, 0.3, 1),
                     400ms translate cubic-bezier(0.87, 0, 0.13, 1) 200ms;
             }
 
-
-            &[data-activated='true'] {
+            &[data-activated="true"] {
                 font-weight: bold;
-
 
                 &:before {
                     width: 100%;
@@ -153,19 +151,25 @@ body[data-theme='dark'] {
         }
     }
 
-
     .description {
         display: block;
 
         font-size: 0.85em;
         font-family: "Nunito";
 
+        @media (max-width: 650px) {
+            font-size: 0.75em;
+        }
+
+        @media (max-width: 480px) {
+            font-size: 0.6em;
+        }
+
         padding-block-start: 0.25em;
         padding-inline-start: $padding;
 
         user-select: none;
     }
-
 
     .buttons {
         display: flex;
@@ -178,30 +182,22 @@ body[data-theme='dark'] {
 
         margin-inline-start: 0.5em;
 
-
         .button {
             flex-grow: 1;
         }
     }
 }
 
-
 .body {
     flex-grow: 1;
 
     margin-block-start: 0.25em;
 
-
     .section {
         display: block;
 
-        height: 100%;
+        min-height: 100%;
 
         font-size: 1.6rem;
-    }
-
-
-    div[data-role='wrapper'] {
-        height: 100%;
     }
 }
