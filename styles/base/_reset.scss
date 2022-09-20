@@ -81,7 +81,7 @@ audio,
 video {
     margin: 0;
     padding: 0;
-    border: 0;
+    border: none;
 
     font-size: 100%;
 
@@ -105,24 +105,27 @@ section {
     line-height: 1;
 }
 
-
 ol,
 ul {
     list-style: none;
 }
-
 
 blockquote,
 q {
     quotes: none;
 }
 
-
 table {
     border-collapse: collapse;
     border-spacing: 0;
-}
+    border-width: 0;
 
+    * {
+        border-collapse: collapse;
+        border-spacing: 0;
+        border-width: 0;
+    }
+}
 
 button {
     border: none;

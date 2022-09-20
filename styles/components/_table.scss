@@ -3,9 +3,9 @@ table {
 
     width: 100%;
 
-    --padding-block: calc(0.25em);
-    --padding-inline: calc(0.5em);
-    --border-radius: calc(0.5em);
+    --padding-block: calc(0.3rem);
+    --padding-inline: calc(0.6rem);
+    --border-radius: calc(0.5rem);
 
     thead,
     tbody {
@@ -82,29 +82,25 @@ table {
         position: sticky;
         inset-block-start: 0;
 
-        border-radius: var(--border-radius);
-
-        background-color: var(--global-background-color);
-
         tr {
             position: sticky;
             inset-block-start: 0;
-
-            background-color: var(--global-background-color);
-
-            color: var(--global-color-dimmed);
 
             th {
                 padding: var(--padding-block) var(--padding-inline);
 
                 font-family: var(--font-title-hard);
-                font-weight: 700;
-                font-size: 1.2em;
+                font-weight: 900;
+                font-size: 1.25em;
+
+                background-color: var(--global-background-color);
+
+                color: var(--global-color-dimmed);
             }
 
             &:last-child {
                 th {
-                    padding-block-end: 1em;
+                    padding-block-end: 0.9rem;
                 }
             }
         }
@@ -135,6 +131,13 @@ table {
                 th,
                 td {
                     background-color: var(--odd-background-color);
+                }
+            }
+
+            &:nth-child(even) {
+                th,
+                td {
+                    background-color: var(--global-background-color);
                 }
             }
 

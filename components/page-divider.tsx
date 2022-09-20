@@ -6,13 +6,13 @@ import {
     useState,
     Dispatch,
     SetStateAction,
-    useCallback,
     ReactElement,
     MouseEventHandler,
+    CSSProperties,
 } from "react"
 import classNames from "classnames"
 
-import { useRenderEffect } from "@ts/client-side"
+import { useRenderEffect } from "@ts/libraries"
 import Glasium from "./glasium"
 import ScrollBox from "./scroll-box"
 
@@ -30,6 +30,8 @@ function Icon({ iconClass }: { iconClass: string }): JSX.Element {
 
 export function Divider({
     maxWidth,
+    backgroundOuterVar,
+    backgroundInnerVar,
     children,
     sections,
 }: Fukumi.DividerProps): JSX.Element {
@@ -37,6 +39,9 @@ export function Divider({
         useState<Fukumi.DividerSection["name"]>("")
 
     useRenderEffect((): void => setCurrentSection(sections[0].name), [sections])
+
+    const bgOuterVar: string = backgroundOuterVar ?? "--undefined"
+    const bgInnerVar: string = backgroundInnerVar ?? "--undefined"
 
     const bodySections: Fukumi.SectionElement[] = useMemo(
         (): JSX.Element[] =>
@@ -55,10 +60,21 @@ export function Divider({
     )
 
     return (
-        <div className={styles.container}>
+        <div
+            className={styles.container}
+            style={{ background: `var(${bgOuterVar}, transparent)` }}
+        >
             <div
                 className={styles.wrapper}
-                style={{ maxWidth: maxWidth ?? "1200px" }}
+                style={
+                    {
+                        maxWidth: maxWidth ?? "1200px",
+                        background: `var(${bgInnerVar}, var(--global-background-color))`,
+                        "--box-shadow-color-var": !backgroundOuterVar
+                            ? "--undefined"
+                            : "var(--box-shadow-color)",
+                    } as CSSProperties
+                }
             >
                 <DividerHead
                     sections={sections}
@@ -72,6 +88,13 @@ export function Divider({
                     {bodySections}
                 </DividerBody>
             </div>
+
+            {children.filter(
+                (child: JSX.Element): boolean =>
+                    child.type !== Button &&
+                    child.type !== Section &&
+                    child.type !== Divider
+            )}
 
             <style>
                 {`@media (max-width: calc(${maxWidth ?? "1200px"} / 1.05)) {
@@ -150,7 +173,7 @@ function DividerHead({
         <div className={styles.head}>
             <Icon iconClass={currentSectionIcon} />
 
-            <div style={{ flexGrow: 1 }}>
+            <div className={styles.grow}>
                 <Switches
                     sections={sections}
                     currentSection={currentSection}
@@ -293,6 +316,20 @@ declare global {
 
         interface DividerProps {
             maxWidth?: Property.Width
+            /**
+             * @example
+             * ```css
+             * --background-outer
+             * ```
+             */
+            backgroundOuterVar?: string
+            /**
+             * @example
+             * ```css
+             * --background-outer
+             * ```
+             */
+            backgroundInnerVar?: string
             sections: DividerSection[]
             children: JSX.Element[]
         }

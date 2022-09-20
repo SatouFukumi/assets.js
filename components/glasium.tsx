@@ -1,14 +1,17 @@
 import type { Property } from "csstype"
 
-import { Component, createRef, useLayoutEffect, useState } from "react"
+import { Component, createRef, useReducer, useState } from "react"
 
 import styles from "@styles/components/glasium.module.scss"
 
-import { libraries } from "@ts/libraries"
+import { libraries, useRenderEffect } from "@ts/libraries"
 import { $ } from "@ts/jquery"
 
 /** */
-export default class Glasium extends Component<Fukumi.GlasiumProps, Fukumi.GlasiumState> {
+export default class Glasium extends Component<
+    Fukumi.GlasiumProps,
+    Fukumi.GlasiumState
+> {
     private ref: Fukumi.GlasiumRef = {
         container: createRef<HTMLDivElement>(),
     }
@@ -71,7 +74,8 @@ export default class Glasium extends Component<Fukumi.GlasiumProps, Fukumi.Glasi
                 className={styles.container}
                 style={
                     {
-                        backgroundColor: this.state.colorOptions.backgroundColor,
+                        backgroundColor:
+                            this.state.colorOptions.backgroundColor,
                         color: this.state.colorOptions.textColor,
                         "--rotation": this.state.rotate ? "360deg" : "0deg",
                         "--background-height": `${this.state.height}px`,
@@ -94,53 +98,107 @@ export default class Glasium extends Component<Fukumi.GlasiumProps, Fukumi.Glasi
     }
 }
 
-function Shape(props: Fukumi.GlasiumShapeProps): JSX.Element {
-    const [shape, setShape] = useState<Fukumi.GlasiumShape>(props.shape)
-    const [brightness, setBrightness] = useState(0)
+function Shape({
+    shape,
+    colorOptions,
+    scale,
+    speed,
+}: Fukumi.GlasiumShapeProps): JSX.Element {
     const [position, setPosition] = useState(0)
-    const [color, setColor] = useState<Property.BackgroundColor>()
-    const [size, setSize] = useState(0)
-    const [delay, setDelay] = useState(0)
-    const [speedPerFiveSeconds, setSpeedPerFiveSeconds] = useState(0)
+    const [state, dispatch] = useReducer<
+        React.Reducer<Fukumi.GlasiumShapeState, Fukumi.GlasiumShapeAction>
+    >(
+        function (
+            prevState: Fukumi.GlasiumShapeState,
+            action: Fukumi.GlasiumShapeAction
+        ): Fukumi.GlasiumShapeState {
+            const randomScale: number =
+                libraries.randomBetween(0.8, 2, false) * scale
 
-    useLayoutEffect((): void => {
-        let randomScale: number = libraries.randomBetween(0.8, 2, false) * props.scale
+            switch (action.type) {
+                case "SHAPE_CHANGE":
+                    return {
+                        ...prevState,
+                        shape:
+                            action.newShape === "all"
+                                ? libraries.randomItem(["triangle", "hexagon"])
+                                : action.newShape,
+                    }
 
-        setShape(props.shape === "all" ? libraries.randomItem(SHAPE) : props.shape)
-        setSize(45 * randomScale)
-        setColor(props.colorOptions.shapeColor)
+                case "COLOR_OPTIONS_CHANGE":
+                    return {
+                        ...prevState,
+                        brightness: libraries.randomBetween(
+                            action.newColorOptions.shapeBrightnessScope[0],
+                            action.newColorOptions.shapeBrightnessScope[1],
+                            false,
+                            [0.97, 1.03]
+                        ),
+                    }
+
+                case "SCALE_CHANGE":
+                    return {
+                        ...prevState,
+                        size: 45 * randomScale,
+                    }
+
+                case "SPEED_CHANGE":
+                    const sp5s: number =
+                        (libraries.randomBetween(0.67, 1.35, false) * 5) / speed
+
+                    return {
+                        ...prevState,
+                        speedPerFiveSeconds: sp5s,
+                        delay: libraries.randomBetween(
+                            -sp5s / 2,
+                            sp5s / 2,
+                            false
+                        ),
+                    }
+
+                default:
+                    break
+            }
+
+            return prevState
+        },
+        {
+            shape:
+                shape === "all"
+                    ? libraries.randomItem(["triangle", "hexagon"])
+                    : shape,
+            size: 0,
+            brightness: 0,
+            delay: 0,
+            speedPerFiveSeconds: 0,
+        }
+    )
+
+    useRenderEffect((): void => {
         setPosition(libraries.randomBetween(0, 100, false))
-        setBrightness(
-            libraries.randomBetween(
-                props.colorOptions.shapeBrightnessScope[0],
-                props.colorOptions.shapeBrightnessScope[1],
-                false,
-                [0.97, 1.03]
-            )
-        )
-        setSpeedPerFiveSeconds(
-            (libraries.randomBetween(0.67, 1.35, false) * 5) / props.speed
-        )
-        setDelay(
-            libraries.randomBetween(
-                -speedPerFiveSeconds / 2,
-                speedPerFiveSeconds / 2,
-                false
-            )
-        )
-    }, [props])
+        dispatch({ type: "SCALE_CHANGE", newScale: scale })
+        dispatch({ type: "SPEED_CHANGE", newSpeed: speed })
+        dispatch({
+            type: "COLOR_OPTIONS_CHANGE",
+            newColorOptions: colorOptions,
+        })
+        dispatch({
+            type: "COLOR_OPTIONS_CHANGE",
+            newColorOptions: colorOptions,
+        })
+    }, [scale, speed, shape, colorOptions])
 
     return (
         <span
-            className={styles[shape]}
+            className={styles[state.shape]}
             style={{
-                backgroundColor: color,
-                width: `${size}px`,
-                height: `${size}px`,
-                filter: `brightness(${brightness})`,
-                left: `calc(${position}% - ${size}px / 2)`,
-                animationDelay: `${delay}s`,
-                animationDuration: `${speedPerFiveSeconds}s`,
+                backgroundColor: colorOptions.shapeColor,
+                width: `${state.size}px`,
+                height: `${state.size}px`,
+                filter: `brightness(${state.brightness})`,
+                left: `calc(${position}% - ${state.size}px / 2)`,
+                animationDelay: `${state.delay}s`,
+                animationDuration: `${state.speedPerFiveSeconds}s`,
             }}
         />
     )
@@ -293,5 +351,25 @@ declare global {
         }
 
         type GlasiumShape = "triangle" | "hexagon" | "all"
+
+        interface GlasiumShapeState {
+            shape: Exclude<GlasiumShape, "all">
+            size: number
+            brightness: number
+            delay: number
+            speedPerFiveSeconds: number
+        }
+
+        type GlasiumShapeAction =
+            | { type: "SHAPE_CHANGE"; newShape: GlasiumShape }
+            | {
+                  type: "COLOR_OPTIONS_CHANGE"
+                  newColorOptions: Omit<
+                      GlasiumOptions,
+                      "backgroundColor" | "textColor"
+                  >
+              }
+            | { type: "SCALE_CHANGE"; newScale: number }
+            | { type: "SPEED_CHANGE"; newSpeed: number }
     }
 }

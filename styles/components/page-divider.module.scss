@@ -2,7 +2,8 @@ body.light,
 body[data-theme="light"] {
     .container {
         --opacity: 0.4;
-        --background: var(--osc-color-blue);
+        --background-color: var(--osc-color-blue);
+        --box-shadow-color: rgba(0, 0, 0, 0.3);
     }
 }
 
@@ -10,28 +11,37 @@ body.dark,
 body[data-theme="dark"] {
     .container {
         --opacity: 0.75;
-        --background: var(--osc-color-blue);
+        --background-color: var(--osc-color-blue);
+        --box-shadow-color: rgb(255, 255, 255, 0.1);
     }
 }
 
 .container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+
+    place-items: center;
+    place-content: center;
 
     width: 100%;
     height: 100%;
 
-    padding-inline: 1em;
-    padding-block-end: 1em;
+    padding-inline: 0.75em;
+    padding-block: 0.75em;
 
     .wrapper {
         display: flex;
         flex-direction: column;
+        flex-grow: 1;
 
-        margin-inline: auto;
-
-        height: 100%;
         width: 100%;
+        height: 100%;
+
+        padding-inline: 0.5em;
+
+        border-radius: 0.4em;
+
+        box-shadow: 0 0 1.2rem 0 var(--box-shadow-color-var);
     }
 }
 
@@ -43,22 +53,9 @@ body[data-theme="dark"] {
 
     align-items: center;
 
-    padding-inline: 0.1em;
-    padding-block: 2em 0.625em;
-
     color: var(--global-color-dimmed-lesser);
 
     overflow: hidden;
-
-    @media (max-width: 650px) {
-        padding-block-start: 1em;
-        padding-block-end: 0.3125em;
-    }
-
-    @media (max-width: 480px) {
-        padding-block-start: 0.75em;
-        padding-block-end: 0.2em;
-    }
 
     .icon {
         display: flex;
@@ -78,6 +75,10 @@ body[data-theme="dark"] {
 
         width: 1.5em;
         height: 100%;
+    }
+
+    .grow {
+        flex-grow: 1;
     }
 
     .switches {
@@ -125,7 +126,7 @@ body[data-theme="dark"] {
                 width: 0;
                 height: 2px;
 
-                background-color: var(--background);
+                background-color: var(--background-color);
 
                 z-index: -1;
 
@@ -192,6 +193,8 @@ body[data-theme="dark"] {
     flex-grow: 1;
 
     margin-block-start: 0.25em;
+
+    overflow: hidden;
 
     .section {
         display: block;

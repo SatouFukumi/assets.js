@@ -50,8 +50,3 @@ export const clientSide = {
         return this.preferDarkColorScheme() ? "dark" : "light"
     },
 }
-
-export const useRenderEffect: (
-    effect: React.EffectCallback,
-    deps?: React.DependencyList | undefined
-) => void = typeof document === "undefined" ? useEffect : useLayoutEffect

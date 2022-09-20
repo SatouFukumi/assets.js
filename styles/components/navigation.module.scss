@@ -1,39 +1,90 @@
 $height: 50px;
 
-
 body.light,
-body[data-theme='light'] {
+body[data-theme="light"] {
     .container {
         --background-color: hsl(0, 0%, 100%);
-        --shadow-color: hsla(0, 0%, 100%, 0.9);
+        --tooltip-shadow-color: hsla(0, 0%, 100%, 0.9);
+        --box-shadow-color: rgba(0, 0, 0, 0.3);
+        --indicator-background-color: rgb(65, 65, 65);
+        --indicator-box-shadow-color: rgba(0, 0, 0, 0.4);
     }
 }
-
 
 body.dark,
-body[data-theme='dark'] {
+body[data-theme="dark"] {
     .container {
         --background-color: hsl(0, 0%, 13%);
-        --shadow-color: hsla(0, 0%, 6%, 0.9);
+        --tooltip-shadow-color: hsla(0, 0%, 6%, 0.9);
+        --box-shadow-color: rgb(255, 255, 255, 0.1);
+        --indicator-background-color: white;
+        --indicator-box-shadow-color: rgb(194, 224, 255);
     }
 }
 
-
 .container {
-    position: absolute;
+    --link-width: 50px;
+
+    position: sticky;
     inset-inline: 0;
     inset-block-start: 0;
 
-    translate: 0 -100%;
+    display: flex;
+    flex-direction: row;
 
     width: 100%;
     height: $height;
 
     background-color: var(--background-color);
 
-    z-index: 99999;
-}
+    box-shadow: 0 0 1.2rem 0 var(--box-shadow-color);
 
+    transition-property: height;
+    transition-duration: 200ms;
+    transition-timing-function: ease-out;
+
+    z-index: 99999;
+
+    .expander {
+        flex-grow: 1;
+
+        height: 100%;
+
+        order: 3;
+    }
+
+    .indicator {
+        position: absolute;
+        inset-block-start: 100%;
+
+        height: 3px;
+
+        background-color: var(--indicator-background-color);
+
+        box-shadow: 0 0 10px 1px var(--indicator-box-shadow-color);
+
+        transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .link {
+        display: flex;
+
+        place-items: center;
+        place-content: center;
+
+        order: 2;
+
+        height: 100%;
+        width: var(--link-width);
+
+        i {
+            font-size: 2rem;
+
+            pointer-events: none;
+            user-select: none;
+        }
+    }
+}
 
 :export {
     height: $height;
