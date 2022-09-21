@@ -376,7 +376,7 @@ declare global {
 
         interface SectionProps {
             name: string
-            children: React.ReactNode
+            children: React.ReactNode | React.ReactNode[]
         }
 
         type SectionElement = ReactElement<SectionProps>

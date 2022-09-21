@@ -81,7 +81,8 @@ class JHTMLElement<
 
             if (typeof a === "string" && b === null) delete element.dataset[a]
 
-            if (typeof a === "string" && typeof b === "string") element.dataset[a] = b
+            if (typeof a === "string" && typeof b === "string")
+                element.dataset[a] = b
 
             if (a instanceof Object)
                 for (let key in a) {
@@ -99,7 +100,9 @@ class JHTMLElement<
         if (typeof func !== "function")
             throw new Error('"jquery.each()" : "func" is not a function')
 
-        this.forEach((element: Type, index: number): void => func.call(element, index))
+        this.forEach((element: Type, index: number): void =>
+            func.call(element, index)
+        )
         return this
     }
 
@@ -147,7 +150,8 @@ class JHTMLElement<
         b: Fn<Type, Key>,
         c?: boolean | AddEventListenerOptions
     ): JHTMLElement<Type> {
-        if (typeof a !== "string") throw new Error(`'JQuery.on() : 'event' is not valid`)
+        if (typeof a !== "string")
+            throw new Error(`'JQuery.on() : 'event' is not valid`)
         if (typeof b !== "function")
             throw new Error(`'JQuery.on() : 'listener' is not valid`)
 
@@ -183,11 +187,14 @@ class JHTMLElement<
         b: Fn<Type, Key>,
         c?: boolean | AddEventListenerOptions
     ): JHTMLElement<Type> {
-        if (typeof a !== "string") throw new Error(`'JQuery.on() : 'event' is not valid`)
+        if (typeof a !== "string")
+            throw new Error(`'JQuery.on() : 'event' is not valid`)
         if (typeof b !== "function")
             throw new Error(`'JQuery.on() : 'listener' is not valid`)
 
-        this.forEach((element: Type): void => element.removeEventListener(a, b, c))
+        this.forEach((element: Type): void =>
+            element.removeEventListener(a, b, c)
+        )
 
         return this
     }
@@ -222,11 +229,20 @@ class JHTMLElement<
 
 /** */
 export function $$<T extends HTMLElement>(query: string): T | null
-export function $$<T extends HTMLElement>(query: string, element?: HTMLElement): T | null
-export function $$<T extends HTMLElement>(query: string, fromQuery?: string): T | null
+export function $$<T extends HTMLElement>(
+    query: string,
+    element?: HTMLElement
+): T | null
+export function $$<T extends HTMLElement>(
+    query: string,
+    fromQuery?: string
+): T | null
 
 /** @brief implementation */
-export function $$<T extends HTMLElement>(a: string, b?: string | HTMLElement): T | null {
+export function $$<T extends HTMLElement>(
+    a: string,
+    b?: string | HTMLElement
+): T | null {
     if (typeof a === "string" && typeof b === "string") {
         const container: T | null = document.querySelector<T>(b)
         if (container === null) return null
@@ -234,7 +250,8 @@ export function $$<T extends HTMLElement>(a: string, b?: string | HTMLElement): 
         return container.querySelector<T>(a)
     }
 
-    if (typeof a === "string" && b instanceof HTMLElement) return b.querySelector<T>(a)
+    if (typeof a === "string" && b instanceof HTMLElement)
+        return b.querySelector<T>(a)
 
     return document.querySelector<T>(a)
 }
@@ -261,7 +278,8 @@ export function $<T extends HTMLElement>(
 ): JHTMLElement<Node | HTMLElement | Window | Document> {
     if (typeof a === "string" && typeof b === "string") {
         const container: Element | null = document.querySelector(b)
-        const qsa: NodeListOf<Element> | undefined = container?.querySelectorAll(a)
+        const qsa: NodeListOf<Element> | undefined =
+            container?.querySelectorAll(a)
         const elements: NodeListOf<Element> | any[] = qsa ? qsa : []
 
         return new JHTMLElement(...elements)
@@ -285,8 +303,14 @@ const jquery: {
     $: {
         (doc: Document): JHTMLElement<Document>
         (win: Window): JHTMLElement<Window>
-        <T extends HTMLElement>(query: string, fromQuery: string): JHTMLElement<T>
-        <T extends HTMLElement>(query: string, element: HTMLElement): JHTMLElement<T>
+        <T extends HTMLElement>(
+            query: string,
+            fromQuery: string
+        ): JHTMLElement<T>
+        <T extends HTMLElement>(
+            query: string,
+            element: HTMLElement
+        ): JHTMLElement<T>
         <T extends HTMLElement>(query: string): JHTMLElement<T>
         <T extends HTMLElement>(elements: NodeList): JHTMLElement<T>
         <T extends HTMLElement>(element: T): JHTMLElement<T>

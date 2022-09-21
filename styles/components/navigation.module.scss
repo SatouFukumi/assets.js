@@ -4,7 +4,7 @@ body.light,
 body[data-theme="light"] {
     .container {
         --background-color: hsl(0, 0%, 100%);
-        --tooltip-box-shadow-color: hsla(0, 0%, 100%, 0.9);
+        --tooltip-box-shadow-color: hsla(0, 0%, 100%);
         --box-shadow-color: rgba(0, 0, 0, 0.3);
         --indicator-background-color: rgb(65, 65, 65);
         --indicator-box-shadow-color: rgba(0, 0, 0, 0.4);
@@ -17,7 +17,7 @@ body.dark,
 body[data-theme="dark"] {
     .container {
         --background-color: hsl(0, 0%, 13%);
-        --tooltip-box-shadow-color: hsla(0, 0%, 6%, 0.9);
+        --tooltip-box-shadow-color: hsla(0, 0%, 6%);
         --box-shadow-color: rgb(255, 255, 255, 0.1);
         --indicator-background-color: white;
         --indicator-box-shadow-color: rgb(194, 224, 255);
@@ -48,7 +48,7 @@ body[data-theme="dark"] {
     }
 
     &[data-navigation-tooltip="true"] {
-        box-shadow: 0 6rem 15rem 5rem var(--tooltip-box-shadow-color);
+        box-shadow: 0 3rem 15rem 2rem var(--tooltip-box-shadow-color);
     }
 
     transition-property: all, box-shadow;
@@ -73,7 +73,7 @@ body[data-theme="dark"] {
 
         background-color: var(--indicator-background-color);
 
-        box-shadow: 0 0 10px 1px var(--indicator-box-shadow-color);
+        box-shadow: 0 0 1rem 0.1rem var(--indicator-box-shadow-color);
 
         transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
     }
