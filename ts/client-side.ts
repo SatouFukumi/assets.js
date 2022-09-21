@@ -1,5 +1,3 @@
-import { useEffect, useLayoutEffect } from "react"
-
 export const clientSide = {
     /**
      * return whether the url exists
@@ -50,3 +48,5 @@ export const clientSide = {
         return this.preferDarkColorScheme() ? "dark" : "light"
     },
 }
+
+export default clientSide

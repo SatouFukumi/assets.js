@@ -13,6 +13,7 @@ import Link from "next/link"
 import styles from "@styles/components/navigation.module.scss"
 import { useRenderEffect } from "@ts/libraries"
 import Glasium, { COLOR } from "./glasium"
+import { clientSide } from "@ts/client-side"
 
 const NavigationContext: Context<Fukumi.NavigationContextType> = createContext({
     setPathIndicator: (width: number, left: number): void => {},
@@ -63,6 +64,8 @@ export class Navigation extends Component<
         left = 0,
         width = 0,
     }: Fukumi.NavigationTooltipProps): void {
+        if (clientSide.isMobile()) return
+
         if (!activate || !title)
             return this.setState(
                 ({ tooltip }: Readonly<Fukumi.NavigationState>) => ({
