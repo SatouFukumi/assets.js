@@ -16,7 +16,7 @@
     transition: 200ms background-color ease-out;
 
     .triangle {
-        clip-path: polygon(50% 0, 0% 100%, 100% 100%);
+        clip-path: polygon(50% 0, 50% 0, 0% 100%, 0% 100%, 100% 100%, 100% 100%);
     }
 
     .hexagon {
@@ -33,13 +33,13 @@
         width: var(--size);
         height: var(--size);
 
-        transition: 200ms background-color ease-out;
+        transition-property: background-color, width, height, clip-path;
+        transition-duration: 200ms;
+        transition-timing-function: ease-out;
 
         animation-name: glasium-shape;
         animation-timing-function: linear;
         animation-iteration-count: infinite;
-
-        will-change: transform, animation-delay, animation-duration;
 
         transform: translateY(0%) rotate(0deg);
     }
