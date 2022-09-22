@@ -1,6 +1,12 @@
 .container {
     scrollbar-width: none;
 
+    scroll-behavior: auto;
+
+    * {
+        scroll-behavior: auto;
+    }
+
     .view {
         margin: 0 !important;
     }
@@ -43,6 +49,12 @@
                     background-color: var(--hover-color);
                 }
             }
+        }
+    }
+
+    .view {
+        &[data-border-radius="true"] {
+            border-radius: 0.4em;
         }
     }
 }

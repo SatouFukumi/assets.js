@@ -84,10 +84,6 @@ button {
         margin-inline: auto;
     }
 
-    * + i {
-        margin-inline: 0 auto;
-    }
-
     i + * {
         margin-inline: auto 0;
     }

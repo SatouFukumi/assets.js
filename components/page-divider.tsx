@@ -33,31 +33,66 @@ export function Divider({
     backgroundOuterVar,
     backgroundInnerVar,
     children,
-    sections,
+    sections = [],
 }: Fukumi.DividerProps): JSX.Element {
+    const children_: JSX.Element[] = useMemo(
+        (): JSX.Element[] =>
+            children instanceof Array ? children : [children],
+        [children]
+    )
+
     const [currentSection, setCurrentSection] =
         useState<Fukumi.DividerSection["name"]>("")
 
-    useRenderEffect((): void => setCurrentSection(sections[0].name), [sections])
+    useRenderEffect((): void => {
+        if (sections.length) setCurrentSection(sections[0].name)
+    }, [sections])
 
     const bgOuterVar: string = backgroundOuterVar ?? "--undefined"
     const bgInnerVar: string = backgroundInnerVar ?? "--undefined"
 
     const bodySections: Fukumi.SectionElement[] = useMemo(
         (): JSX.Element[] =>
-            children.filter(
+            children_.filter(
                 (child: JSX.Element): boolean => child.type === Section
             ),
-        [children]
+        [children_]
     )
 
     const buttons: Fukumi.ButtonElement[] = useMemo(
         (): JSX.Element[] =>
-            children.filter(
+            children_.filter(
                 (child: JSX.Element): boolean => child.type === Button
             ),
-        [children]
+        [children_]
     )
+
+    if (!sections.length)
+        return (
+            <div
+                className={styles.container}
+                style={{ background: `var(${bgOuterVar}, transparent)` }}
+            >
+                <div
+                    className={styles.wrapper}
+                    style={
+                        {
+                            maxWidth: maxWidth ?? "1200px",
+                            background: `var(${bgInnerVar}, var(--global-background-color))`,
+                            "--box-shadow-color-var": !backgroundOuterVar
+                                ? "--undefined"
+                                : "var(--box-shadow-color)",
+                        } as CSSProperties
+                    }
+                >
+                    <div className={styles.body}>
+                        <ScrollBox curve>
+                            <div className={styles.section}>{children_}</div>
+                        </ScrollBox>
+                    </div>
+                </div>
+            </div>
+        )
 
     return (
         <div
@@ -89,7 +124,7 @@ export function Divider({
                 </DividerBody>
             </div>
 
-            {children.filter(
+            {children_.filter(
                 (child: JSX.Element): boolean =>
                     child.type !== Button &&
                     child.type !== Section &&
@@ -113,7 +148,7 @@ function DividerBody({
 }: Fukumi.DividerBodyProps): JSX.Element {
     return (
         <div className={styles.body}>
-            <ScrollBox>
+            <ScrollBox curve>
                 <>
                     {Children.map(
                         children,
@@ -330,8 +365,8 @@ declare global {
              * ```
              */
             backgroundInnerVar?: string
-            sections: DividerSection[]
-            children: JSX.Element[]
+            sections?: DividerSection[]
+            children: JSX.Element[] | JSX.Element
         }
 
         interface DividerHeadProps {

@@ -7,10 +7,14 @@ import {
     createContext,
     Context,
 } from "react"
-import { useRouter } from "next/router"
+import { NextRouter, useRouter } from "next/router"
+import Image, { ImageProps } from "next/image"
 import Link from "next/link"
+import classNames from "classnames"
 
 import styles from "@styles/components/navigation.module.scss"
+import glasiumStyles from "@styles/components/glasium.module.scss"
+
 import { useRenderEffect } from "@ts/libraries"
 import Glasium, { COLOR } from "./glasium"
 import { clientSide } from "@ts/client-side"
@@ -18,24 +22,68 @@ import { clientSide } from "@ts/client-side"
 const NavigationContext: Context<Fukumi.NavigationContextType> = createContext({
     setPathIndicator: (width: number, left: number): void => {},
     setTooltip: (props: Fukumi.NavigationTooltipProps): void => {},
-    routerPath: "/",
+    setUnderlay: (activate: boolean = false): void => {},
+    router: { path: "/" },
 })
 
 function NavigationContextWrapper({
     setPathIndicator,
     setTooltip,
+    setUnderlay,
     children,
 }: Fukumi.NavigationContextWrapperProps): JSX.Element {
+    const router: NextRouter = useRouter()
+
     const contextValue: Fukumi.NavigationContextType = {
         setPathIndicator,
         setTooltip,
-        routerPath: useRouter().asPath,
+        setUnderlay,
+        router: {
+            path: router.asPath,
+            events: router.events,
+        },
     }
 
     return (
         <NavigationContext.Provider value={contextValue}>
             {children}
         </NavigationContext.Provider>
+    )
+}
+
+function NavigationLoading(): JSX.Element {
+    const { router } = useContext(NavigationContext)
+    const [loading, setLoading] = useState(false)
+
+    useRenderEffect((): void | (() => void) => {
+        function routeChangeStart(path: string): void {
+            if (path === router.path) return setLoading(false)
+            setLoading(true)
+        }
+
+        function routeChangeComplete(): void {
+            setLoading(false)
+        }
+
+        router.events?.on("routeChangeStart", routeChangeStart)
+        router.events?.on("routeChangeComplete", routeChangeComplete)
+
+        return (): void => {
+            router.events?.off("routeChangeStart", routeChangeStart)
+            router.events?.off("routeChangeComplete", routeChangeComplete)
+        }
+    }, [router])
+
+    return (
+        <div
+            className={styles.loading}
+            data-loading={loading}
+        >
+            <span />
+            <span />
+            <span />
+            <span />
+        </div>
     )
 }
 
@@ -49,12 +97,7 @@ export class Navigation extends Component<
     }
 
     private setPathIndicator(width: number, left: number): void {
-        this.setState({
-            pathIndicator: {
-                left: left,
-                width: width,
-            },
-        })
+        this.setState({ pathIndicator: { left, width } })
     }
 
     private setTooltip({
@@ -69,35 +112,26 @@ export class Navigation extends Component<
         if (!activate || !title)
             return this.setState(
                 ({ tooltip }: Readonly<Fukumi.NavigationState>) => ({
-                    tooltip: {
-                        ...tooltip,
-                        activate: false,
-                    },
+                    tooltip: { ...tooltip, activate: false },
                 })
             )
 
-        if (!this.ref.tooltip.current) return
+        if (!this.ref.tooltip.current || !this.ref.container.current) return
 
         this.setState(({ tooltip }: Readonly<Fukumi.NavigationState>) => ({
-            tooltip: {
-                ...tooltip,
-                title: title,
-                description: description,
-            },
+            tooltip: { ...tooltip, title, description, activate: false },
         }))
 
-        if (
-            this.ref.tooltip.current.getBoundingClientRect().left +
-                this.ref.tooltip.current.getBoundingClientRect().width >
-            window.innerWidth
-        )
+        const containerWidth: number = this.ref.container.current.clientWidth
+
+        if (left > containerWidth / 2)
             return this.setState(
                 ({ tooltip }: Readonly<Fukumi.NavigationState>) => ({
                     tooltip: {
                         ...tooltip,
-                        align: "right",
                         side: "right",
-                        position: left + width,
+                        align: "right",
+                        position: containerWidth - left - width,
                         activate: true,
                     },
                 })
@@ -145,6 +179,7 @@ export class Navigation extends Component<
             <NavigationContextWrapper
                 setPathIndicator={this.setPathIndicator.bind(this)}
                 setTooltip={this.setTooltip.bind(this)}
+                setUnderlay={this.setUnderlay.bind(this)}
             >
                 <div
                     ref={this.ref.container}
@@ -205,6 +240,8 @@ export class Navigation extends Component<
 
                     <div className={styles.expander} />
                 </div>
+
+                <NavigationLoading />
             </NavigationContextWrapper>
         )
     }
@@ -216,34 +253,29 @@ export function Anchor({
     title,
     description,
 }: Fukumi.NavigationAnchorProps): JSX.Element {
-    const { setPathIndicator, setTooltip, routerPath } =
+    const { setPathIndicator, setTooltip, router } =
         useContext(NavigationContext)
     const [activated, setActivated] = useState(false)
     const ref: React.RefObject<HTMLAnchorElement> =
         createRef<HTMLAnchorElement>()
 
-    const indicate: () => void = useCallback((): void => {
+    useRenderEffect((): void => {
         function activate(): void {
             if (!ref.current?.parentElement) return
 
             const { width, left } = ref.current.getBoundingClientRect()
 
-            setPathIndicator(
-                width,
-                left - ref.current.parentElement.getBoundingClientRect().left
-            )
+            setPathIndicator(width, left)
 
             setActivated(true)
         }
 
-        if (href === "/" && routerPath !== href) return setActivated(false)
+        if (href === "/" && router.path !== href) return setActivated(false)
 
-        if (routerPath.startsWith(href)) return activate()
+        if (router.path.startsWith(href)) return activate()
 
         return setActivated(false)
-    }, [href, setPathIndicator, ref, routerPath])
-
-    useRenderEffect(indicate, [href, routerPath])
+    }, [href, router.path, ref.current])
 
     const onPointerEnter: () => void = useCallback((): void => {
         if (!ref.current || activated) return
@@ -277,6 +309,198 @@ export function Anchor({
         </Link>
     )
 }
+
+export function Hamburger({
+    onClick = (): void => {},
+    title,
+    description,
+}: Fukumi.NavigationHamburgerProps = {}): JSX.Element {
+    const { setUnderlay, setTooltip } = useContext(NavigationContext)
+    const [activated, setActivated] = useState(false)
+    const ref: React.RefObject<HTMLDivElement> = createRef()
+
+    return (
+        <div
+            ref={ref}
+            className={styles.hamburger}
+            data-activated={activated}
+            onClick={function (
+                event: React.MouseEvent<HTMLDivElement, MouseEvent>
+            ): void {
+                setActivated((value: boolean): boolean => !value)
+                onClick({
+                    ...event,
+                    activated: !activated,
+                    setActivated: (
+                        setter: boolean | ((value: boolean) => boolean)
+                    ): void => {
+                        if (typeof setter === "function")
+                            return setActivated((value: boolean): boolean =>
+                                setter(!value)
+                            )
+
+                        setActivated(!setter)
+                    },
+                    setUnderlay,
+                })
+            }}
+            onPointerEnter={(): void => {
+                if (!ref.current) return
+
+                const { width, left } = ref.current.getBoundingClientRect()
+
+                setTooltip({ title, description, width, left })
+            }}
+            onPointerLeave={function (): void {
+                setTooltip({ activate: false })
+            }}
+        >
+            <div />
+            <div />
+            <div />
+        </div>
+    )
+}
+
+export function Button({
+    title,
+    description,
+    text,
+    icon = "nfb nf-cod-code",
+    imageProps,
+    colorOptions = COLOR.blue,
+    alwaysActive = false,
+    onClick = (): void => {},
+}: Fukumi.NavigationButtonProps): JSX.Element {
+    const { setTooltip } = useContext(NavigationContext)
+    const [activated, setActivated] = useState(alwaysActive)
+    const ref: React.RefObject<HTMLButtonElement> = createRef()
+
+    return (
+        <button
+            ref={ref}
+            className={classNames({
+                [glasiumStyles.button]: true,
+                [styles.button]: true,
+            })}
+            data-activated={activated}
+            onClick={function (
+                event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+            ): void {
+                onClick({
+                    ...event,
+                    activated,
+                    setActivated: function (
+                        setter: boolean | ((value: boolean) => boolean)
+                    ): void {
+                        if (alwaysActive) return
+
+                        if (typeof setter === "function")
+                            return setActivated((value: boolean): boolean =>
+                                setter(value)
+                            )
+
+                        setActivated(setter)
+                    },
+                })
+            }}
+            onPointerEnter={(): void => {
+                if (!ref.current) return
+
+                const { width, left } = ref.current.getBoundingClientRect()
+
+                setTooltip({ title, description, width, left })
+            }}
+            onPointerLeave={function (): void {
+                setTooltip({ activate: false })
+            }}
+        >
+            <Glasium colorOptions={colorOptions} />
+            {imageProps ? (
+                <Image
+                    alt=""
+                    width={30}
+                    height={30}
+                    {...imageProps}
+                    className={styles.image}
+                />
+            ) : (
+                <i className={icon} />
+            )}
+
+            {text === undefined || <span className={styles.text}>{text}</span>}
+        </button>
+    )
+}
+
+export function Logo({
+    alwaysActive = false,
+    description,
+    imageProps = { src: "/favicon.ico" },
+    onClick = (): void => {},
+    text,
+    title,
+}: Fukumi.NavigationLogoProps): JSX.Element {
+    const { setTooltip } = useContext(NavigationContext)
+    const [activated, setActivated] = useState(alwaysActive)
+    const ref: React.RefObject<HTMLDivElement> = createRef()
+
+    return (
+        <div
+            ref={ref}
+            className={styles.logo}
+            data-activated={activated}
+            onClick={function (
+                event: React.MouseEvent<HTMLDivElement, MouseEvent>
+            ): void {
+                onClick({
+                    ...event,
+                    activated,
+                    setActivated: function (
+                        setter: boolean | ((value: boolean) => boolean)
+                    ): void {
+                        if (alwaysActive) return
+
+                        if (typeof setter === "function")
+                            return setActivated((value: boolean): boolean =>
+                                setter(value)
+                            )
+
+                        setActivated(setter)
+                    },
+                })
+            }}
+            onPointerEnter={(): void => {
+                if (!ref.current) return
+
+                const { width, left } = ref.current.getBoundingClientRect()
+
+                setTooltip({ title, description, width, left })
+            }}
+            onPointerLeave={function (): void {
+                setTooltip({ activate: false })
+            }}
+        >
+            <Image
+                alt=""
+                width={30}
+                height={30}
+                {...imageProps}
+                className={styles.image}
+            />
+            <span className={styles.text}>{text ?? "logo"}</span>
+        </div>
+    )
+}
+
+const FukumiNav = {
+    Navigation,
+    Anchor,
+    Hamburger,
+    Button,
+}
+
+export default FukumiNav
 
 declare global {
     namespace Fukumi {
@@ -318,12 +542,16 @@ declare global {
         interface NavigationContextType {
             setPathIndicator: (width: number, left: number) => void
             setTooltip: (props: NavigationTooltipProps) => void
-            routerPath: string
+            setUnderlay: (activate?: boolean) => void
+            router: {
+                path: string
+                events?: NextRouter["events"]
+            }
         }
 
         interface NavigationContextWrapperProps
-            extends Omit<Fukumi.NavigationContextType, "routerPath"> {
-            children: JSX.Element
+            extends Omit<Fukumi.NavigationContextType, "router"> {
+            children: JSX.Element[]
         }
 
         interface NavigationTooltipProps {
@@ -339,6 +567,57 @@ declare global {
             icon: string
             title?: string
             description?: string
+        }
+
+        interface NavigationHamburgerClickEvent
+            extends React.MouseEvent<HTMLDivElement, MouseEvent> {
+            activated: boolean
+            setActivated: React.Dispatch<
+                React.SetStateAction<NavigationHamburgerClickEvent["activated"]>
+            >
+            setUnderlay: (activate?: boolean) => void
+        }
+
+        interface NavigationButtonClickEvent
+            extends React.MouseEvent<HTMLButtonElement, MouseEvent> {
+            activated: boolean
+            setActivated: React.Dispatch<
+                React.SetStateAction<NavigationHamburgerClickEvent["activated"]>
+            >
+        }
+
+        interface NavigationHamburgerProps {
+            title?: string
+            description?: string
+            onClick?: (event: NavigationHamburgerClickEvent) => any
+        }
+
+        interface NavigationButtonProps {
+            title?: string
+            description?: string
+            text?: string
+            icon?: string
+            image?: string
+            alwaysActive?: boolean
+            imageProps?: ImageProps
+            colorOptions?: GlasiumOptions
+            onClick?: (event: NavigationButtonClickEvent) => any
+        }
+
+        interface NavigationLogoClickEvent
+            extends React.MouseEvent<HTMLDivElement, MouseEvent> {
+            activated: boolean
+            setActivated: React.Dispatch<
+                React.SetStateAction<NavigationLogoClickEvent["activated"]>
+            >
+        }
+
+        interface NavigationLogoProps
+            extends Omit<
+                NavigationButtonProps,
+                "icon" | "colorOptions" | "onClick"
+            > {
+            onClick?: (event: NavigationLogoClickEvent) => any
         }
     }
 }

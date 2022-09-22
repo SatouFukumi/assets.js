@@ -16,6 +16,7 @@
         ],
         // Options
         "allowJs": false,
+        "allowSyntheticDefaultImports": true,
         "alwaysStrict": true,
         "exactOptionalPropertyTypes": true,
         "jsx": "react-native",

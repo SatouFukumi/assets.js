@@ -5,39 +5,48 @@ import classNames from "classnames"
 import styles from "@styles/components/scroll-box.module.scss"
 
 /** */
-export default class ScrollBox extends Component<ScrollbarProps> {
-    render(): React.ReactNode {
-        const className: string = this.props.className
-            ? classNames({
-                  [styles.container]: true,
-                  [this.props.className]: true,
-              })
-            : styles.container
+export default function ScrollBox(props: Fukumi.ScrollBoxProps): JSX.Element {
+    const className: string = props.className
+        ? classNames({
+              [styles.container]: true,
+              [props.className]: true,
+          })
+        : styles.container
 
-        return (
-            <Scrollbars
-                renderView={(props: any): JSX.Element => (
-                    <div
-                        {...props}
-                        className={styles.view}
-                    />
-                )}
-                renderThumbHorizontal={(props: any): JSX.Element => (
-                    <div
-                        {...props}
-                        className={styles.thumb}
-                    />
-                )}
-                renderThumbVertical={(props: any): JSX.Element => (
-                    <div
-                        {...props}
-                        className={styles.thumb}
-                    />
-                )}
-                {...this.props}
-                className={className}
-                universal
-            />
-        )
+    props = { ...props, curve: props.curve?.toString() }
+
+    return (
+        <Scrollbars
+            renderView={(childProps: any): JSX.Element => (
+                <div
+                    {...childProps}
+                    className={styles.view}
+                    data-border-radius={props.curve}
+                />
+            )}
+            renderThumbHorizontal={(childProps: any): JSX.Element => (
+                <div
+                    {...childProps}
+                    className={styles.thumb}
+                />
+            )}
+            renderThumbVertical={(childProps: any): JSX.Element => (
+                <div
+                    {...childProps}
+                    className={styles.thumb}
+                />
+            )}
+            {...props}
+            className={className}
+            universal
+        />
+    )
+}
+
+declare global {
+    namespace Fukumi {
+        interface ScrollBoxProps extends ScrollbarProps {
+            curve?: boolean | string | undefined
+        }
     }
 }
