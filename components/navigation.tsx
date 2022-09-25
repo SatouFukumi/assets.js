@@ -23,6 +23,8 @@ const NavigationContext: Context<Fukumi.NavigationContextType> = createContext({
     setPathIndicator: (width: number, left: number): void => {},
     setTooltip: (props: Fukumi.NavigationTooltipProps): void => {},
     setUnderlay: (activate: boolean = false): void => {},
+    addUnderlayClickHandler: (fn: (showing: boolean) => any): undefined => this,
+    container: createRef<HTMLDivElement>(),
     router: { path: "/" },
 })
 
@@ -30,6 +32,8 @@ function NavigationContextWrapper({
     setPathIndicator,
     setTooltip,
     setUnderlay,
+    addUnderlayClickHandler,
+    container,
     children,
 }: Fukumi.NavigationContextWrapperProps): JSX.Element {
     const router: NextRouter = useRouter()
@@ -38,6 +42,8 @@ function NavigationContextWrapper({
         setPathIndicator,
         setTooltip,
         setUnderlay,
+        addUnderlayClickHandler,
+        container,
         router: {
             path: router.asPath,
             events: router.events,
@@ -149,15 +155,34 @@ export class Navigation extends Component<
     }
 
     private setUnderlay(activate: boolean = false): void {
-        this.setState({ underlay: activate })
+        this.setState(({ underlay }) => ({
+            underlay: { ...underlay, showing: activate },
+        }))
+    }
+
+    private addUnderlayClickHandler(fn: (showing: boolean) => any): this {
+        this.setState(({ underlay }) => ({
+            underlay: {
+                showing: underlay.showing,
+                onClickHandlers: [...underlay.onClickHandlers, fn],
+            },
+        }))
+
+        return this
     }
 
     public CONSTANT: Fukumi.NavigationConstant = Object.freeze({
-        height: styles.height,
+        containerHeight: styles.containerHeight,
+        loadingTransitionDelayInitial: styles.loadingTransitionDelayInitial,
+        loadingTransitionDelay: styles.loadingTransitionDelay,
+        loadingTransitionDuration: styles.loadingTransitionDuration,
     })
 
     public state: Readonly<Fukumi.NavigationState> = {
-        underlay: false,
+        underlay: {
+            showing: false,
+            onClickHandlers: [],
+        },
 
         pathIndicator: {
             width: 0,
@@ -177,16 +202,22 @@ export class Navigation extends Component<
     public render(): JSX.Element {
         return (
             <NavigationContextWrapper
+                container={this.ref.container}
                 setPathIndicator={this.setPathIndicator.bind(this)}
                 setTooltip={this.setTooltip.bind(this)}
                 setUnderlay={this.setUnderlay.bind(this)}
+                addUnderlayClickHandler={this.addUnderlayClickHandler.bind(
+                    this
+                )}
             >
                 <div
                     ref={this.ref.container}
                     className={styles.container}
                     data-navigation-tooltip={this.state.tooltip.activate}
                     data-hide={this.props.hide}
-                    data-underlay={this.state.underlay && !this.props.hide}
+                    data-underlay={
+                        this.state.underlay.showing && !this.props.hide
+                    }
                 >
                     <span className={styles.route}>
                         <Glasium
@@ -233,12 +264,22 @@ export class Navigation extends Component<
                         }}
                     />
 
+                    <div className={styles.expander} />
+
                     <div
                         className={styles.underlay}
-                        onClick={(): void => this.setUnderlay.bind(this)()}
-                    />
+                        onClick={(): any => {
+                            this.state.underlay.onClickHandlers?.forEach(
+                                (fn: (showing: boolean) => any): void => {
+                                    fn(this.state.underlay.showing)
+                                }
+                            )
 
-                    <div className={styles.expander} />
+                            this.setState(({ underlay }) => ({
+                                underlay: { ...underlay, showing: false },
+                            }))
+                        }}
+                    />
                 </div>
 
                 <NavigationLoading />
@@ -275,7 +316,7 @@ export function Anchor({
         if (router.path.startsWith(href)) return activate()
 
         return setActivated(false)
-    }, [href, router.path, ref.current])
+    }, [href, router.path])
 
     const onPointerEnter: () => void = useCallback((): void => {
         if (!ref.current || activated) return
@@ -389,7 +430,7 @@ export function Button({
             ): void {
                 onClick({
                     ...event,
-                    activated,
+                    activated: !activated,
                     setActivated: function (
                         setter: boolean | ((value: boolean) => boolean)
                     ): void {
@@ -417,13 +458,13 @@ export function Button({
         >
             <Glasium colorOptions={colorOptions} />
             {imageProps ? (
-                <Image
-                    alt=""
-                    width={30}
-                    height={30}
-                    {...imageProps}
-                    className={styles.image}
-                />
+                <div className={styles.image}>
+                    <Image
+                        alt=""
+                        {...imageProps}
+                        layout="fill"
+                    />
+                </div>
             ) : (
                 <i className={icon} />
             )}
@@ -455,7 +496,7 @@ export function Logo({
             ): void {
                 onClick({
                     ...event,
-                    activated,
+                    activated: !activated,
                     setActivated: function (
                         setter: boolean | ((value: boolean) => boolean)
                     ): void {
@@ -481,15 +522,147 @@ export function Logo({
                 setTooltip({ activate: false })
             }}
         >
-            <Image
-                alt=""
-                width={30}
-                height={30}
-                {...imageProps}
-                className={styles.image}
-            />
+            <div className={styles.image}>
+                <Image
+                    alt=""
+                    {...imageProps}
+                    layout="fill"
+                />
+            </div>
             <span className={styles.text}>{text ?? "logo"}</span>
         </div>
+    )
+}
+
+export function Subwindow({
+    title,
+    description,
+    text,
+    icon = "nfb nf-cod-code",
+    imageProps,
+    colorOptions = COLOR.blue,
+    alwaysActive = false,
+    onClick = (): void => {},
+    children,
+    borderColor = "var(--osc-color-blue)",
+}: Fukumi.NavigationSubwindowProps): JSX.Element {
+    const { setTooltip, setUnderlay, addUnderlayClickHandler, container } =
+        useContext(NavigationContext)
+    const [activated, setActivated] = useState(alwaysActive)
+    const [set, setSet] = useState(false)
+    const [height, setHeight] = useState(0)
+    const [style, setStyle] = useState<React.CSSProperties>({})
+    const [align, setAlign] = useState<"left" | "right" | "full">("right")
+    const button: React.RefObject<HTMLButtonElement> = createRef()
+    const inside: React.RefObject<HTMLDivElement> = createRef()
+
+    useRenderEffect((): any => {
+        if (!(container.current && button.current && inside.current)) return
+
+        if (!set) {
+            addUnderlayClickHandler((): void => setActivated(false))
+            setSet(true)
+        }
+
+        if (activated) {
+            setUnderlay(true)
+            setHeight(inside.current.clientHeight)
+        } else {
+            setUnderlay(false)
+        }
+
+        setStyle({})
+
+        const rect: DOMRect = button.current.getBoundingClientRect()
+        const width: number = inside.current.offsetWidth
+        const { clientWidth } = container.current
+
+        if (rect.right - width > 0) setAlign("right")
+        else if (rect.left + width < clientWidth) setAlign("left")
+        else {
+            setAlign("full")
+            setStyle({
+                left: -rect.left,
+                width: clientWidth,
+            })
+        }
+    }, [activated, set, children])
+
+    return (
+        <button
+            ref={button}
+            className={classNames({
+                [glasiumStyles.button]: true,
+                [styles.subwindow]: true,
+            })}
+            data-activated={activated}
+        >
+            <div
+                className="_expander"
+                onClick={function (
+                    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+                ): void {
+                    onClick({
+                        ...event,
+                        activated: !activated,
+                        setActivated: function (
+                            setter: boolean | ((value: boolean) => boolean)
+                        ): void {
+                            if (alwaysActive) return
+
+                            if (typeof setter === "function")
+                                return setActivated((value: boolean): boolean =>
+                                    setter(value)
+                                )
+
+                            setActivated(setter)
+                        },
+                    })
+                }}
+                onPointerEnter={(): void => {
+                    if (!button.current) return
+
+                    const { width, left } =
+                        button.current.getBoundingClientRect()
+
+                    setTooltip({ title, description, width, left })
+                }}
+                onPointerLeave={function (): void {
+                    setTooltip({ activate: false })
+                }}
+            />
+            <Glasium colorOptions={colorOptions} />
+            {imageProps ? (
+                <div className={styles.image}>
+                    <Image
+                        alt=""
+                        {...imageProps}
+                        layout="fill"
+                    />
+                </div>
+            ) : (
+                <i className={icon} />
+            )}
+
+            {text === undefined || <span className={styles.text}>{text}</span>}
+
+            <div
+                className={styles.content}
+                style={{
+                    ...style,
+                    borderColor,
+                    height: activated ? `${height}px` : 0,
+                }}
+                data-align={align}
+            >
+                <div
+                    ref={inside}
+                    className={styles.inside}
+                >
+                    {children}
+                </div>
+            </div>
+        </button>
     )
 }
 
@@ -518,11 +691,17 @@ declare global {
         }
 
         interface NavigationConstant {
-            readonly height: string
+            readonly containerHeight: string
+            readonly loadingTransitionDelayInitial: string
+            readonly loadingTransitionDelay: string
+            readonly loadingTransitionDuration: string
         }
 
         interface NavigationState {
-            underlay: boolean
+            underlay: {
+                showing: boolean
+                onClickHandlers: ((showing: boolean) => any)[]
+            }
 
             pathIndicator: {
                 width: number
@@ -543,6 +722,8 @@ declare global {
             setPathIndicator: (width: number, left: number) => void
             setTooltip: (props: NavigationTooltipProps) => void
             setUnderlay: (activate?: boolean) => void
+            addUnderlayClickHandler: (fn: (showing: boolean) => any) => any
+            container: React.RefObject<HTMLDivElement>
             router: {
                 path: string
                 events?: NextRouter["events"]
@@ -582,7 +763,15 @@ declare global {
             extends React.MouseEvent<HTMLButtonElement, MouseEvent> {
             activated: boolean
             setActivated: React.Dispatch<
-                React.SetStateAction<NavigationHamburgerClickEvent["activated"]>
+                React.SetStateAction<NavigationButtonClickEvent["activated"]>
+            >
+        }
+
+        interface NavigationSubwindowClickEvent
+            extends React.MouseEvent<HTMLDivElement, MouseEvent> {
+            activated: boolean
+            setActivated: React.Dispatch<
+                React.SetStateAction<NavigationSubwindowClickEvent["activated"]>
             >
         }
 
@@ -618,6 +807,13 @@ declare global {
                 "icon" | "colorOptions" | "onClick"
             > {
             onClick?: (event: NavigationLogoClickEvent) => any
+        }
+
+        interface NavigationSubwindowProps
+            extends Omit<NavigationButtonProps, "onClick"> {
+            children: React.ReactNode | React.ReactNode[]
+            borderColor?: React.CSSProperties["borderColor"]
+            onClick?: (event: NavigationSubwindowClickEvent) => any
         }
     }
 }

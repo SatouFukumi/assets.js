@@ -38,11 +38,13 @@ export const clientSide = {
         return cookie.split("=")[1]
     },
 
-    preferDarkColorScheme: (): boolean =>
-        window.matchMedia("(prefers-color-scheme: dark)").matches,
+    preferDarkColorScheme(): boolean {
+        return window.matchMedia("(prefers-color-scheme: dark)").matches
+    },
 
-    preferLightColorScheme: (): boolean =>
-        window.matchMedia("(prefers-color-scheme: light)").matches,
+    preferLightColorScheme(): boolean {
+        return window.matchMedia("(prefers-color-scheme: light)").matches
+    },
 
     get preferColorScheme(): "light" | "dark" {
         return this.preferDarkColorScheme() ? "dark" : "light"

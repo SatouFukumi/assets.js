@@ -127,13 +127,19 @@ export const libraries = {
     },
 
     /** this function returns the smallest number */
-    min: (...args: number[]): number => Math.min(...args),
+    min(...args: number[]): number {
+        return Math.min(...args)
+    },
 
     /** this function returns the biggest number */
-    max: (...args: number[]): number => Math.max(...args),
+    max(...args: number[]): number {
+        return Math.max(...args)
+    },
 
     /** this function returns the absolute value of the number */
-    abs: (num: number): number => Math.abs(num),
+    abs(num: number): number {
+        return Math.abs(num)
+    },
 
     /** this function returns the clamped number */
     clamp(min: number, dynamic: number, max: number): number {

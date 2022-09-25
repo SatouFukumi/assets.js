@@ -1,5 +1,6 @@
 :root {
     --background-color-dark: rgb(24, 24, 24);
+    --background-color-dark-deep: #020202;
     --color-dark: whitesmoke;
     --color-dimmed-dark: hsl(0, 0%, 88%);
     --color-dimmed-lesser-dark: whitesmoke;
@@ -14,4 +15,5 @@ body[data-theme="dark"] {
 
     background-color: var(--background-color-dark);
     --global-background-color: var(--background-color-dark);
+    --global-background-color-deep: var(--background-color-dark-deep);
 }
