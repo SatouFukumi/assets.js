@@ -204,7 +204,6 @@ export class Navigation extends Component<
     public render(): JSX.Element {
         const containerStyle: CSSProperties = {
             "--color": this.props.color,
-            "--tooltip-background-color": this.props.tooltip.backgroundColor,
             "--route-color": this.props.route?.color,
             "--route-color-activated": this.props.route?.colorActive,
         } as CSSProperties
@@ -690,9 +689,6 @@ declare global {
             children: JSX.Element[]
             hide?: boolean
             color?: string | `var(--${string})`
-            tooltip: {
-                backgroundColor: string
-            }
             route?: {
                 colorOptions?: Fukumi.GlasiumOptions
                 color?: string | `var(--${string})`
