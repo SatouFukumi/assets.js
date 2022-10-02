@@ -273,14 +273,14 @@ export function attempt<T extends (...args: any[]) => any>(
 
 /** chain async */
 export async function chainAsync(
-    funcs: ((nextFunc: Function) => Fukumi.Awaitable<void>)[]
+    funcs: ((nextFn: Function) => Fukumi.Awaitable<void>)[]
 ): Promise<void> {
     let curr: number = 0
-    const nextFunc: () => Promise<void> = async (): Promise<void> => {
+    const nextFn: () => Promise<void> = async (): Promise<void> => {
         if (curr === funcs.length) return
-        return funcs[curr++](nextFunc)
+        return funcs[curr++](nextFn)
     }
-    return nextFunc()
+    return nextFn()
 }
 
 /**

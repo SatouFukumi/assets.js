@@ -6,6 +6,8 @@ import {
     useContext,
     createContext,
     Context,
+    useRef,
+    CSSProperties,
 } from "react"
 import { NextRouter, useRouter } from "next/router"
 import Image, { ImageProps } from "next/image"
@@ -200,6 +202,13 @@ export class Navigation extends Component<
     }
 
     public render(): JSX.Element {
+        const containerStyle: CSSProperties = {
+            "--color": this.props.color,
+            "--tooltip-background-color": this.props.tooltip.backgroundColor,
+            "--route-color": this.props.route?.color,
+            "--route-color-activated": this.props.route?.colorActive,
+        } as CSSProperties
+
         return (
             <NavigationContextWrapper
                 container={this.ref.container}
@@ -213,7 +222,7 @@ export class Navigation extends Component<
                 <div
                     ref={this.ref.container}
                     className={styles.container}
-                    data-navigation-tooltip={this.state.tooltip.activate}
+                    style={containerStyle}
                     data-hide={this.props.hide}
                     data-underlay={
                         this.state.underlay.showing && !this.props.hide
@@ -298,7 +307,7 @@ export function Anchor({
         useContext(NavigationContext)
     const [activated, setActivated] = useState(false)
     const ref: React.RefObject<HTMLAnchorElement> =
-        createRef<HTMLAnchorElement>()
+        useRef<HTMLAnchorElement>(null)
 
     useRenderEffect((): void => {
         function activate(): void {
@@ -358,7 +367,7 @@ export function Hamburger({
 }: Fukumi.NavigationHamburgerProps = {}): JSX.Element {
     const { setUnderlay, setTooltip } = useContext(NavigationContext)
     const [activated, setActivated] = useState(false)
-    const ref: React.RefObject<HTMLDivElement> = createRef()
+    const ref: React.RefObject<HTMLDivElement> = useRef(null)
 
     return (
         <div
@@ -415,7 +424,7 @@ export function Button({
 }: Fukumi.NavigationButtonProps): JSX.Element {
     const { setTooltip } = useContext(NavigationContext)
     const [activated, setActivated] = useState(alwaysActive)
-    const ref: React.RefObject<HTMLButtonElement> = createRef()
+    const ref: React.RefObject<HTMLButtonElement> = useRef(null)
 
     return (
         <button
@@ -484,7 +493,7 @@ export function Logo({
 }: Fukumi.NavigationLogoProps): JSX.Element {
     const { setTooltip } = useContext(NavigationContext)
     const [activated, setActivated] = useState(alwaysActive)
-    const ref: React.RefObject<HTMLDivElement> = createRef()
+    const ref: React.RefObject<HTMLDivElement> = useRef(null)
 
     return (
         <div
@@ -553,8 +562,8 @@ export function Subwindow({
     const [height, setHeight] = useState(0)
     const [style, setStyle] = useState<React.CSSProperties>({})
     const [align, setAlign] = useState<"left" | "right" | "full">("right")
-    const button: React.RefObject<HTMLButtonElement> = createRef()
-    const inside: React.RefObject<HTMLDivElement> = createRef()
+    const button: React.RefObject<HTMLButtonElement> = useRef(null)
+    const inside: React.RefObject<HTMLDivElement> = useRef(null)
 
     useRenderEffect((): any => {
         if (!(container.current && button.current && inside.current)) return
@@ -680,8 +689,14 @@ declare global {
         interface NavigationProps {
             children: JSX.Element[]
             hide?: boolean
+            color?: string | `var(--${string})`
+            tooltip: {
+                backgroundColor: string
+            }
             route?: {
                 colorOptions?: Fukumi.GlasiumOptions
+                color?: string | `var(--${string})`
+                colorActive?: string | `var(--${string})`
             }
         }
 

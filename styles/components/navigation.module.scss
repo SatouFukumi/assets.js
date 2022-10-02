@@ -1,36 +1,9 @@
 $containerHeight: 50px;
+$underlineHeight: 3px;
 
 $loadingTransitionDelayInitial: 300ms;
 $loadingTransitionDelay: 100ms;
 $loadingTransitionDuration: 150ms;
-
-body.light,
-body[data-theme="light"] {
-    .container {
-        --background-color: hsl(0, 0%, 100%);
-        --tooltip-box-shadow-color: hsla(0, 0%, 100%);
-        --box-shadow-color: rgba(0, 0, 0, 0.3);
-        --indicator-background-color: rgb(65, 65, 65);
-        --indicator-box-shadow-color: rgba(0, 0, 0, 0.4);
-        --item-background-color-hover: rgb(218, 218, 218);
-        --item-background-color-active: rgb(194, 194, 194);
-        --item-background-color-activated: rgb(235, 235, 235);
-    }
-}
-
-body.dark,
-body[data-theme="dark"] {
-    .container {
-        --background-color: hsl(0, 0%, 13%);
-        --tooltip-box-shadow-color: hsla(0, 0%, 6%);
-        --box-shadow-color: rgb(255, 255, 255, 0.1);
-        --indicator-background-color: white;
-        --indicator-box-shadow-color: rgb(194, 224, 255);
-        --item-background-color-hover: rgb(54, 54, 54);
-        --item-background-color-active: rgb(78, 78, 78);
-        --item-background-color-activated: rgb(70, 70, 70);
-    }
-}
 
 .container {
     --item-width: 5rem;
@@ -52,23 +25,104 @@ body[data-theme="dark"] {
     width: 100%;
     height: var(--container-height);
 
-    background-color: var(--background-color);
+    background-color: hsla(0, 0%, 100%, 0.04);
 
-    box-shadow: 0 0 1.2rem 0 var(--box-shadow-color);
+    color: var(--color, var(--global-color));
+
+    backdrop-filter: blur(0.4rem);
+
+    box-shadow: inset 0 0 100vmax 0 hsla(0, 0%, 100%, 0.01),
+        0 0 1.2rem 0 hsla(0, 0%, 75%, 0.01);
+
+    transition-property: all, box-shadow;
+    transition-duration: 200ms, 150ms;
+    transition-timing-function: ease-out, ease-out;
+
+    z-index: 10001;
+
+    /** outline */
+    &:before {
+        content: "";
+
+        position: absolute;
+        inset: 0;
+
+        width: 100%;
+
+        border-block-end: 0.1px solid hsla(0, 0%, 70%, 0.05);
+    }
 
     * {
         transition: all 150ms ease-out;
     }
 
-    &[data-navigation-tooltip="true"] {
-        box-shadow: 0 0 12rem 6rem var(--tooltip-box-shadow-color);
+    > *:not(.route, .indicator, .tooltip, .subwindow, .underlay, .expander) {
+        position: relative;
+
+        &:before {
+            --background: var(--color-yellow);
+
+            content: "";
+
+            position: absolute;
+            inset-inline: 0;
+            inset-block-start: 100%;
+
+            width: 100%;
+            height: $underlineHeight;
+
+            @media (hover: hover) {
+                width: 0;
+            }
+
+            background-color: var(--background);
+
+            box-shadow: 0 0 1rem 0.1rem var(--background);
+
+            transition: all 150ms ease-out;
+
+            pointer-events: none;
+            user-select: none;
+        }
+
+        @media (hover: hover) {
+            &:hover:before {
+                --background: var(--color-yellow);
+
+                width: 100%;
+            }
+        }
+
+        &[data-activated="true"] {
+            &:before {
+                width: 100%;
+
+                --background: var(--color-green);
+            }
+        }
+
+        &:active:before {
+            --background: var(--color-green-dark);
+        }
     }
 
-    transition-property: all, box-shadow;
-    transition-duration: 150ms, 100ms;
-    transition-timing-function: ease-out, linear;
+    *:is(.logo, .hamburger, .link) {
+        background-color: transparent;
 
-    z-index: 99999;
+        @media (hover: hover) {
+            &:hover {
+                backdrop-filter: blur(0.3rem) invert(0.1);
+            }
+        }
+
+        &:active {
+            backdrop-filter: blur(0.3rem) invert(0.15);
+        }
+
+        &[data-activated="true"] {
+            backdrop-filter: blur(0.3rem) invert(0.05);
+        }
+    }
 
     .expander {
         flex-grow: 1;
@@ -82,11 +136,11 @@ body[data-theme="dark"] {
         position: absolute;
         inset-block-start: 100%;
 
-        height: 3px;
+        height: $underlineHeight;
 
-        background-color: var(--indicator-background-color);
+        background-color: var(--color, var(--global-color));
 
-        box-shadow: 0 0 1rem 0.1rem var(--indicator-box-shadow-color);
+        box-shadow: 0 0 1rem 0.1rem var(--color, var(--global-color));
 
         transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
 
@@ -135,20 +189,6 @@ body[data-theme="dark"] {
                 display: none;
             }
         }
-
-        &[data-activated="true"] {
-            background-color: var(--item-background-color-activated);
-        }
-
-        @media (hover: hover) {
-            &:hover {
-                background-color: var(--item-background-color-hover);
-            }
-        }
-
-        &:active {
-            background-color: var(--item-background-color-active);
-        }
     }
 
     .route {
@@ -164,6 +204,10 @@ body[data-theme="dark"] {
         height: 100%;
         width: var(--item-width);
 
+        background-color: transparent;
+
+        color: var(--route-color, var(--global-color));
+
         i {
             font-size: 2rem;
 
@@ -171,32 +215,30 @@ body[data-theme="dark"] {
             user-select: none;
         }
 
-        @media (hover: hover) {
-            &:hover {
-                background-color: var(--item-background-color-hover);
-            }
-        }
-
-        &:active {
-            background-color: var(--item-background-color-active);
-        }
-
         &[data-activated="true"] {
             background-color: transparent;
 
-            color: var(--global-color);
+            color: var(--route-color-active, var(--global-color)) !important;
+
+            backdrop-filter: unset;
 
             i,
             i:after,
             i:before {
                 text-shadow: 0 0 1rem rgb(194, 224, 255);
             }
+
+            @media (hover: hover) {
+                &:hover {
+                    backdrop-filter: unset;
+                }
+            }
         }
     }
 
     .tooltip {
         position: absolute;
-        inset-block-start: 100%;
+        inset-block-start: 110%;
 
         padding: 0.25em 0.5em;
 
@@ -205,6 +247,18 @@ body[data-theme="dark"] {
         user-select: none;
 
         pointer-events: none;
+
+        background-color: hsla(0, 0%, 100%, 0.04);
+
+        color: var(--color, var(--global-color));
+
+        backdrop-filter: blur(0.4rem);
+
+        border: 0.1px solid hsla(0, 0%, 70%, 0.05);
+
+        box-shadow: inset 0 0 100vmax 0 hsla(0, 0%, 100%, 0.01);
+
+        border-radius: 0.4em;
 
         .title {
             font-family: var(--font-secondary);
@@ -235,7 +289,11 @@ body[data-theme="dark"] {
         place-items: left;
         place-content: center space-around;
 
-        overflow: hidden;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
 
         div {
             height: var(--container-height);
@@ -249,6 +307,8 @@ body[data-theme="dark"] {
             }
 
             &:nth-child(2) {
+                transform-origin: center center;
+
                 width: 75%;
             }
 
@@ -277,7 +337,7 @@ body[data-theme="dark"] {
                 &:nth-child(2) {
                     width: 100%;
 
-                    translate: 100% 0;
+                    scale: 120%;
 
                     opacity: 0;
                 }
@@ -355,6 +415,12 @@ body[data-theme="dark"] {
 
         .text {
             display: inline-block;
+        }
+
+        filter: brightness(100%);
+
+        * {
+            filter: brightness(100%);
         }
 
         @media (max-width: 780px) {
@@ -459,6 +525,12 @@ body[data-theme="dark"] {
                 border-bottom-width: 3px;
             }
         }
+
+        &:active {
+            .content {
+                filter: brightness(0.8);
+            }
+        }
     }
 
     .underlay {
@@ -500,7 +572,7 @@ body[data-theme="dark"] {
     width: 100%;
     height: 100%;
 
-    z-index: 100;
+    z-index: 10003;
 
     overflow: hidden;
 
@@ -527,6 +599,7 @@ body[data-theme="dark"] {
         transition-property: translate;
         transition-duration: $loadingTransitionDuration;
         transition-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
+        transition-delay: 0;
 
         animation-name: popping;
         animation-duration: var(--animation-duration);
@@ -538,9 +611,11 @@ body[data-theme="dark"] {
 
             background-color: #70d6ff;
 
-            transition-delay: $loadingTransitionDelayInitial + $loadingTransitionDelay * 0;
+            animation-delay: $loadingTransitionDelay * 0;
 
-            animation-delay: calc(var(--transition-delay) * 0);
+            transition-delay: $loadingTransitionDelay * 0;
+
+            z-index: 4;
         }
 
         &:nth-child(2) {
@@ -548,9 +623,11 @@ body[data-theme="dark"] {
 
             background-color: #ff70a6;
 
-            transition-delay: $loadingTransitionDelayInitial + $loadingTransitionDelay * 1;
+            animation-delay: $loadingTransitionDelay * 1;
 
-            animation-delay: calc(var(--transition-delay) * 1);
+            transition-delay: $loadingTransitionDelay * 1;
+
+            z-index: 3;
         }
 
         &:nth-child(3) {
@@ -558,9 +635,11 @@ body[data-theme="dark"] {
 
             background-color: #ff9770;
 
-            transition-delay: $loadingTransitionDelayInitial + $loadingTransitionDelay * 2;
+            animation-delay: $loadingTransitionDelay * 2;
 
-            animation-delay: calc(var(--transition-delay) * 2);
+            transition-delay: $loadingTransitionDelay * 2;
+
+            z-index: 2;
         }
 
         &:nth-child(4) {
@@ -568,9 +647,11 @@ body[data-theme="dark"] {
 
             background-color: #ffd670;
 
-            transition-delay: $loadingTransitionDelayInitial + $loadingTransitionDelay * 3;
+            animation-delay: $loadingTransitionDelay * 3;
 
-            animation-delay: calc(var(--transition-delay) * 3);
+            transition-delay: $loadingTransitionDelay * 3;
+
+            z-index: 1;
         }
     }
 
@@ -582,13 +663,33 @@ body[data-theme="dark"] {
             animation-play-state: running;
 
             translate: 0 0;
+
+            &:nth-child(1) {
+                transition-delay: $loadingTransitionDelayInitial +
+                    $loadingTransitionDelay * 0;
+            }
+
+            &:nth-child(2) {
+                transition-delay: $loadingTransitionDelayInitial +
+                    $loadingTransitionDelay * 1;
+            }
+
+            &:nth-child(3) {
+                transition-delay: $loadingTransitionDelayInitial +
+                    $loadingTransitionDelay * 2;
+            }
+
+            &:nth-child(4) {
+                transition-delay: $loadingTransitionDelayInitial +
+                    $loadingTransitionDelay * 3;
+            }
         }
     }
 }
 
 @keyframes popping {
-    75% {
-        scale: 1.3 1;
+    50% {
+        scale: 1.5 1;
     }
 }
 

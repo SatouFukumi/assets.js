@@ -1,0 +1,116 @@
+$background-color: hsla(0, 0%, 4%, 0.45);
+$background-blink-color: hsla(0, 0%, 40%, 0.45);
+$duration: 300;
+
+.container {
+    --position-x: 500;
+    --position-y: 500;
+
+    position: fixed;
+    inset-inline-start: 0;
+    inset-block-start: 0;
+
+    margin: auto;
+
+    display: inline-flex;
+
+    place-items: center;
+    place-content: center;
+
+    padding: 0;
+
+    background-color: $background-color;
+
+    letter-spacing: 0.2px;
+    text-align: center;
+    white-space: pre-line;
+    word-wrap: break-word;
+
+    border-radius: 6px;
+
+    backdrop-filter: saturate(80%) blur(6px);
+
+    box-sizing: content-box;
+
+    transform-origin: center;
+
+    overflow: hidden;
+
+    pointer-events: none;
+    user-select: none;
+
+    transition-duration: $duration * 1ms, $duration * 1ms, $duration * 1ms,
+        $duration * 1ms, $duration * 1ms;
+    transition-property: translate, opacity, width, height, padding;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1), ease-out, ease,
+        ease, cubic-bezier(0.22, 1, 0.36, 1);
+
+    translate: calc(var(--position-x) * 1px) calc(var(--position-y) * 1px);
+
+    animation-name: none;
+    animation-duration: $duration * 1ms;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+
+    opacity: 0;
+
+    z-index: 10002;
+
+    &[data-glow="true"] {
+        animation-name: tooltip-blink;
+    }
+
+    &[data-activated="true"] {
+        opacity: 1;
+
+        padding: 0.6rem 0.9rem;
+    }
+
+    &[data-deactivated="true"] {
+        width: 0;
+        height: 0;
+    }
+
+    &[data-padding="false"] {
+        padding: 0;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: row;
+
+        place-items: center;
+        place-content: center;
+
+        max-width: 25vw;
+        max-height: 30vh;
+        width: fit-content;
+        height: fit-content;
+
+        border-radius: inherit;
+
+        color: var(--color-dark);
+
+        font-family: var(--font-secondary);
+        font-size: 1.3rem;
+        font-weight: normal;
+
+        text-align: center;
+        letter-spacing: 0.2px;
+        white-space: pre;
+    }
+}
+
+@keyframes tooltip-blink {
+    0% {
+        background-color: $background-blink-color;
+    }
+
+    100% {
+        background-color: $background-color;
+    }
+}
+
+:export {
+    duration: $duration;
+}
