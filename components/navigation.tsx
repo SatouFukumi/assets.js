@@ -324,7 +324,7 @@ export function Anchor({
         if (router.path.startsWith(href)) return activate()
 
         return setActivated(false)
-    }, [href, router.path])
+    }, [href, router.path, setPathIndicator])
 
     const onPointerEnter: () => void = useCallback((): void => {
         if (!ref.current || activated) return
@@ -594,7 +594,7 @@ export function Subwindow({
                 width: clientWidth,
             })
         }
-    }, [activated, set, children])
+    }, [container, activated, set, children, addUnderlayClickHandler, setUnderlay])
 
     return (
         <button

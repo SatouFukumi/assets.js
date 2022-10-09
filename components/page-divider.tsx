@@ -41,8 +41,8 @@ export function Divider({
         [children]
     )
 
-    const [currentSection, setCurrentSection] =
-        useState<Fukumi.DividerSection["name"]>("")
+    const [currentSection, setCurrentSection]
+        = useState<Fukumi.DividerSection["name"]>("")
 
     useRenderEffect((): void => {
         if (sections.length) setCurrentSection(sections[0].name)
@@ -126,9 +126,9 @@ export function Divider({
 
             {children_.filter(
                 (child: JSX.Element): boolean =>
-                    child.type !== Button &&
-                    child.type !== Section &&
-                    child.type !== Divider
+                    child.type !== Button
+                    && child.type !== Section
+                    && child.type !== Divider
             )}
 
             <style>
@@ -192,8 +192,8 @@ function DividerHead({
     )
 
     useRenderEffect((): void => {
-        const targetedSection: Fukumi.DividerSection | undefined =
-            sections.find(
+        const targetedSection: Fukumi.DividerSection | undefined
+            = sections.find(
                 (section: Fukumi.DividerSection): boolean =>
                     section.name === currentSection
             )
@@ -202,7 +202,12 @@ function DividerHead({
 
         setCurrentSectionIcon(targetedSection.icon)
         setCurrentSectionDescription(targetedSection.description ?? "\u2800")
-    }, [sections, currentSectionDescription, currentSectionIcon])
+    }, [
+        sections,
+        currentSection,
+        currentSectionDescription,
+        currentSectionIcon,
+    ])
 
     return (
         <div className={styles.head}>

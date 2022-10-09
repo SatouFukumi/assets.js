@@ -2,8 +2,8 @@ import { createContext } from "react"
 
 import styles from "@styles/components/tooltip.module.scss"
 
-export const TooltipContext: React.Context<Fukumi.TooltipContext> =
-    createContext<Fukumi.TooltipContext>({
+export const TooltipContext: React.Context<Fukumi.TooltipContext>
+    = createContext<Fukumi.TooltipContext>({
         setPadding: (
             value: boolean | ((prevState: boolean) => boolean)
         ): void => {},
@@ -27,7 +27,7 @@ export const CONSTANT = {
     mouseOffsetY: 25,
 
     throttle: duration / 6 + 5,
-
+    
     hideTimeout: duration - 200,
     deactivateTimeout: duration,
 }

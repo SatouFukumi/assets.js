@@ -1,4 +1,5 @@
 import { useState, useMemo, useRef, useContext } from "react"
+import { useResizeDetector } from "react-resize-detector"
 
 import { TooltipContext, CONSTANT } from "./utils"
 import { throttled, useRenderEffect } from "@ts/libraries"
@@ -7,7 +8,6 @@ import RecordAnimationFrame from "@ts/record-animation-frame"
 import { $ } from "@ts/jquery"
 
 import styles from "@styles/components/tooltip.module.scss"
-import { useResizeDetector } from "react-resize-detector"
 
 export default function Container({
     children,
@@ -45,26 +45,27 @@ export default function Container({
                     const { offsetWidth, offsetHeight } = container.current
                     const { positionX, positionY } = cursor
 
-                    const isOverflowedX: boolean =
-                        innerWidth * CONSTANT.largeXAxis < positionX
-                    const isOverflowedY: boolean =
-                        innerHeight * CONSTANT.largeYAxis < positionY
-                    const isLargerThanScreenX: boolean =
-                        innerWidth - offsetWidth - CONSTANT.offset < positionX
-                    const isLargerThanScreenY: boolean =
-                        innerWidth - offsetHeight - CONSTANT.offset < positionY
+                    const isOverflowedX: boolean
+                        = innerWidth * CONSTANT.largeXAxis < positionX
+                    const isOverflowedY: boolean
+                        = innerHeight * CONSTANT.largeYAxis < positionY
+                    const isLargerThanScreenX: boolean
+                        = innerWidth - offsetWidth - CONSTANT.offset < positionX
+                    const isLargerThanScreenY: boolean
+                        = innerWidth - offsetHeight - CONSTANT.offset < positionY
 
-                    const posX: number =
-                        isOverflowedX || isLargerThanScreenX
+                    const posX: number
+                        = isOverflowedX || isLargerThanScreenX
                             ? positionX - offsetWidth - CONSTANT.mouseOffsetX
                             : positionX + CONSTANT.mouseOffsetX
 
-                    const posY: number =
-                        isOverflowedY || isLargerThanScreenY
+                    const posY: number
+                        = isOverflowedY || isLargerThanScreenY
                             ? positionY - offsetHeight - CONSTANT.mouseOffsetY
                             : positionY + CONSTANT.mouseOffsetY
 
-                    /** using state for this is not good, because setState will make this extremely glitchy */
+                    /** using state for this is not good, because setState will
+                     *  make this extremely glitchy */
                     $(container.current).css({
                         "--position-x": posX,
                         "--position-y": posY,
@@ -85,7 +86,8 @@ export default function Container({
 
             record.start()
         } else {
-            record.start() // the stop function fired when show changes, so, this is necessary
+            record.start() /** the stop function fired when show changes, \
+                               so, this is necessary */
 
             clearTimeout(deactivateTimeoutId.current)
             clearTimeout(hideTimeoutID.current)

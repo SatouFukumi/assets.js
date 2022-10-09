@@ -28,11 +28,6 @@ body[data-theme="dark"] {
 
     padding: 0.75em;
 
-    animation-name: fade-in;
-    animation-fill-mode: forwards;
-    animation-duration: var(--animation-duration);
-    animation-timing-function: ease-in-out;
-
     --wrapper-padding: 0.75rem;
     --animation-duration: 200ms;
 
@@ -53,11 +48,6 @@ body[data-theme="dark"] {
         border-radius: 0.4em;
 
         box-shadow: 0 0 1.2rem 0 var(--box-shadow-color-var);
-
-        animation-name: slide-in;
-        animation-fill-mode: forwards;
-        animation-duration: var(--animation-duration);
-        animation-timing-function: ease-in-out;
     }
 }
 
@@ -150,7 +140,8 @@ body[data-theme="dark"] {
 
                 z-index: -1;
 
-                transition: 400ms all cubic-bezier(0.87, 0, 0.13, 1), 400ms width cubic-bezier(0.16, 1, 0.3, 1),
+                transition: 400ms all cubic-bezier(0.87, 0, 0.13, 1),
+                    400ms width cubic-bezier(0.16, 1, 0.3, 1),
                     400ms translate cubic-bezier(0.87, 0, 0.13, 1) 200ms;
             }
 
@@ -232,26 +223,4 @@ body[data-theme="dark"] {
 
 .head + .body {
     padding-block: 0;
-}
-
-@keyframes fade-in {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
-@keyframes slide-in {
-    0% {
-        translate: -3rem 0;
-
-        opacity: 0;
-    }
-    100% {
-        translate: 0 0;
-
-        opacity: 1;
-    }
 }
