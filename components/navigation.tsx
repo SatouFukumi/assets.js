@@ -230,8 +230,8 @@ export class Navigation extends Component<
                     <span className={styles.route}>
                         <Glasium
                             colorOptions={
-                                this.props.route?.colorOptions ??
-                                COLOR.whitesmoke
+                                this.props.route?.colorOptions
+                                ?? COLOR.whitesmoke
                             }
                             count={11}
                         />
@@ -302,11 +302,11 @@ export function Anchor({
     title,
     description,
 }: Fukumi.NavigationAnchorProps): JSX.Element {
-    const { setPathIndicator, setTooltip, router } =
-        useContext(NavigationContext)
+    const { setPathIndicator, setTooltip, router }
+        = useContext(NavigationContext)
     const [activated, setActivated] = useState(false)
-    const ref: React.RefObject<HTMLAnchorElement> =
-        useRef<HTMLAnchorElement>(null)
+    const ref: React.RefObject<HTMLAnchorElement>
+        = useRef<HTMLAnchorElement>(null)
 
     useRenderEffect((): void => {
         function activate(): void {
@@ -324,7 +324,7 @@ export function Anchor({
         if (router.path.startsWith(href)) return activate()
 
         return setActivated(false)
-    }, [href, router.path, setPathIndicator])
+    }, [href, router.path])
 
     const onPointerEnter: () => void = useCallback((): void => {
         if (!ref.current || activated) return
@@ -554,8 +554,8 @@ export function Subwindow({
     children,
     borderColor = "var(--osc-color-blue)",
 }: Fukumi.NavigationSubwindowProps): JSX.Element {
-    const { setTooltip, setUnderlay, addUnderlayClickHandler, container } =
-        useContext(NavigationContext)
+    const { setTooltip, setUnderlay, addUnderlayClickHandler, container }
+        = useContext(NavigationContext)
     const [activated, setActivated] = useState(alwaysActive)
     const [set, setSet] = useState(false)
     const [height, setHeight] = useState(0)
@@ -630,8 +630,8 @@ export function Subwindow({
                 onPointerEnter={(): void => {
                     if (!button.current) return
 
-                    const { width, left } =
-                        button.current.getBoundingClientRect()
+                    const { width, left }
+                        = button.current.getBoundingClientRect()
 
                     setTooltip({ title, description, width, left })
                 }}
