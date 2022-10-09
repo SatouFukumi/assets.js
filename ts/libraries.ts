@@ -70,18 +70,12 @@ export const libraries = {
                 WW: weekDays[workingTimestamp.getDay()],
                 ww: weekDays[workingTimestamp.getDay()].toLowerCase(),
                 Mo: months[workingTimestamp.getMonth()].slice(0, 3),
-                mo: months[workingTimestamp.getMonth()]
-                    .slice(0, 3)
-                    .toLowerCase(),
+                mo: months[workingTimestamp.getMonth()].slice(0, 3).toLowerCase(),
                 MM: months[workingTimestamp.getMonth()],
                 mm: months[workingTimestamp.getMonth()].toLowerCase(),
                 W: weekDays[workingTimestamp.getDay()].slice(0, 3),
-                w: weekDays[workingTimestamp.getDay()]
-                    .slice(0, 3)
-                    .toLowerCase(),
-                m: (workingTimestamp.getMonth() + 1)
-                    .toString()
-                    .padStart(2, "0"),
+                w: weekDays[workingTimestamp.getDay()].slice(0, 3).toLowerCase(),
+                m: (workingTimestamp.getMonth() + 1).toString().padStart(2, "0"),
                 O: ordinal[(workingTimestamp.getDate() % 10) % 4],
                 o: ordinal[(workingTimestamp.getDate() % 10) % 4].toLowerCase(),
                 mi: workingTimestamp.getMinutes().toString().padStart(2, "0"),
@@ -89,10 +83,7 @@ export const libraries = {
                 hh: workingTimestamp.getHours().toString().padStart(2, "0"),
                 yyyy: workingTimestamp.getFullYear().toString(),
                 YYYY: workingTimestamp.getFullYear().toString(),
-                P: (workingTimestamp.getHours() >= 12
-                    ? "pm"
-                    : "am"
-                ).toUpperCase(),
+                P: (workingTimestamp.getHours() >= 12 ? "pm" : "am").toUpperCase(),
                 p: workingTimestamp.getHours() >= 12 ? "pm" : "am",
             }
 
@@ -122,7 +113,7 @@ export const libraries = {
      * @returns                 rounded number
      */
     round(number: number, to: number = 0): number {
-        const d = Math.pow(10, to)
+        const d: number = Math.pow(10, to)
         return Math.round(number * d) / d
     },
 
@@ -151,14 +142,12 @@ export const libraries = {
     },
 
     randomHexColor(hexLength?: 3 | 6): `#${string}` {
-        const hex: `#${string}` = `#${Math.floor(
-            Math.random() * 16777215
-        ).toString(16)}`
+        const hex: `#${string}` = `#${Math.floor(Math.random() * 16777215).toString(
+            16
+        )}`
         if (hexLength === undefined) return hex
 
-        return hex.length - 1 === hexLength
-            ? hex
-            : this.randomHexColor(hexLength)
+        return hex.length - 1 === hexLength ? hex : this.randomHexColor(hexLength)
     },
 
     hexToRgb(hex: string): {
@@ -167,7 +156,6 @@ export const libraries = {
         blue: number
         rgb: `rgb(${number}, ${number}, ${number})`
     } {
-        this
         if (hex.charAt(0) === "#") hex = hex.substring(1)
 
         if (hex.length !== 3 && hex.length !== 6)
@@ -186,19 +174,17 @@ export const libraries = {
         return { red, green, blue, rgb: `rgb(${red}, ${green}, ${blue})` }
     },
 
-    /**
-     * Return random number between min and max
-     *
-     * @param	{ Number }		    min		        Minimum Random Number
-     * @param	{ Number }		    max		        Maximum Random Number
-     * @param   { boolean }         toInt           by default is true
-     * @param   { Number[2] }       outRange
-     */
+    /** Return random number between min and max */
     randomBetween(
         min: number,
         max: number,
-        toInt: boolean = true,
-        outRange: number[] = []
+        {
+            toInt = true,
+            outerRange = []
+        }: {
+            toInt?: boolean
+            outerRange?: number[]
+        } = {}
     ): number {
         if (max < min) {
             let tmp: number = max
@@ -210,11 +196,11 @@ export const libraries = {
             ? Math.floor(Math.random() * (max - min + 1) + min)
             : Math.random() * (max - min) + min
 
-        if (!outRange.length) return res
+        if (!outerRange.length) return res
 
-        let [minEdge, maxEdge] = outRange
+        let [minEdge, maxEdge] = outerRange
         if (res > minEdge && res < maxEdge)
-            return this.randomBetween(min, max, toInt, outRange)
+            return this.randomBetween(min, max, { toInt, outerRange })
 
         return res
     },

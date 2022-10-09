@@ -278,8 +278,8 @@ export function $<T extends HTMLElement>(
 ): JHTMLElement<Node | HTMLElement | Window | Document> {
     if (typeof a === "string" && typeof b === "string") {
         const container: Element | null = document.querySelector(b)
-        const qsa: NodeListOf<Element> | undefined =
-            container?.querySelectorAll(a)
+        const qsa: NodeListOf<Element> | undefined
+            = container?.querySelectorAll(a)
         const elements: NodeListOf<Element> | any[] = qsa ? qsa : []
 
         return new JHTMLElement(...elements)

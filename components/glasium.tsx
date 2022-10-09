@@ -31,12 +31,12 @@ export default class Glasium extends Component<
         prevState: Fukumi.GlasiumState
     ): null | Fukumi.GlasiumState {
         if (
-            nextProps.colorOptions === prevState.colorOptions &&
-            nextProps.count === prevState.count &&
-            nextProps.rotate === prevState.rotate &&
-            nextProps.scale === prevState.scale &&
-            nextProps.shape === prevState.shape &&
-            nextProps.speed === prevState.speed
+            nextProps.colorOptions === prevState.colorOptions
+            && nextProps.count === prevState.count
+            && nextProps.rotate === prevState.rotate
+            && nextProps.scale === prevState.scale
+            && nextProps.shape === prevState.shape
+            && nextProps.speed === prevState.speed
         )
             return null
 
@@ -74,8 +74,7 @@ export default class Glasium extends Component<
                 className={styles.container}
                 style={
                     {
-                        backgroundColor:
-                            this.state.colorOptions.backgroundColor,
+                        backgroundColor: this.state.colorOptions.backgroundColor,
                         color: this.state.colorOptions.textColor,
                         "--rotation": this.state.rotate ? "360deg" : "0deg",
                         "--background-height": `${this.state.height}px`,
@@ -112,8 +111,8 @@ function Shape({
             prevState: Fukumi.GlasiumShapeState,
             action: Fukumi.GlasiumShapeAction
         ): Fukumi.GlasiumShapeState {
-            const randomScale: number =
-                libraries.randomBetween(0.8, 2, false) * scale
+            const randomScale: number
+                = libraries.randomBetween(0.8, 2, { toInt: false }) * scale
 
             switch (action.type) {
                 case "SHAPE_CHANGE":
@@ -131,8 +130,7 @@ function Shape({
                         brightness: libraries.randomBetween(
                             action.newColorOptions.shapeBrightnessScope[0],
                             action.newColorOptions.shapeBrightnessScope[1],
-                            false,
-                            [0.97, 1.03]
+                            { toInt: false, outerRange: [0.97, 1.03] }
                         ),
                     }
 
@@ -143,17 +141,16 @@ function Shape({
                     }
 
                 case "SPEED_CHANGE":
-                    const sp5s: number =
-                        (libraries.randomBetween(0.67, 1.35, false) * 5) / speed
+                    const sp5s: number
+                        = (libraries.randomBetween(0.67, 1.35, { toInt: false }) * 5)
+                        / speed
 
                     return {
                         ...prevState,
                         speedPerFiveSeconds: sp5s,
-                        delay: libraries.randomBetween(
-                            -sp5s / 2,
-                            sp5s / 2,
-                            false
-                        ),
+                        delay: libraries.randomBetween(-sp5s / 2, sp5s / 2, {
+                            toInt: false,
+                        }),
                     }
 
                 default:
@@ -175,7 +172,7 @@ function Shape({
     )
 
     useRenderEffect((): void => {
-        setPosition(libraries.randomBetween(0, 100, false))
+        setPosition(libraries.randomBetween(0, 100, { toInt: false }))
         dispatch({ type: "SCALE_CHANGE", newScale: scale })
         dispatch({ type: "SPEED_CHANGE", newSpeed: speed })
         dispatch({

@@ -86,7 +86,7 @@ table {
             inset-block-start: 0;
 
             th {
-                padding: var(--padding-block) var(--padding-inline);
+                padding: 0.6em var(--padding-inline);
 
                 font-family: var(--font-title-hard);
                 font-weight: 900;
@@ -95,12 +95,6 @@ table {
                 background-color: var(--global-background-color);
 
                 color: var(--global-color-dimmed);
-            }
-
-            &:last-child {
-                th {
-                    padding-block-end: 0.9rem;
-                }
             }
         }
     }
@@ -144,7 +138,11 @@ table {
                 &:hover {
                     th,
                     td {
-                        background-color: var(--odd-hover-background-color);
+                        filter: brightness(1.1);
+
+                        &:nth-child(even) {
+                            backdrop-filter: brightness(2);
+                        }
                     }
                 }
             }
@@ -152,7 +150,11 @@ table {
             &:active {
                 th,
                 td {
-                    background-color: var(--odd-hover-background-color);
+                    filter: brightness(1.1);
+
+                    &:nth-child(even) {
+                        backdrop-filter: brightness(2);
+                    }
                 }
             }
         }
