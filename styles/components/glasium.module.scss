@@ -37,7 +37,7 @@
         transition-duration: 200ms;
         transition-timing-function: ease-out;
 
-        animation-name: glasium-shape;
+        animation-name: glasiumShape;
         animation-timing-function: linear;
         animation-iteration-count: infinite;
 
@@ -129,7 +129,7 @@
     }
 }
 
-@keyframes glasium-shape {
+@keyframes glasiumShape {
     0% {
         transform: translateY(calc(100% + var(--size))) rotate(0deg);
     }

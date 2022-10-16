@@ -1,5 +1,5 @@
-$background-color: hsla(0, 0%, 4%, 0.45);
-$background-blink-color: hsla(0, 0%, 40%, 0.45);
+$backgroundColor: hsla(0, 0%, 4%, 0.45);
+$backgroundBlinkColor: hsla(0, 0%, 40%, 0.45);
 $duration: 300;
 
 .container {
@@ -19,7 +19,7 @@ $duration: 300;
 
     padding: 0;
 
-    background-color: $background-color;
+    background-color: $backgroundColor;
 
     letter-spacing: 0.2px;
     text-align: center;
@@ -57,7 +57,7 @@ $duration: 300;
     z-index: 10002;
 
     &[data-glow="true"] {
-        animation-name: tooltip-blink;
+        animation-name: tooltipBlink;
     }
 
     &[data-activated="true"] {
@@ -101,13 +101,13 @@ $duration: 300;
     }
 }
 
-@keyframes tooltip-blink {
+@keyframes tooltipBlink {
     0% {
-        background-color: $background-blink-color;
+        background-color: $backgroundBlinkColor;
     }
 
     100% {
-        background-color: $background-color;
+        background-color: $backgroundColor;
     }
 }
 
