@@ -12,7 +12,7 @@ import {
 } from "react"
 import classNames from "classnames"
 
-import { useRenderEffect } from "@ts/libraries"
+import { useRenderEffect } from "@ts/hooks"
 import Glasium from "./glasium"
 import ScrollBox from "./scroll-box"
 

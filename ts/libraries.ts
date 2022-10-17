@@ -1,5 +1,3 @@
-import { useLayoutEffect, useEffect } from "react"
-
 export const libraries = {
     /**
      * formatted time
@@ -344,11 +342,6 @@ export function debounce(
         timer = setTimeout((): void => fn.call(context, ...args), timeout)
     }
 }
-
-export const useRenderEffect: (
-    effect: React.EffectCallback,
-    deps?: React.DependencyList | undefined
-) => void = typeof document === "undefined" ? useEffect : useLayoutEffect
 
 /** */
 

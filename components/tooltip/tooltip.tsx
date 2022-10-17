@@ -1,7 +1,7 @@
 import { useState } from "react"
 
 import cursor from "@ts/cursor"
-import { useRenderEffect } from "@ts/libraries"
+import { useRenderEffect } from "@ts/hooks"
 import Container from "./container"
 import { TooltipContext } from "./utils"
 import clientSide from "@ts/client-side"

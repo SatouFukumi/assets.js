@@ -19,6 +19,8 @@ export class RecordAnimationFrame {
     }
 
     private run(): any {
+        if (typeof window === 'undefined') return
+        
         this.raf = window.requestAnimationFrame((): void => {
             if (!this.callback) return
 
@@ -30,7 +32,7 @@ export class RecordAnimationFrame {
 
     /** stop the callback */
     public stop(): any {
-        if (!this.__running) return
+        if (!this.__running || typeof window === 'undefined') return
         this.__running = false
 
         window.cancelAnimationFrame(this.raf)

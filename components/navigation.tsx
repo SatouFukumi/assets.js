@@ -17,7 +17,7 @@ import classNames from "classnames"
 import styles from "@styles/components/navigation.module.scss"
 import glasiumStyles from "@styles/components/glasium.module.scss"
 
-import { useRenderEffect } from "@ts/libraries"
+import { useRenderEffect } from "@ts/hooks"
 import Glasium, { COLOR } from "./glasium"
 import { clientSide } from "@ts/client-side"
 

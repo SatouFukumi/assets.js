@@ -1,10 +1,13 @@
 import { useState, useMemo, useRef, useContext } from "react"
-import { useResizeDetector } from "react-resize-detector"
 
 import { TooltipContext, CONSTANT } from "./utils"
-import { throttled, useRenderEffect } from "@ts/libraries"
+import { throttled } from "@ts/libraries"
+import {
+    useRenderEffect,
+    useRequestAnimationFrame,
+    useResizeObserver,
+} from "@ts/hooks"
 import cursor from "@ts/cursor"
-import RecordAnimationFrame from "@ts/record-animation-frame"
 import { $ } from "@ts/jquery"
 
 import styles from "@styles/components/tooltip.module.scss"
@@ -22,99 +25,95 @@ export default function Container({
     const { setContent } = useContext(TooltipContext)
 
     /** refs */
-    const container: DOMRef = useRef(null)
-    const content: DOMRef = useRef(null)
+    const containerRef: DOMRef = useRef(null)
+    const contentRef: DOMRef = useRef(null)
 
-    const hideTimeoutID: TimeoutRef = useRef<Timeout>()
-    const deactivateTimeoutId: TimeoutRef = useRef<Timeout>()
+    const hideTimeoutIDRef: TimeoutRef = useRef<Timeout>()
+    const deactivateTimeoutIdRef: TimeoutRef = useRef<Timeout>()
 
     /** local state */
     const [glow, setGlow] = useState(false)
     const [activated, setActivated] = useState(false)
     const [deactivated, setDeactivated] = useState(true)
-    const { width, height } = useResizeDetector({ targetRef: content })
+    const { width, height } = useResizeObserver({ ref: contentRef })
 
     /** this record is used to calculating position of the tooltip */
-    const record: RecordAnimationFrame = useMemo(
-        (): RecordAnimationFrame =>
-            new RecordAnimationFrame(
-                throttled((): void => {
-                    if (!container.current) return
+    const { start, stop } = useRequestAnimationFrame(
+        throttled((): void => {
+            if (!containerRef.current) return
 
-                    const { innerWidth, innerHeight } = window
-                    const { offsetWidth, offsetHeight } = container.current
-                    const { positionX, positionY } = cursor
+            const { innerWidth, innerHeight } = window
+            const { offsetWidth, offsetHeight } = containerRef.current
+            const { positionX, positionY } = cursor
 
-                    const isOverflowedX: boolean
-                        = innerWidth * CONSTANT.largeXAxis < positionX
-                    const isOverflowedY: boolean
-                        = innerHeight * CONSTANT.largeYAxis < positionY
-                    const isLargerThanScreenX: boolean
-                        = innerWidth - offsetWidth - CONSTANT.offset < positionX
-                    const isLargerThanScreenY: boolean
-                        = innerWidth - offsetHeight - CONSTANT.offset < positionY
+            const isOverflowedX: boolean
+                = innerWidth * CONSTANT.largeXAxis < positionX
+            const isOverflowedY: boolean
+                = innerHeight * CONSTANT.largeYAxis < positionY
+            const isLargerThanScreenX: boolean
+                = innerWidth - offsetWidth - CONSTANT.offset < positionX
+            const isLargerThanScreenY: boolean
+                = innerWidth - offsetHeight - CONSTANT.offset < positionY
 
-                    const posX: number
-                        = isOverflowedX || isLargerThanScreenX
-                            ? positionX - offsetWidth - CONSTANT.mouseOffsetX
-                            : positionX + CONSTANT.mouseOffsetX
+            const posX: number
+                = isOverflowedX || isLargerThanScreenX
+                    ? positionX - offsetWidth - CONSTANT.mouseOffsetX
+                    : positionX + CONSTANT.mouseOffsetX
 
-                    const posY: number
-                        = isOverflowedY || isLargerThanScreenY
-                            ? positionY - offsetHeight - CONSTANT.mouseOffsetY
-                            : positionY + CONSTANT.mouseOffsetY
+            const posY: number
+                = isOverflowedY || isLargerThanScreenY
+                    ? positionY - offsetHeight - CONSTANT.mouseOffsetY
+                    : positionY + CONSTANT.mouseOffsetY
 
-                    /** using state for this is not good, because setState will
-                     *  make this extremely glitchy */
-                    $(container.current).css({
-                        "--position-x": posX,
-                        "--position-y": posY,
-                    })
-                }, CONSTANT.throttle)
-            ),
-        [container]
+            /** using state for this is not good, because setState will
+             *  make this extremely glitchy */
+            $(containerRef.current).css({
+                "--position-x": posX,
+                "--position-y": posY,
+            })
+        }, CONSTANT.throttle)
     )
 
     /** display */
     useRenderEffect((): void | (() => void) => {
         if (show) {
-            clearTimeout(deactivateTimeoutId.current)
-            clearTimeout(hideTimeoutID.current)
+            clearTimeout(deactivateTimeoutIdRef.current)
+            clearTimeout(hideTimeoutIDRef.current)
 
             setActivated(true)
             setDeactivated(false)
 
-            record.start()
+            start()
         } else {
-            record.start() /** the stop function fired when show changes, \
+            start() /** the stop function fired when show changes, \
                                so, this is necessary */
 
-            clearTimeout(deactivateTimeoutId.current)
-            clearTimeout(hideTimeoutID.current)
+            clearTimeout(deactivateTimeoutIdRef.current)
+            clearTimeout(hideTimeoutIDRef.current)
 
-            hideTimeoutID.current = setTimeout((): void => {
+            hideTimeoutIDRef.current = setTimeout((): void => {
                 setActivated(false)
 
-                deactivateTimeoutId.current = setTimeout((): void => {
+                deactivateTimeoutIdRef.current = setTimeout((): void => {
                     setContent("")
                     setDeactivated(true)
 
-                    record.stop()
+                    stop()
                 }, CONSTANT.deactivateTimeout)
             }, CONSTANT.hideTimeout)
         }
 
         return (): void => {
-            clearTimeout(deactivateTimeoutId.current)
-            clearTimeout(hideTimeoutID.current)
+            clearTimeout(deactivateTimeoutIdRef.current)
+            clearTimeout(hideTimeoutIDRef.current)
 
-            record.stop()
+            stop()
         }
-    }, [show, container, content, record, setContent])
+    }, [show, containerRef, contentRef, start, stop, setContent])
 
     return (
         <div
-            ref={container}
+            ref={containerRef}
             data-padding={padding}
             data-activated={activated}
             data-deactivated={deactivated}
@@ -124,7 +123,7 @@ export default function Container({
             style={{ width, height }}
         >
             <div
-                ref={content}
+                ref={contentRef}
                 className={styles.content}
             >
                 {children}

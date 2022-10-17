@@ -26,7 +26,7 @@ export default function Span(props: Fukumi.TooltipDivProps): JSX.Element {
     }
 
     return (
-        <span
+        <div
             {...props}
             onPointerEnter={onPointerEnter}
             onPointerLeave={onPointerLeave}

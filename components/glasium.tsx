@@ -4,7 +4,8 @@ import { Component, createRef, useReducer, useState } from "react"
 
 import styles from "@styles/components/glasium.module.scss"
 
-import { libraries, useRenderEffect } from "@ts/libraries"
+import { libraries } from "@ts/libraries"
+import { useRenderEffect } from "@ts/hooks"
 import { $ } from "@ts/jquery"
 
 /** */
@@ -115,46 +116,46 @@ function Shape({
                 = libraries.randomBetween(0.8, 2, { toInt: false }) * scale
 
             switch (action.type) {
-                case "SHAPE_CHANGE":
-                    return {
-                        ...prevState,
-                        shape:
+            case "SHAPE_CHANGE":
+                return {
+                    ...prevState,
+                    shape:
                             action.newShape === "all"
                                 ? libraries.randomItem(["triangle", "hexagon"])
                                 : action.newShape,
-                    }
+                }
 
-                case "COLOR_OPTIONS_CHANGE":
-                    return {
-                        ...prevState,
-                        brightness: libraries.randomBetween(
-                            action.newColorOptions.shapeBrightnessScope[0],
-                            action.newColorOptions.shapeBrightnessScope[1],
-                            { toInt: false, outerRange: [0.97, 1.03] }
-                        ),
-                    }
+            case "COLOR_OPTIONS_CHANGE":
+                return {
+                    ...prevState,
+                    brightness: libraries.randomBetween(
+                        action.newColorOptions.shapeBrightnessScope[0],
+                        action.newColorOptions.shapeBrightnessScope[1],
+                        { toInt: false, outerRange: [0.97, 1.03] }
+                    ),
+                }
 
-                case "SCALE_CHANGE":
-                    return {
-                        ...prevState,
-                        size: 45 * randomScale,
-                    }
+            case "SCALE_CHANGE":
+                return {
+                    ...prevState,
+                    size: 45 * randomScale,
+                }
 
-                case "SPEED_CHANGE":
-                    const sp5s: number
+            case "SPEED_CHANGE":
+                const sp5s: number
                         = (libraries.randomBetween(0.67, 1.35, { toInt: false }) * 5)
                         / speed
 
-                    return {
-                        ...prevState,
-                        speedPerFiveSeconds: sp5s,
-                        delay: libraries.randomBetween(-sp5s / 2, sp5s / 2, {
-                            toInt: false,
-                        }),
-                    }
+                return {
+                    ...prevState,
+                    speedPerFiveSeconds: sp5s,
+                    delay: libraries.randomBetween(-sp5s / 2, sp5s / 2, {
+                        toInt: false,
+                    }),
+                }
 
-                default:
-                    break
+            default:
+                break
             }
 
             return prevState
