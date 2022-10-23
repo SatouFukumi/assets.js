@@ -1,30 +1,38 @@
+import { useCallback } from "react"
+
+import useStore from "./store"
 import clientSide from "@ts/client-side"
-import useStore from './store'
 
 export default function Span(props: Fukumi.TooltipSpanProps): JSX.Element {
     const { setShow, setPadding, setContent } = useStore()
 
-    function onPointerEnter(event: React.PointerEvent<HTMLSpanElement>): void {
-        if (!clientSide.isMobile()) {
-            setPadding(props.padding ?? true)
-            setContent(props.tooltip)
-            setShow(true)
-        }
+    const onPointerLeave = useCallback(
+        function (event: React.PointerEvent<HTMLSpanElement>): void {
+            if (!clientSide.isMobile()) {
+                setShow(false)
+                setPadding(true)
+            }
 
-        props.onPointerEnter?.(event)
-    }
+            props.onPointerLeave?.(event)
+        },
+        [props, setPadding, setShow]
+    )
 
-    function onPointerLeave(event: React.PointerEvent<HTMLSpanElement>): void {
-        if (!clientSide.isMobile()) {
-            setShow(false)
-            setPadding(true)
-        }
+    const onPointerEnter = useCallback(
+        function (event: React.PointerEvent<HTMLSpanElement>): void {
+            if (!clientSide.isMobile()) {
+                setPadding(props.padding ?? true)
+                setContent(props.tooltip)
+                setShow(true)
+            }
 
-        props.onPointerLeave?.(event)
-    }
+            props.onPointerEnter?.(event)
+        },
+        [props, setContent, setPadding, setShow]
+    )
 
     return (
-        <span
+        <div
             {...props}
             onPointerEnter={onPointerEnter}
             onPointerLeave={onPointerLeave}
@@ -34,9 +42,8 @@ export default function Span(props: Fukumi.TooltipSpanProps): JSX.Element {
 
 declare global {
     namespace Fukumi {
-        interface TooltipSpanProps
-            extends React.HTMLAttributes<HTMLSpanElement> {
-            tooltip: Fukumi.TooltipContent
+        interface TooltipSpanProps extends React.HTMLAttributes<HTMLSpanElement> {
+            tooltip: React.ReactNode | string | number | boolean
             padding?: boolean
         }
     }

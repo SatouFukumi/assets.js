@@ -135,7 +135,7 @@ export default function Container({
 declare global {
     namespace Fukumi {
         interface TooltipContainerProps {
-            children: Fukumi.TooltipContent
+            children: React.ReactNode | string | number | boolean
             padding: boolean
             show: boolean
         }

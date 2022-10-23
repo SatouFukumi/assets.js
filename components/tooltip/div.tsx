@@ -1,27 +1,35 @@
-import useStore from './store'
+import { useCallback } from "react"
+
+import useStore from "./store"
 import clientSide from "@ts/client-side"
 
-export default function Span(props: Fukumi.TooltipDivProps): JSX.Element {
+export default function Div(props: Fukumi.TooltipDivProps): JSX.Element {
     const { setShow, setPadding, setContent } = useStore()
 
-    function onPointerEnter(event: React.PointerEvent<HTMLDivElement>): void {
-        if (!clientSide.isMobile()) {
-            setPadding(props.padding ?? true)
-            setContent(props.tooltip)
-            setShow(true)
-        }
+    const onPointerLeave = useCallback(
+        function (event: React.PointerEvent<HTMLDivElement>): void {
+            if (!clientSide.isMobile()) {
+                setShow(false)
+                setPadding(true)
+            }
 
-        props.onPointerEnter?.(event)
-    }
+            props.onPointerLeave?.(event)
+        },
+        [props, setPadding, setShow]
+    )
 
-    function onPointerLeave(event: React.PointerEvent<HTMLDivElement>): void {
-        if (!clientSide.isMobile()) {
-            setShow(false)
-            setPadding(true)
-        }
+    const onPointerEnter = useCallback(
+        function (event: React.PointerEvent<HTMLDivElement>): void {
+            if (!clientSide.isMobile()) {
+                setPadding(props.padding ?? true)
+                setContent(props.tooltip)
+                setShow(true)
+            }
 
-        props.onPointerLeave?.(event)
-    }
+            props.onPointerEnter?.(event)
+        },
+        [props, setContent, setPadding, setShow]
+    )
 
     return (
         <div
@@ -35,7 +43,7 @@ export default function Span(props: Fukumi.TooltipDivProps): JSX.Element {
 declare global {
     namespace Fukumi {
         interface TooltipDivProps extends React.HTMLAttributes<HTMLDivElement> {
-            tooltip: Fukumi.TooltipContent
+            tooltip: React.ReactNode | string | number | boolean
             padding?: boolean
         }
     }

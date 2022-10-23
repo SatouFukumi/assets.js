@@ -4,9 +4,7 @@ import { useRenderEffect } from "@ts/hooks/use-render-effect"
 import Container from "./container"
 import clientSide from "@ts/client-side"
 
-export default function Tooltip({
-    children,
-}: Fukumi.TooltipProps): JSX.Element {
+export default function Tooltip(): JSX.Element {
     const { padding, show, content } = useStore()
 
     useRenderEffect((): void => {
@@ -15,25 +13,11 @@ export default function Tooltip({
     }, [])
 
     return (
-        <>
-            <Container
-                padding={padding}
-                show={show}
-            >
-                {content}
-            </Container>
-
-            {children}
-        </>
+        <Container
+            padding={padding}
+            show={show}
+        >
+            {content}
+        </Container>
     )
-}
-
-declare global {
-    namespace Fukumi {
-        interface TooltipProps {
-            children: React.ReactNode
-        }
-
-        type TooltipContent = React.ReactNode | string | number | boolean
-    }
 }
