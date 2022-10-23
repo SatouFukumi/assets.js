@@ -6,18 +6,18 @@ export function useAsync<T extends any>(
 ): {
     loading: boolean
     error: undefined
-    value: T | undefined
+    data: T | undefined
 } {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState()
-    const [value, setValue] = useState<T>()
+    const [data, setData] = useState<T>()
 
     const callbackMemoized = useCallback(() => {
         setLoading(true)
         setError(undefined)
-        setValue(undefined)
+        setData(undefined)
         callback()
-            .then(setValue)
+            .then(setData)
             .catch(setError)
             .finally(() => setLoading(false))
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -27,5 +27,5 @@ export function useAsync<T extends any>(
         callbackMemoized()
     }, [callbackMemoized])
 
-    return { loading, error, value }
+    return { loading, error, data }
 }
