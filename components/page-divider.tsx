@@ -10,7 +10,6 @@ import {
     MouseEventHandler,
     CSSProperties,
 } from "react"
-import classNames from "classnames"
 
 import { useRenderEffect } from "@ts/hooks/use-render-effect"
 import Glasium from "./glasium"
@@ -323,10 +322,7 @@ export function Button({
 }: Fukumi.ButtonProps): JSX.Element {
     return (
         <button
-            className={classNames({
-                [glasiumStyles.button]: true,
-                [styles.button]: true,
-            })}
+            className={`${glasiumStyles.button} ${styles.button}`}
             title={title}
             data-title={tooltipTitle}
             onClick={onClick}
@@ -334,10 +330,7 @@ export function Button({
         >
             <Glasium {...glasiumOptions} />
             <i
-                className={classNames({
-                    [icon]: true,
-                    [glasiumStyles.icon]: true,
-                })}
+                className={`${icon} ${glasiumStyles.icon}`}
             />
             {!text || <span className={glasiumStyles.text}>{text}</span>}
         </button>

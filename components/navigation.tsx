@@ -12,7 +12,6 @@ import {
 import { NextRouter, useRouter } from "next/router"
 import Image, { ImageProps } from "next/image"
 import Link from "next/link"
-import classNames from "classnames"
 
 import styles from "@styles/components/navigation.module.scss"
 import glasiumStyles from "@styles/components/glasium.module.scss"
@@ -428,10 +427,7 @@ export function Button({
     return (
         <button
             ref={ref}
-            className={classNames({
-                [glasiumStyles.button]: true,
-                [styles.button]: true,
-            })}
+            className={`${glasiumStyles.button} ${styles.button}`}
             data-activated={activated}
             onClick={function (
                 event: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -599,10 +595,7 @@ export function Subwindow({
     return (
         <button
             ref={button}
-            className={classNames({
-                [glasiumStyles.button]: true,
-                [styles.subwindow]: true,
-            })}
+            className={`${glasiumStyles.button} ${styles.subwindow}`}
             data-activated={activated}
         >
             <div
