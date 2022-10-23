@@ -1,17 +1,13 @@
-import { useState } from "react"
-
+import useStore from './store'
 import cursor from "@ts/cursor"
-import { useRenderEffect } from "@ts/hooks"
+import { useRenderEffect } from "@ts/hooks/use-render-effect"
 import Container from "./container"
-import { TooltipContext } from "./utils"
 import clientSide from "@ts/client-side"
 
 export default function Tooltip({
     children,
 }: Fukumi.TooltipProps): JSX.Element {
-    const [content, setContent] = useState<Fukumi.TooltipContent>(<></>)
-    const [padding, setPadding] = useState<boolean>(true)
-    const [show, setShow] = useState(false)
+    const { padding, show, content } = useStore()
 
     useRenderEffect((): void => {
         if (clientSide.isMobile()) return
@@ -19,7 +15,7 @@ export default function Tooltip({
     }, [])
 
     return (
-        <TooltipContext.Provider value={{ setContent, setPadding, setShow }}>
+        <>
             <Container
                 padding={padding}
                 show={show}
@@ -28,7 +24,7 @@ export default function Tooltip({
             </Container>
 
             {children}
-        </TooltipContext.Provider>
+        </>
     )
 }
 

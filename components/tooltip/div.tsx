@@ -1,10 +1,8 @@
+import useStore from './store'
 import clientSide from "@ts/client-side"
-import { useContext } from "react"
-
-import { TooltipContext } from "./utils"
 
 export default function Span(props: Fukumi.TooltipDivProps): JSX.Element {
-    const { setShow, setPadding, setContent } = useContext(TooltipContext)
+    const { setShow, setPadding, setContent } = useStore()
 
     function onPointerEnter(event: React.PointerEvent<HTMLDivElement>): void {
         if (!clientSide.isMobile()) {

@@ -3,8 +3,8 @@ $backgroundBlinkColor: hsla(0, 0%, 40%, 0.45);
 $duration: 300;
 
 .container {
-    --position-x: 500;
-    --position-y: 500;
+    --position-x: 600;
+    --position-y: 600;
 
     position: fixed;
     inset-inline-start: 0;
@@ -39,11 +39,24 @@ $duration: 300;
     pointer-events: none;
     user-select: none;
 
-    transition-duration: $duration * 1ms, $duration * 1ms, $duration * 1ms,
-        $duration * 1ms, $duration * 1ms;
-    transition-property: translate, opacity, width, height, padding;
-    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1), ease-out, ease,
-        ease, cubic-bezier(0.22, 1, 0.36, 1);
+    transition-duration:
+        $duration * 1ms, 
+        $duration * 1ms,
+        $duration * 1ms,
+        $duration * 1ms,
+        $duration * 1ms;
+    transition-property:
+        translate,
+        opacity,
+        width,
+        height,
+        padding;
+    transition-timing-function:
+        cubic-bezier(0.22, 1, 0.36, 1),
+        cubic-bezier(0.22, 1, 0.36, 1),
+        ease-out,
+        ease-out,
+        cubic-bezier(0.22, 1, 0.36, 1);
 
     translate: calc(var(--position-x) * 1px) calc(var(--position-y) * 1px);
 
@@ -62,13 +75,15 @@ $duration: 300;
 
     &[data-activated="true"] {
         opacity: 1;
-
+        
         padding: 0.6rem 0.9rem;
     }
 
     &[data-deactivated="true"] {
-        width: 0;
-        height: 0;
+        width: 0 !important;
+        height: 0 !important;
+
+        padding: 0;
     }
 
     &[data-padding="false"] {

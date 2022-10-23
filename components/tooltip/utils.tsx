@@ -1,21 +1,4 @@
-import { createContext } from "react"
-
 import styles from "@styles/components/tooltip.module.scss"
-
-export const TooltipContext: React.Context<Fukumi.TooltipContext>
-    = createContext<Fukumi.TooltipContext>({
-        setPadding: (
-            value: boolean | ((prevState: boolean) => boolean)
-        ): void => {},
-        setShow: (
-            value: boolean | ((prevState: boolean) => boolean)
-        ): void => {},
-        setContent: (
-            value:
-                | Fukumi.TooltipContent
-                | ((prevState: Fukumi.TooltipContent) => Fukumi.TooltipContent)
-        ): void => {},
-    })
 
 const duration: number = parseInt(styles.duration)
 export const CONSTANT = {

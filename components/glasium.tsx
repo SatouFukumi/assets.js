@@ -1,12 +1,12 @@
 import type { Property } from "csstype"
 
 import { Component, createRef, useReducer, useState } from "react"
+import $ from 'jquery'
 
 import styles from "@styles/components/glasium.module.scss"
 
 import { libraries } from "@ts/libraries"
-import { useRenderEffect } from "@ts/hooks"
-import { $ } from "@ts/jquery"
+import { useRenderEffect } from "@ts/hooks/use-render-effect"
 
 /** */
 export default class Glasium extends Component<
@@ -58,8 +58,7 @@ export default class Glasium extends Component<
 
         /** css parent */
         $(this.ref.container.current.parentElement).css({
-            position: "relative",
-            color: this.state.colorOptions.textColor,
+            position: "relative"
         })
     }
 
@@ -76,7 +75,6 @@ export default class Glasium extends Component<
                 style={
                     {
                         backgroundColor: this.state.colorOptions.backgroundColor,
-                        color: this.state.colorOptions.textColor,
                         "--rotation": this.state.rotate ? "360deg" : "0deg",
                         "--background-height": `${this.state.height}px`,
                     } as React.CSSProperties
@@ -235,79 +233,66 @@ export const COLOR: Readonly<{
     blue: {
         backgroundColor: "#44aadd",
         shapeColor: "#44aadd",
-        textColor: "whitesmoke",
         shapeBrightnessScope: BRIGHTNESS_SCOPE.other,
     },
     red: {
         backgroundColor: "#fb3852",
         shapeColor: "hsl(352, 85%, 50%)",
-        textColor: "whitesmoke",
         shapeBrightnessScope: BRIGHTNESS_SCOPE.other,
     },
     grey: {
         backgroundColor: "#485e74",
         shapeColor: "#485e74",
-        textColor: "whitesmoke",
         shapeBrightnessScope: BRIGHTNESS_SCOPE.other,
     },
     green: {
         backgroundColor: "#38e538",
         shapeColor: "#38e538",
-        textColor: "whitesmoke",
         shapeBrightnessScope: BRIGHTNESS_SCOPE.other,
     },
     pink: {
         backgroundColor: "#ff66aa",
         shapeColor: "#ff66aa",
-        textColor: "whitesmoke",
         shapeBrightnessScope: BRIGHTNESS_SCOPE.other,
     },
     darkred: {
         backgroundColor: "#c52339",
         shapeColor: "#c52339",
-        textColor: "whitesmoke",
         shapeBrightnessScope: BRIGHTNESS_SCOPE.dark,
     },
     orange: {
         backgroundColor: "#ffa502",
         shapeColor: "#ffa502",
-        textColor: "whitesmoke",
         shapeBrightnessScope: BRIGHTNESS_SCOPE.other,
     },
     navyblue: {
         backgroundColor: "#333d79",
         shapeColor: "#333d79",
-        textColor: "whitesmoke",
         shapeBrightnessScope: BRIGHTNESS_SCOPE.other,
     },
     whitesmoke: {
         backgroundColor: "#f6f6f6",
         shapeColor: "#f6f6f6",
-        textColor: "rgb(28, 28, 28)",
         shapeBrightnessScope: BRIGHTNESS_SCOPE.light,
     },
     lightblue: {
         backgroundColor: "#b9e8fd",
         shapeColor: "#b9e8fd",
-        textColor: "rgb(28, 28, 28)",
         shapeBrightnessScope: BRIGHTNESS_SCOPE.light,
     },
     dark: {
         backgroundColor: "#1e1e1e",
         shapeColor: "#242424",
-        textColor: "whitesmoke",
         shapeBrightnessScope: BRIGHTNESS_SCOPE.dark,
     },
     yellow: {
         backgroundColor: "#ffc414",
         shapeColor: "#fccc3de6",
-        textColor: "whitesmoke",
         shapeBrightnessScope: BRIGHTNESS_SCOPE.other,
     },
     purple: {
         backgroundColor: "rgb(95, 57, 155)",
         shapeColor: "rgb(95, 57, 155)",
-        textColor: "whitesmoke",
         shapeBrightnessScope: BRIGHTNESS_SCOPE.other,
     },
 })
@@ -337,7 +322,6 @@ declare global {
         interface GlasiumOptions {
             backgroundColor: Property.BackgroundColor
             shapeColor: Property.BackgroundColor
-            textColor: Property.Color
             shapeBrightnessScope: [number, number]
         }
 
@@ -345,7 +329,7 @@ declare global {
             shape: GlasiumShape
             scale: number
             speed: number
-            colorOptions: Omit<GlasiumOptions, "backgroundColor" | "textColor">
+            colorOptions: Omit<GlasiumOptions, "backgroundColor">
         }
 
         type GlasiumShape = "triangle" | "hexagon" | "all"

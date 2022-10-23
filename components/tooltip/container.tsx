@@ -1,14 +1,11 @@
-import { useState, useMemo, useRef, useContext } from "react"
+import { useState, useRef, useContext, useEffect } from "react"
+import $ from "jquery"
 
-import { TooltipContext, CONSTANT } from "./utils"
+import useStore from './store'
+import { CONSTANT } from "./utils"
 import { throttled } from "@ts/libraries"
-import {
-    useRenderEffect,
-    useRequestAnimationFrame,
-    useResizeObserver,
-} from "@ts/hooks"
+import { useRequestAnimationFrame, useResizeObserver } from "@ts/hooks"
 import cursor from "@ts/cursor"
-import { $ } from "@ts/jquery"
 
 import styles from "@styles/components/tooltip.module.scss"
 
@@ -18,24 +15,28 @@ export default function Container({
     show,
 }: Fukumi.TooltipContainerProps): JSX.Element {
     type Timeout = NodeJS.Timeout | undefined
-    type TimeoutRef = React.MutableRefObject<Timeout>
-    type DOMRef = React.RefObject<HTMLDivElement>
+    type TimeoutRef = React.MutableRefObject<NodeJS.Timeout | undefined>
+    type DivRef = React.RefObject<HTMLDivElement>
 
     /** */
-    const { setContent } = useContext(TooltipContext)
+    const setContent = useStore((state) => state.setContent)
 
     /** refs */
-    const containerRef: DOMRef = useRef(null)
-    const contentRef: DOMRef = useRef(null)
+    const containerRef: DivRef = useRef(null)
+    const contentRef: DivRef = useRef(null)
 
     const hideTimeoutIDRef: TimeoutRef = useRef<Timeout>()
     const deactivateTimeoutIdRef: TimeoutRef = useRef<Timeout>()
 
     /** local state */
-    const [glow, setGlow] = useState(false)
     const [activated, setActivated] = useState(false)
     const [deactivated, setDeactivated] = useState(true)
-    const { width, height } = useResizeObserver({ ref: contentRef })
+
+    /** watch width and height */
+    const { width, height } = useResizeObserver({
+        ref: contentRef,
+        throttle: CONSTANT.throttle,
+    })
 
     /** this record is used to calculating position of the tooltip */
     const { start, stop } = useRequestAnimationFrame(
@@ -75,7 +76,7 @@ export default function Container({
     )
 
     /** display */
-    useRenderEffect((): void | (() => void) => {
+    useEffect((): void | (() => void) => {
         if (show) {
             clearTimeout(deactivateTimeoutIdRef.current)
             clearTimeout(hideTimeoutIDRef.current)
@@ -85,8 +86,8 @@ export default function Container({
 
             start()
         } else {
-            start() /** the stop function fired when show changes, \
-                               so, this is necessary */
+            start() // the `stop` function fires when `show` changes,
+                    // so, this is necessary
 
             clearTimeout(deactivateTimeoutIdRef.current)
             clearTimeout(hideTimeoutIDRef.current)
@@ -109,7 +110,8 @@ export default function Container({
 
             stop()
         }
-    }, [show, containerRef, contentRef, start, stop, setContent])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [show, containerRef, contentRef, setContent])
 
     return (
         <div
@@ -117,8 +119,6 @@ export default function Container({
             data-padding={padding}
             data-activated={activated}
             data-deactivated={deactivated}
-            data-glow={glow}
-            onAnimationEnd={(): void => setGlow(false)}
             className={styles.container}
             style={{ width, height }}
         >
