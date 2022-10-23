@@ -14,15 +14,3 @@ export const CONSTANT = {
     hideTimeout: duration - 200,
     deactivateTimeout: duration,
 }
-
-declare global {
-    namespace Fukumi {
-        interface TooltipContext {
-            setPadding: React.Dispatch<React.SetStateAction<boolean>>
-            setShow: React.Dispatch<React.SetStateAction<boolean>>
-            setContent: React.Dispatch<
-                React.SetStateAction<Fukumi.TooltipContent>
-            >
-        }
-    }
-}
