@@ -8,7 +8,7 @@ export function useFetch<T = unknown>(
 
     // Used to prevent state update if the component is unmounted
     const cancelRequest = useRef<boolean>(false)
-    const initialState: Fukumi.UseFetchObject<T> = {}
+    const initialState: Fukumi.UseFetchObject<T> = { loading: true }
 
     // Keep state logic separated
     const fetchReducer = (
@@ -23,10 +23,10 @@ export function useFetch<T = unknown>(
                 return { ...initialState }
 
             case "fetched":
-                return { ...initialState, data: action.payload }
+                return { ...initialState, data: action.payload, loading: false }
 
             case "error":
-                return { ...initialState, error: action.payload }
+                return { ...initialState, error: action.payload, loading: false }
 
             default:
                 return state
@@ -90,6 +90,7 @@ declare global {
         interface UseFetchObject<T> {
             data?: T
             error?: Error
+            loading: boolean
         }
     }
 }
