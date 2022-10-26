@@ -90,7 +90,6 @@ export const libraries = {
                 (match: string): string => formats[match].toString()
             )
         } catch (e) {
-            console.log(e)
             return "`libraries.prettyTime` : Invalid Date"
         }
     },
