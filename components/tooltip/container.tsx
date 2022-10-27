@@ -1,19 +1,17 @@
 import { useState, useRef, useContext, useEffect } from "react"
 import $ from "jquery"
-
 import useStore from './store'
 import { CONSTANT } from "./utils"
 import { throttled } from "@ts/libraries"
 import { useRequestAnimationFrame, useResizeObserver } from "@ts/hooks"
 import cursor from "@ts/cursor"
-
 import styles from "@styles/components/tooltip.module.scss"
 
-export default function Container({
+const Container: React.FC<Fukumi.TooltipContainerProps> = ({
     children,
     padding,
     show,
-}: Fukumi.TooltipContainerProps): JSX.Element {
+}) => {
     type Timeout = NodeJS.Timeout | undefined
     type TimeoutRef = React.MutableRefObject<NodeJS.Timeout | undefined>
     type DivRef = React.RefObject<HTMLDivElement>
@@ -87,7 +85,7 @@ export default function Container({
             start()
         } else {
             start() // the `stop` function fires when `show` changes,
-                    // so, this is necessary
+            // so, this is necessary
 
             clearTimeout(deactivateTimeoutIdRef.current)
             clearTimeout(hideTimeoutIDRef.current)
@@ -110,7 +108,7 @@ export default function Container({
 
             stop()
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [show, containerRef, contentRef, setContent])
 
     return (
@@ -131,6 +129,8 @@ export default function Container({
         </div>
     )
 }
+
+export default Container
 
 declare global {
     namespace Fukumi {

@@ -4,7 +4,7 @@ import { useRenderEffect } from "@ts/hooks/use-render-effect"
 import Container from "./container"
 import clientSide from "@ts/client-side"
 
-export default function Tooltip(): JSX.Element {
+const Tooltip: React.FC = () => {
     const { padding, show, content } = useStore()
 
     useRenderEffect((): void => {
@@ -21,3 +21,5 @@ export default function Tooltip(): JSX.Element {
         </Container>
     )
 }
+
+export default Tooltip

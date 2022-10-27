@@ -1,9 +1,8 @@
 import { useCallback } from "react"
-
 import useStore from "./store"
 import clientSide from "@ts/client-side"
 
-export default function Span(props: Fukumi.TooltipSpanProps): JSX.Element {
+const Span: React.FC<Fukumi.TooltipSpanProps> = (props) => {
     const { setShow, setPadding, setContent } = useStore()
 
     const onPointerLeave = useCallback(
@@ -32,13 +31,15 @@ export default function Span(props: Fukumi.TooltipSpanProps): JSX.Element {
     )
 
     return (
-        <div
+        <span
             {...props}
             onPointerEnter={onPointerEnter}
             onPointerLeave={onPointerLeave}
         />
     )
 }
+
+export default Span
 
 declare global {
     namespace Fukumi {

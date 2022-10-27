@@ -3,11 +3,7 @@ import { useCallback, useEffect, useState } from "react"
 export function useAsync<T extends any>(
     callback: () => Promise<T>,
     deps: any[] = []
-): {
-    loading: boolean
-    error: undefined
-    data: T | undefined
-} {
+): Fukumi.UseAsyncReturn<T> {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState()
     const [data, setData] = useState<T>()
@@ -28,4 +24,14 @@ export function useAsync<T extends any>(
     }, [callbackMemoized])
 
     return { loading, error, data }
+}
+
+declare global {
+    namespace Fukumi {
+        interface UseAsyncReturn<T extends any> {
+            loading: boolean
+            error: undefined | Error
+            data: T | undefined
+        }
+    }
 }

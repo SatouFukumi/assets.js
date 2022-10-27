@@ -1,9 +1,8 @@
 import { useCallback } from "react"
-
 import useStore from "./store"
 import clientSide from "@ts/client-side"
 
-export default function Div(props: Fukumi.TooltipDivProps): JSX.Element {
+const Div: React.FC<Fukumi.TooltipDivProps> = (props) => {
     const { setShow, setPadding, setContent } = useStore()
 
     const onPointerLeave = useCallback(
@@ -39,6 +38,8 @@ export default function Div(props: Fukumi.TooltipDivProps): JSX.Element {
         />
     )
 }
+
+export default Div
 
 declare global {
     namespace Fukumi {
