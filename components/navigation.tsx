@@ -17,7 +17,7 @@ import styles from "@styles/components/navigation.module.scss"
 import glasiumStyles from "@styles/components/glasium.module.scss"
 
 import { useRenderEffect } from "@ts/hooks/use-render-effect"
-import Glasium, { COLOR } from "./glasium"
+import { Glasium, COLOR } from "./glasium"
 import { clientSide } from "@ts/client-side"
 
 const NavigationContext: Context<Fukumi.NavigationContextType> = createContext({
@@ -464,9 +464,9 @@ export function Button({
             {imageProps ? (
                 <div className={styles.image}>
                     <Image
-                        alt=""
                         {...imageProps}
-                        layout="fill"
+                        alt=""
+                        fill
                     />
                 </div>
             ) : (
@@ -481,7 +481,7 @@ export function Button({
 export function Logo({
     alwaysActive = false,
     description,
-    imageProps = { src: "/favicon.ico" },
+    imageProps = { src: "/favicon.ico", alt: "" },
     onClick = (): void => {},
     text,
     title,
@@ -528,9 +528,9 @@ export function Logo({
         >
             <div className={styles.image}>
                 <Image
-                    alt=""
                     {...imageProps}
-                    layout="fill"
+                    alt=""
+                    fill
                 />
             </div>
             <span className={styles.text}>{text ?? "logo"}</span>
@@ -636,9 +636,9 @@ export function Subwindow({
             {imageProps ? (
                 <div className={styles.image}>
                     <Image
-                        alt=""
                         {...imageProps}
-                        layout="fill"
+                        alt=""
+                        fill
                     />
                 </div>
             ) : (
@@ -683,7 +683,7 @@ declare global {
             hide?: boolean
             color?: string | `var(--${string})`
             route?: {
-                colorOptions?: Fukumi.GlasiumOptions
+                colorOptions?: Fukumi.GlasiumProps['colorOptions']
                 color?: string | `var(--${string})`
                 colorActive?: string | `var(--${string})`
             }
@@ -793,7 +793,7 @@ declare global {
             image?: string
             alwaysActive?: boolean
             imageProps?: ImageProps
-            colorOptions?: GlasiumOptions
+            colorOptions?: Fukumi.GlasiumProps['colorOptions']
             onClick?: (event: NavigationButtonClickEvent) => any
         }
 

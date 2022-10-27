@@ -12,7 +12,7 @@ import {
 } from "react"
 
 import { useRenderEffect } from "@ts/hooks/use-render-effect"
-import Glasium from "./glasium"
+import { Glasium } from "./glasium"
 import ScrollBox from "./scroll-box"
 
 /** stylesheet */
