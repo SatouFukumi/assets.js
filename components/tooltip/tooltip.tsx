@@ -1,25 +1,144 @@
-import useStore from './store'
+import { useRef, useEffect } from "react"
+import $ from "jquery"
+import useStore from "./use-store"
+import { CONSTANT } from "./utils"
+import { throttled } from "@ts/libraries"
+import { useRequestAnimationFrame, useResizeObserver } from "@ts/hooks"
 import cursor from "@ts/cursor"
-import { useRenderEffect } from "@ts/hooks/use-render-effect"
-import Container from "./container"
-import clientSide from "@ts/client-side"
+import styles from "@styles/components/tooltip.module.scss"
 
 const Tooltip: React.FC = () => {
-    const { padding, show, content } = useStore()
+    type Timeout = NodeJS.Timeout | undefined
+    type TimeoutRef = React.MutableRefObject<NodeJS.Timeout | undefined>
+    type DivRef = React.RefObject<HTMLDivElement>
 
-    useRenderEffect((): void => {
-        if (clientSide.isMobile()) return
-        cursor.watch(true)
-    }, [])
+    /** store */
+    const {
+        activated,
+        deactivated,
+        padding,
+        show,
+        content,
+        setActivated,
+        setDeactivated,
+        setContent,
+    } = useStore()
+
+    /** refs */
+    const containerRef: DivRef = useRef(null)
+    const contentRef: DivRef = useRef(null)
+
+    const hideTimeoutIDRef: TimeoutRef = useRef<Timeout>()
+    const deactivateTimeoutIdRef: TimeoutRef = useRef<Timeout>()
+
+    /** watch width and height */
+    const { width, height } = useResizeObserver({
+        ref: contentRef,
+        throttle: CONSTANT.throttle,
+    })
+
+    /** this record is used to calculating position of the tooltip */
+    const { start, stop } = useRequestAnimationFrame(
+        throttled((): void => {
+            if (!containerRef.current) return
+
+            const { innerWidth, innerHeight } = window
+            const { offsetWidth, offsetHeight } = containerRef.current
+            const { positionX, positionY } = cursor
+
+            const isOverflowedX: boolean
+                = innerWidth * CONSTANT.largeXAxis < positionX
+            const isOverflowedY: boolean
+                = innerHeight * CONSTANT.largeYAxis < positionY
+            const isLargerThanScreenX: boolean
+                = innerWidth - offsetWidth - CONSTANT.offset < positionX
+            const isLargerThanScreenY: boolean
+                = innerWidth - offsetHeight - CONSTANT.offset < positionY
+
+            const posX: number
+                = isOverflowedX || isLargerThanScreenX
+                    ? positionX - offsetWidth - CONSTANT.mouseOffsetX
+                    : positionX + CONSTANT.mouseOffsetX
+
+            const posY: number
+                = isOverflowedY || isLargerThanScreenY
+                    ? positionY - offsetHeight - CONSTANT.mouseOffsetY
+                    : positionY + CONSTANT.mouseOffsetY
+
+            /** using state for this is not good, because setState will
+             *  make this extremely glitchy */
+            $(containerRef.current).css({
+                "--position-x": posX,
+                "--position-y": posY,
+            })
+        }, CONSTANT.throttle)
+    )
+
+    /** display */
+    useEffect((): void | (() => void) => {
+        if (show) {
+            clearTimeout(deactivateTimeoutIdRef.current)
+            clearTimeout(hideTimeoutIDRef.current)
+
+            setActivated(true)
+            setDeactivated(false)
+
+            start()
+        } else {
+            start() // the `stop` function fires when `show` changes,
+            // so, this is necessary
+
+            clearTimeout(deactivateTimeoutIdRef.current)
+            clearTimeout(hideTimeoutIDRef.current)
+
+            hideTimeoutIDRef.current = setTimeout((): void => {
+                setActivated(false)
+
+                deactivateTimeoutIdRef.current = setTimeout((): void => {
+                    setContent("")
+                    setDeactivated(true)
+
+                    stop()
+                }, CONSTANT.deactivateTimeout)
+            }, CONSTANT.hideTimeout)
+        }
+
+        return (): void => {
+            clearTimeout(deactivateTimeoutIdRef.current)
+            clearTimeout(hideTimeoutIDRef.current)
+
+            stop()
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [show, setContent])
 
     return (
-        <Container
-            padding={padding}
-            show={show}
+        <div
+            ref={containerRef}
+            data-padding={padding}
+            data-activated={activated}
+            data-deactivated={deactivated}
+            className={styles.container}
+            style={{ width, height }}
         >
-            {content}
-        </Container>
+            <div
+                ref={contentRef}
+                className={styles.content}
+            >
+                {content}
+            </div>
+        </div>
     )
 }
 
 export default Tooltip
+
+declare global {
+    namespace Fukumi {
+        interface TooltipContainerProps {
+            children: React.ReactNode | string | number | boolean
+            padding: boolean
+            show: boolean
+        }
+    }
+}

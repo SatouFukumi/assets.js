@@ -1,7 +1,7 @@
 import styles from "@styles/components/glasium.module.scss"
 import { useAsync } from "@ts/hooks/use-async"
 import { libraries } from "@ts/libraries"
-import useStore from "./store"
+import useStore from "./use-store"
 
 const Shape: React.FC = () => {
     const { shape, colorOptions, speed, scale } = useStore()

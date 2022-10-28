@@ -1,7 +1,7 @@
 import create from 'zustand'
 import COLOR from './color'
 
-export default create<Fukumi.GlasiumStore>((set) => ({
+const useStore = create<Fukumi.GlasiumStore>((set) => ({
     shape: 'triangle',
     rotate: false,
     speed: 6,
@@ -13,6 +13,8 @@ export default create<Fukumi.GlasiumStore>((set) => ({
         set(props)
     }
 }))
+
+export default useStore
 
 declare global {
     namespace Fukumi {

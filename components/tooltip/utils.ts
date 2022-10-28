@@ -1,6 +1,11 @@
 import styles from "@styles/components/tooltip.module.scss"
+import cursor from "@ts/cursor"
+
+if (typeof window !== 'undefined')
+    cursor.watch(true)
 
 const duration: number = parseInt(styles.duration)
+
 export const CONSTANT = {
     offset: 135,
 

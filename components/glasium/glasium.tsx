@@ -3,7 +3,7 @@ import { useResizeObserver } from "@ts/hooks/use-observer"
 import { useRenderEffect } from "@ts/hooks/use-render-effect"
 import { useRef } from "react"
 import Shape from "./shape"
-import useStore from "./store"
+import useStore from "./use-store"
 
 const Glasium: React.FC<Fukumi.GlasiumProps> = (props) => {
     const set = useStore((state) => state.set)

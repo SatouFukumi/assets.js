@@ -1,5 +1,5 @@
 import { useCallback } from "react"
-import useStore from "./store"
+import useStore from "./use-store"
 import clientSide from "@ts/client-side"
 
 const Span: React.FC<Fukumi.TooltipSpanProps> = (props) => {
