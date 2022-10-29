@@ -23,15 +23,32 @@ export function useAsync<T extends any>(
         callbackMemoized()
     }, [callbackMemoized])
 
-    return { loading, error, data }
+    return { loading, error, data } as any
 }
 
 declare global {
     namespace Fukumi {
-        interface UseAsyncReturn<T extends any> {
-            loading: boolean
-            error: undefined | Error
-            data: T | undefined
+        type UseAsyncReturn<T> =
+            | UseAsyncReturnDone<T>
+            | UseAsyncReturnLoading
+            | UseAsyncReturnError
+
+        interface UseAsyncReturnDone<T> {
+            loading: false
+            error: undefined
+            data: T
+        }
+
+        interface UseAsyncReturnLoading {
+            loading: true
+            error: undefined
+            data: undefined
+        }
+
+        interface UseAsyncReturnError {
+            loading: false
+            error: Error
+            data: undefined
         }
     }
 }

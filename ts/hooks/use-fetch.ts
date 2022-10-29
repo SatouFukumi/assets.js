@@ -3,21 +3,25 @@ import { useEffect, useReducer, useRef } from "react"
 export function useFetch<T = unknown>(
     url?: string,
     options?: RequestInit
-): Fukumi.UseFetchObject<T> {
+): Fukumi.UseFetchReturn<T> {
     const cache = useRef<{ [url: string]: T }>({})
 
     // Used to prevent state update if the component is unmounted
     const cancelRequest = useRef<boolean>(false)
-    const initialState: Fukumi.UseFetchObject<T> = { loading: true }
+    const initialState: Fukumi.UseFetchReturn<T> = {
+        loading: true,
+        data: undefined,
+        error: undefined,
+    }
 
     // Keep state logic separated
     const fetchReducer = (
-        state: Fukumi.UseFetchObject<T>,
+        state: Fukumi.UseFetchReturn<T>,
         action:
             | { type: "loading" }
             | { type: "fetched"; payload: T }
             | { type: "error"; payload: Error }
-    ): Fukumi.UseFetchObject<T> => {
+    ): Fukumi.UseFetchReturn<T> => {
         switch (action.type) {
             case "loading":
                 return { ...initialState }
@@ -87,10 +91,27 @@ export function useFetch<T = unknown>(
 
 declare global {
     namespace Fukumi {
-        interface UseFetchObject<T> {
-            data?: T
-            error?: Error
-            loading: boolean
+        type UseFetchReturn<T> =
+            | UseFetchReturnDone<T>
+            | UseFetchReturnLoading
+            | UseFetchReturnError
+
+        interface UseFetchReturnDone<T> {
+            data: T
+            error: undefined
+            loading: false
+        }
+
+        interface UseFetchReturnLoading {
+            loading: true
+            error: undefined
+            data: undefined
+        }
+
+        interface UseFetchReturnError {
+            error: Error
+            loading: false
+            data: undefined
         }
     }
 }
