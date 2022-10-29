@@ -1,5 +1,4 @@
 import { useState } from "react"
-
 import { useSynchronizedInterval } from "./use-interval"
 
 export function useClock(ms: number = 1000) {
