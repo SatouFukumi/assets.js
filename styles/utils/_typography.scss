@@ -1,6 +1,24 @@
 /** font path */
 $font-path: "./../../fonts";
 
+/** Font: Chango */
+@font-face {
+    font-family: "Chango";
+    src: url("./../../fonts/Chango-Regular.ttf") format('woff2');
+}
+
+/** Font: Modak */
+@font-face {
+    font-family: "Modak";
+    src: url("./../../fonts/Modak-Regular.ttf") format('woff2');
+}
+
+/** Font: SigmarOne */
+@font-face {
+    font-family: "SigmarOne";
+    src: url("./../../fonts/SigmarOne-Regular.ttf") format('woff2');
+}
+
 /** Font: Roboto */
 @font-face {
     font-family: "Roboto";
