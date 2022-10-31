@@ -5,7 +5,7 @@ export function useGeolocation({
     options = {},
     throttleMs = 1000,
 }: Fukumi.UseGeolocationProps = {}): Fukumi.UseGeolocationReturn {
-    const [position, setPosition] = useState<GeolocationPosition>()
+    const [geoPosition, setGeoPosition] = useState<GeolocationPosition>()
     const [error, setError] = useState<GeolocationPositionError>()
 
     const stopRef = useRef(false)
@@ -13,8 +13,8 @@ export function useGeolocation({
     const watchingRef = useRef<boolean>(false)
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    const positionSetter = useCallback(throttle(setPosition, throttleMs), [
-        setPosition,
+    const positionSetter = useCallback(throttle(setGeoPosition, throttleMs), [
+        setGeoPosition,
     ])
 
     const startWatch = useCallback(() => {
@@ -34,15 +34,15 @@ export function useGeolocation({
 
     useEffect(() => {
         if (stopRef.current) return
-        if (!!position) stopRef.current = true
+        if (!!geoPosition) stopRef.current = true
 
-        navigator.geolocation.getCurrentPosition(setPosition, setError, options)
+        navigator.geolocation.getCurrentPosition(setGeoPosition, setError, options)
 
         return () => clearWatch()
-    }, [position, options, clearWatch])
+    }, [geoPosition, options, clearWatch])
 
     return {
-        position,
+        geoPosition,
         error,
         startWatch,
         clearWatch,
@@ -57,7 +57,7 @@ declare global {
         }
 
         interface UseGeolocationReturn {
-            position: GeolocationPosition | undefined
+            geoPosition: GeolocationPosition | undefined
             error: GeolocationPositionError | undefined
             clearWatch: () => void
             startWatch: () => void
