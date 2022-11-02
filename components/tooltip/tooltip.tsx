@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react"
+import { useRef, useEffect, memo } from "react"
 import $ from "jquery"
 import useStore from "./use-store"
 import { CONSTANT } from "./utils"
@@ -134,4 +134,4 @@ const Tooltip: React.FC = () => {
     )
 }
 
-export default Tooltip
+export default memo(Tooltip)
