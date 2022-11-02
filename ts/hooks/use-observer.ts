@@ -85,6 +85,30 @@ export function useResizeObserver<T extends HTMLElement = HTMLElement>({
     return { ...size, ref }
 }
 
+export function useResizeCallback<T extends HTMLElement = HTMLElement>({
+    ref,
+    onResize,
+    throttle = 0,
+}: {
+    ref: RefObject<T>
+    onResize?: (entry: ResizeObserverEntry) => void
+    throttle?: number
+}) {
+    useEffect(() => {
+        if (!ref.current) return
+
+        const obs = new ResizeObserver(
+            throttled(
+                ([entry]: ResizeObserverEntry[]) => onResize?.(entry),
+                throttle
+            )
+        )
+        obs.observe(ref.current)
+
+        return obs.disconnect.bind(obs)
+    }, [throttle, onResize, ref])
+}
+
 declare global {
     namespace Fukumi {
         interface UseResizeObserverObject<T extends HTMLElement = HTMLElement> {

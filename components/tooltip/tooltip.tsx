@@ -3,7 +3,7 @@ import $ from "jquery"
 import useStore from "./use-store"
 import { CONSTANT } from "./utils"
 import { throttled } from "@ts/libraries"
-import { useRequestAnimationFrame, useResizeObserver } from "@ts/hooks"
+import { useRequestAnimationFrame, useResizeCallback } from "@ts/hooks"
 import cursor from "@ts/cursor"
 import styles from "@styles/components/tooltip.module.scss"
 
@@ -13,16 +13,10 @@ const Tooltip: React.FC = () => {
     type DivRef = React.RefObject<HTMLDivElement>
 
     /** store */
-    const {
-        activated,
-        deactivated,
-        padding,
-        show,
-        content,
-        setActivated,
-        setDeactivated,
-        setContent,
-    } = useStore()
+    const padding = useStore((state) => state.padding)
+    const show = useStore((state) => state.show)
+    const content = useStore((state) => state.content)
+    const setContent = useStore((state) => state.setContent)
 
     /** refs */
     const containerRef: DivRef = useRef(null)
@@ -32,9 +26,20 @@ const Tooltip: React.FC = () => {
     const deactivateTimeoutIdRef: TimeoutRef = useRef<Timeout>()
 
     /** watch width and height */
-    const { width, height } = useResizeObserver({
+    useResizeCallback({
         ref: contentRef,
         throttle: CONSTANT.throttle,
+        onResize: (entry) => {
+            if (!containerRef.current) return
+
+            const width = entry.borderBoxSize[0].inlineSize
+            const height = entry.borderBoxSize[0].blockSize
+
+            $(containerRef.current).css({
+                "--width": width,
+                "--height": height,
+            })
+        },
     })
 
     /** this record is used to calculating position of the tooltip */
@@ -80,23 +85,24 @@ const Tooltip: React.FC = () => {
             clearTimeout(deactivateTimeoutIdRef.current)
             clearTimeout(hideTimeoutIDRef.current)
 
-            setActivated(true)
-            setDeactivated(false)
+            $(containerRef.current!).attr({
+                'data-activated': true,
+                'data-deactivated': false
+            })
 
             start()
         } else {
-            start() // the `stop` function fires when `show` changes,
-            // so, this is necessary
+            start()
 
             clearTimeout(deactivateTimeoutIdRef.current)
             clearTimeout(hideTimeoutIDRef.current)
-
+            
             hideTimeoutIDRef.current = setTimeout((): void => {
-                setActivated(false)
-
+                $(containerRef.current!).attr({ 'data-activated': false })
+                
                 deactivateTimeoutIdRef.current = setTimeout((): void => {
+                    $(containerRef.current!).attr({ 'data-deactivated': true })
                     setContent("")
-                    setDeactivated(true)
 
                     stop()
                 }, CONSTANT.deactivateTimeout)
@@ -110,16 +116,14 @@ const Tooltip: React.FC = () => {
             stop()
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [show, setContent])
+    }, [show])
+    console.count("re-rendered")
 
     return (
         <div
             ref={containerRef}
             data-padding={padding}
-            data-activated={activated}
-            data-deactivated={deactivated}
             className={styles.container}
-            style={{ width, height }}
         >
             <div
                 ref={contentRef}
@@ -132,13 +136,3 @@ const Tooltip: React.FC = () => {
 }
 
 export default Tooltip
-
-declare global {
-    namespace Fukumi {
-        interface TooltipContainerProps {
-            children: React.ReactNode | string | number | boolean
-            padding: boolean
-            show: boolean
-        }
-    }
-}

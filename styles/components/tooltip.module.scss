@@ -12,11 +12,6 @@ $duration: 300;
 
     margin: auto;
 
-    display: inline-flex;
-
-    place-items: center;
-    place-content: center;
-
     padding: 0;
 
     background-color: $backgroundColor;
@@ -40,7 +35,7 @@ $duration: 300;
     user-select: none;
 
     transition-duration:
-        $duration * 1ms, 
+        $duration * 1ms,
         $duration * 1ms,
         $duration * 1ms,
         $duration * 1ms,
@@ -54,7 +49,7 @@ $duration: 300;
     transition-timing-function:
         cubic-bezier(0.22, 1, 0.36, 1),
         cubic-bezier(0.22, 1, 0.36, 1),
-        ease-out,
+        ease,
         ease-out,
         cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -75,8 +70,11 @@ $duration: 300;
 
     &[data-activated="true"] {
         opacity: 1;
-        
+
         padding: 0.6rem 0.9rem;
+
+        width: calc(var(--width) * 1px);
+        height: calc(var(--height) * 1px);
 
         .content {
             opacity: 1;
@@ -95,12 +93,6 @@ $duration: 300;
     }
 
     .content {
-        display: flex;
-        flex-direction: row;
-
-        place-items: center;
-        place-content: center;
-
         max-width: 25vw;
         max-height: 30vh;
         width: fit-content;
@@ -118,7 +110,6 @@ $duration: 300;
         font-size: 1.3rem;
         font-weight: normal;
 
-        text-align: center;
         letter-spacing: 0.2px;
         white-space: pre;
     }

@@ -3,38 +3,42 @@ import useStore from "./use-store"
 import clientSide from "@ts/client-side"
 
 const Span: React.FC<Fukumi.TooltipSpanProps> = (props) => {
-    const { setShow, setPadding, setContent } = useStore()
+    const { padding, tooltip, onPointerEnter, onPointerLeave, ...restProps } = props
 
-    const onPointerLeave = useCallback(
+    const setShow = useStore((state) => state.setShow)
+    const setPadding = useStore((state) => state.setPadding)
+    const setContent = useStore((state) => state.setContent)
+
+    const handlePointerLeave = useCallback(
         function (event: React.PointerEvent<HTMLSpanElement>): void {
             if (!clientSide.isMobile()) {
                 setShow(false)
                 setPadding(true)
             }
 
-            props.onPointerLeave?.(event)
+            onPointerLeave?.(event)
         },
-        [props, setPadding, setShow]
+        [onPointerLeave, setPadding, setShow]
     )
 
-    const onPointerEnter = useCallback(
+    const handlePointerEnter = useCallback(
         function (event: React.PointerEvent<HTMLSpanElement>): void {
             if (!clientSide.isMobile()) {
-                setPadding(props.padding ?? true)
-                setContent(props.tooltip)
+                setPadding(padding ?? true)
+                setContent(tooltip)
                 setShow(true)
             }
 
-            props.onPointerEnter?.(event)
+            onPointerEnter?.(event)
         },
-        [props, setContent, setPadding, setShow]
+        [onPointerEnter, setContent, setPadding, setShow, tooltip, padding]
     )
 
     return (
         <span
-            {...props}
-            onPointerEnter={onPointerEnter}
-            onPointerLeave={onPointerLeave}
+            {...restProps}
+            onPointerEnter={handlePointerEnter}
+            onPointerLeave={handlePointerLeave}
         />
     )
 }
@@ -44,7 +48,7 @@ export default Span
 declare global {
     namespace Fukumi {
         interface TooltipSpanProps extends React.HTMLAttributes<HTMLSpanElement> {
-            tooltip: React.ReactNode | string | number | boolean
+            tooltip: React.ReactNode
             padding?: boolean
         }
     }
