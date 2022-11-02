@@ -13,7 +13,6 @@ const Tooltip: React.FC = () => {
     type DivRef = React.RefObject<HTMLDivElement>
 
     /** store */
-    const padding = useStore((state) => state.padding)
     const show = useStore((state) => state.show)
     const content = useStore((state) => state.content)
     const setContent = useStore((state) => state.setContent)
@@ -102,7 +101,7 @@ const Tooltip: React.FC = () => {
                 
                 deactivateTimeoutIdRef.current = setTimeout((): void => {
                     $(containerRef.current!).attr({ 'data-deactivated': true })
-                    setContent("")
+                    setContent(null)
 
                     stop()
                 }, CONSTANT.deactivateTimeout)
@@ -121,7 +120,6 @@ const Tooltip: React.FC = () => {
     return (
         <div
             ref={containerRef}
-            data-padding={padding}
             className={styles.container}
         >
             <div

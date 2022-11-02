@@ -3,35 +3,30 @@ import useStore from "./use-store"
 import clientSide from "@ts/client-side"
 
 const Div: React.FC<Fukumi.TooltipDivProps> = (props) => {
-    const { padding, tooltip, onPointerEnter, onPointerLeave, ...restProps } = props
+    const { tooltip, onPointerEnter, onPointerLeave, ...restProps } = props
 
     const setShow = useStore((state) => state.setShow)
-    const setPadding = useStore((state) => state.setPadding)
     const setContent = useStore((state) => state.setContent)
 
     const handlePointerLeave = useCallback(
         function (event: React.PointerEvent<HTMLDivElement>): void {
-            if (!clientSide.isMobile()) {
-                setShow(false)
-                setPadding(true)
-            }
+            if (!clientSide.isMobile()) setShow(false)
 
             onPointerLeave?.(event)
         },
-        [onPointerLeave, setPadding, setShow]
+        [onPointerLeave, setShow]
     )
 
     const handlePointerEnter = useCallback(
         function (event: React.PointerEvent<HTMLDivElement>): void {
             if (!clientSide.isMobile()) {
-                setPadding(padding ?? true)
                 setContent(tooltip)
                 setShow(true)
             }
 
             onPointerEnter?.(event)
         },
-        [onPointerEnter, setContent, setPadding, setShow, tooltip, padding]
+        [onPointerEnter, setContent, setShow, tooltip]
     )
 
     return (
@@ -49,7 +44,6 @@ declare global {
     namespace Fukumi {
         interface TooltipDivProps extends React.HTMLAttributes<HTMLDivElement> {
             tooltip: React.ReactNode
-            padding?: boolean
         }
     }
 }
