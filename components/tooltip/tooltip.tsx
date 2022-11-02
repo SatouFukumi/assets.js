@@ -117,7 +117,6 @@ const Tooltip: React.FC = () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [show])
-    console.count("re-rendered")
 
     return (
         <div
