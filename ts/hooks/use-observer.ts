@@ -1,5 +1,5 @@
-import { RefObject, useEffect, useState } from "react"
-
+import type { RefObject } from "react"
+import { useEffect, useState } from "react"
 import { throttled } from "@ts/libraries"
 
 export function useIntersectionObserver<T extends HTMLElement = HTMLElement>({
@@ -23,8 +23,6 @@ export function useIntersectionObserver<T extends HTMLElement = HTMLElement>({
 
         return observer.disconnect.bind(observer)
     }, [ref, options, onIntersect])
-
-    return { ref }
 }
 
 export function useMutationObserver<T extends HTMLElement = HTMLElement>({
@@ -35,7 +33,7 @@ export function useMutationObserver<T extends HTMLElement = HTMLElement>({
     ref: RefObject<T>
     onMutate: (record: MutationRecord) => void
     options?: MutationObserverInit
-}): Fukumi.UseMutationObserverObject<T> {
+}) {
     useEffect(() => {
         if (!ref.current) return
 
@@ -46,19 +44,19 @@ export function useMutationObserver<T extends HTMLElement = HTMLElement>({
 
         return obs.disconnect.bind(obs)
     }, [ref, onMutate, options])
-
-    return { ref }
 }
 
 export function useResizeObserver<T extends HTMLElement = HTMLElement>({
     ref,
     onResize,
     throttle = 0,
+    options = {},
 }: {
     ref: RefObject<T>
     onResize?: (entry: ResizeObserverEntry) => void
     throttle?: number
-}): Fukumi.UseResizeObserverObject<T> {
+    options?: ResizeObserverOptions
+}): Fukumi.UseResizeObserverObject {
     const [size, setSize] = useState<{ width: number; height: number }>({
         width: 0,
         height: 0,
@@ -77,22 +75,24 @@ export function useResizeObserver<T extends HTMLElement = HTMLElement>({
                 onResize?.(entry)
             }, throttle)
         )
-        obs.observe(ref.current)
+        obs.observe(ref.current, options)
 
         return obs.disconnect.bind(obs)
-    }, [ref, throttle, onResize, setSize])
+    }, [ref, throttle, options, onResize, setSize])
 
-    return { ...size, ref }
+    return { ...size }
 }
 
 export function useResizeCallback<T extends HTMLElement = HTMLElement>({
     ref,
     onResize,
     throttle = 0,
+    options = {},
 }: {
     ref: RefObject<T>
     onResize?: (entry: ResizeObserverEntry) => void
     throttle?: number
+    options?: ResizeObserverOptions
 }) {
     useEffect(() => {
         if (!ref.current) return
@@ -103,22 +103,17 @@ export function useResizeCallback<T extends HTMLElement = HTMLElement>({
                 throttle
             )
         )
-        obs.observe(ref.current)
+        obs.observe(ref.current, options)
 
         return obs.disconnect.bind(obs)
-    }, [throttle, onResize, ref])
+    }, [throttle, ref, options, onResize])
 }
 
 declare global {
     namespace Fukumi {
-        interface UseResizeObserverObject<T extends HTMLElement = HTMLElement> {
+        interface UseResizeObserverObject {
             width: number
             height: number
-            ref: RefObject<T>
-        }
-
-        interface UseMutationObserverObject<T extends HTMLElement = HTMLElement> {
-            ref: RefObject<T>
         }
     }
 }

@@ -1,11 +1,10 @@
 import { useRef, useEffect, memo } from "react"
-import $ from "jquery"
 import useStore from "./use-store"
-import { CONSTANT } from "./utils"
+import { CONSTANT, updateTooltipPosition } from "./utils"
 import { throttled } from "@ts/libraries"
-import { useRequestAnimationFrame, useResizeCallback } from "@ts/hooks"
-import cursor from "@ts/cursor"
+import { useRequestAnimationFrame } from "@ts/hooks"
 import styles from "@styles/components/tooltip.module.scss"
+import TooltipContent from "./tooltip-content"
 
 const Tooltip: React.FC = () => {
     type Timeout = NodeJS.Timeout | undefined
@@ -14,67 +13,25 @@ const Tooltip: React.FC = () => {
 
     /** store */
     const show = useStore((state) => state.show)
-    const content = useStore((state) => state.content)
+    const padding = useStore((state) => state.padding)
+    const { width, height } = useStore((state) => state.size)
+    const { activated, deactivated } = useStore((state) => state.display)
+    const setPadding = useStore((state) => state.setPadding)
     const setContent = useStore((state) => state.setContent)
+    const setDisplay = useStore((state) => state.setDisplay)
 
     /** refs */
     const containerRef: DivRef = useRef(null)
-    const contentRef: DivRef = useRef(null)
 
     const hideTimeoutIDRef: TimeoutRef = useRef<Timeout>()
     const deactivateTimeoutIdRef: TimeoutRef = useRef<Timeout>()
 
-    /** watch width and height */
-    useResizeCallback({
-        ref: contentRef,
-        throttle: CONSTANT.throttle,
-        onResize: (entry) => {
-            if (!containerRef.current) return
-
-            const width = entry.borderBoxSize[0].inlineSize
-            const height = entry.borderBoxSize[0].blockSize
-
-            $(containerRef.current).css({
-                "--width": width,
-                "--height": height,
-            })
-        },
-    })
-
     /** this record is used to calculating position of the tooltip */
     const { start, stop } = useRequestAnimationFrame(
-        throttled((): void => {
+        throttled(() => {
             if (!containerRef.current) return
 
-            const { innerWidth, innerHeight } = window
-            const { offsetWidth, offsetHeight } = containerRef.current
-            const { positionX, positionY } = cursor
-
-            const isOverflowedX: boolean
-                = innerWidth * CONSTANT.largeXAxis < positionX
-            const isOverflowedY: boolean
-                = innerHeight * CONSTANT.largeYAxis < positionY
-            const isLargerThanScreenX: boolean
-                = innerWidth - offsetWidth - CONSTANT.offset < positionX
-            const isLargerThanScreenY: boolean
-                = innerWidth - offsetHeight - CONSTANT.offset < positionY
-
-            const posX: number
-                = isOverflowedX || isLargerThanScreenX
-                    ? positionX - offsetWidth - CONSTANT.mouseOffsetX
-                    : positionX + CONSTANT.mouseOffsetX
-
-            const posY: number
-                = isOverflowedY || isLargerThanScreenY
-                    ? positionY - offsetHeight - CONSTANT.mouseOffsetY
-                    : positionY + CONSTANT.mouseOffsetY
-
-            /** using state for this is not good, because setState will
-             *  make this extremely glitchy */
-            $(containerRef.current).css({
-                "--position-x": posX,
-                "--position-y": posY,
-            })
+            updateTooltipPosition(containerRef.current)
         }, CONSTANT.throttle)
     )
 
@@ -84,10 +41,7 @@ const Tooltip: React.FC = () => {
             clearTimeout(deactivateTimeoutIdRef.current)
             clearTimeout(hideTimeoutIDRef.current)
 
-            $(containerRef.current!).attr({
-                'data-activated': true,
-                'data-deactivated': false
-            })
+            setDisplay({ activated: true, deactivated: false })
 
             start()
         } else {
@@ -95,13 +49,15 @@ const Tooltip: React.FC = () => {
 
             clearTimeout(deactivateTimeoutIdRef.current)
             clearTimeout(hideTimeoutIDRef.current)
-            
+
             hideTimeoutIDRef.current = setTimeout((): void => {
-                $(containerRef.current!).attr({ 'data-activated': false })
-                
+                setDisplay({ activated: false, deactivated: false })
+
                 deactivateTimeoutIdRef.current = setTimeout((): void => {
-                    $(containerRef.current!).attr({ 'data-deactivated': true })
+                    setDisplay({ deactivated: true, activated: false })
+
                     setContent(null)
+                    setPadding(true)
 
                     stop()
                 }, CONSTANT.deactivateTimeout)
@@ -121,13 +77,12 @@ const Tooltip: React.FC = () => {
         <div
             ref={containerRef}
             className={styles.container}
+            style={{ width, height }}
+            data-activated={activated}
+            data-deactivated={deactivated}
+            data-padding={padding}
         >
-            <div
-                ref={contentRef}
-                className={styles.content}
-            >
-                {content}
-            </div>
+            <TooltipContent />
         </div>
     )
 }

@@ -3,16 +3,18 @@ $backgroundBlinkColor: hsla(0, 0%, 40%, 0.45);
 $duration: 300;
 
 .container {
-    --position-x: 600;
-    --position-y: 600;
-
     position: fixed;
     inset-inline-start: 0;
     inset-block-start: 0;
 
-    margin: auto;
+    display: flex;
+    
+    place-content: center;
+    place-items: center;
 
-    padding: 0;
+    box-sizing: border-box;
+
+    margin: auto;
 
     background-color: $backgroundColor;
 
@@ -25,8 +27,6 @@ $duration: 300;
 
     backdrop-filter: saturate(80%) blur(6px);
 
-    box-sizing: content-box;
-
     transform-origin: center;
 
     overflow: hidden;
@@ -38,22 +38,19 @@ $duration: 300;
         $duration * 1ms,
         $duration * 1ms,
         $duration * 1ms,
-        $duration * 1ms,
         $duration * 1ms;
     transition-property:
         translate,
         opacity,
         width,
-        height,
-        padding;
+        height;
     transition-timing-function:
         cubic-bezier(0.22, 1, 0.36, 1),
         cubic-bezier(0.22, 1, 0.36, 1),
         ease,
-        ease-out,
-        cubic-bezier(0.22, 1, 0.36, 1);
+        ease;
 
-    translate: calc(var(--position-x) * 1px) calc(var(--position-y) * 1px);
+    translate: calc(var(--fukumi-tooltip-position-x, 650) * 1px) calc(var(--fukumi-tooltip-position-y, 650) * 1px);
 
     animation-name: none;
     animation-duration: $duration * 1ms;
@@ -71,25 +68,26 @@ $duration: 300;
     &[data-activated="true"] {
         opacity: 1;
 
-        padding: 0.6rem 0.9rem;
-
         width: calc(var(--width) * 1px);
         height: calc(var(--height) * 1px);
 
         .content {
             opacity: 1;
+
+            padding: 0.6rem 0.9rem;
         }
     }
 
     &[data-deactivated="true"] {
-        width: 0 !important;
-        height: 0 !important;
-
-        padding: 0;
+        .content {
+            padding: 0;
+        }
     }
 
     &[data-padding="false"] {
-        padding: 0;
+        .content {
+            padding: 0;
+        }
     }
 
     .content {
@@ -104,7 +102,9 @@ $duration: 300;
 
         opacity: 0;
 
-        transition: opacity $duration * 0.3ms cubic-bezier(0.22, 1, 0.36, 1);
+        transition-property: opacity, padding;
+        transition-duration: $duration * 0.3ms;
+        transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1), ease;
 
         font-family: var(--font-secondary);
         font-size: 1.3rem;
@@ -112,6 +112,8 @@ $duration: 300;
 
         letter-spacing: 0.2px;
         white-space: pre;
+
+        box-sizing: border-box;
     }
 }
 
