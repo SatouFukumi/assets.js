@@ -2,7 +2,7 @@ import { useMemo } from "react"
 
 import RecordAnimationFrame from "@ts/record-animation-frame"
 
-export function useRequestAnimationFrame(callback: (args: any) => any) {
+export function useRequestAnimationFrame(callback: () => void) {
     const record = useMemo(() => new RecordAnimationFrame(callback), [callback])
 
     return {

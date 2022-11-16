@@ -177,7 +177,7 @@ export const libraries = {
         max: number,
         {
             toInt = true,
-            outerRange = []
+            outerRange = [],
         }: {
             toInt?: boolean
             outerRange?: number[]
@@ -272,16 +272,16 @@ export async function chainAsync(
  * @param           throttleTime            throttler delay in milliseconds
  * @returns                                 func(...args)
  */
-export function throttle(
+export function throttle<P extends any[]>(
     this: any,
-    fn: (...args: any[]) => void,
+    fn: (...args: P) => void,
     throttleTime: number
-): (...args: any[]) => any {
+) {
     let throttler: boolean = false
 
     const context: any = this
 
-    return function (...args: any[]): any {
+    return function (...args: Parameters<typeof fn>): void {
         if (throttler) return
         throttler = true
 
@@ -297,16 +297,22 @@ export function throttle(
  * @param           throttleTime            throttler delay in milliseconds
  * @returns                                 func(...args)
  */
-export function throttled(
+export function throttled<P extends any[]>(
     this: any,
-    fn: (...args: any[]) => void,
+    fn: (...args: P) => void,
     throttleTime: number
-): (...args: any[]) => any {
+) {
     const context: any = this
-    const t: (...args: any[]) => any = throttle.call(context, fn, throttleTime)
-    const d: (...args: any[]) => any = debounce.call(context, fn, throttleTime)
+    const t: (...args: Parameters<typeof fn>) => any = throttle.bind(context)(
+        fn,
+        throttleTime
+    )
+    const d: (...args: Parameters<typeof fn>) => any = debounce.bind(context)(
+        fn,
+        throttleTime
+    )
 
-    return function (...args: any[]): void {
+    return function (...args: Parameters<typeof fn>): void {
         t.call(context, ...args)
         d.call(context, ...args)
     }
@@ -319,19 +325,19 @@ export function throttled(
  * @param           firstCall       debounce limit in milliseconds
  * @returns                         func(...args)
  */
-export function debounce(
+export function debounce<P extends any[]>(
     this: any,
-    fn: (...args: any[]) => void,
+    fn: (...args: P) => void,
     timeout: number,
     firstCall: boolean = false
-): (...args: any[]) => any {
+) {
     let timer: number | NodeJS.Timeout = -1
     let toCall: boolean = false
     if (firstCall) toCall = true
 
     const context: any = this
 
-    return function (...args: any[]): void {
+    return function (...args: Parameters<typeof fn>): void {
         if (toCall) {
             toCall = false
             fn.call(context, ...args)
