@@ -26,24 +26,24 @@ export const updateTooltipPosition: (container: HTMLDivElement) => void = thrott
 
     const isOverflowedX: boolean = innerWidth * CONSTANT.largeXAxis < positionX
     const isOverflowedY: boolean = innerHeight * CONSTANT.largeYAxis < positionY
-    const isLargerThanScreenX: boolean =
-      innerWidth - offsetWidth - CONSTANT.offset < positionX
-    const isLargerThanScreenY: boolean =
-      innerWidth - offsetHeight - CONSTANT.offset < positionY
+    const isLargerThanScreenX: boolean
+      = innerWidth - offsetWidth - CONSTANT.offset < positionX
+    const isLargerThanScreenY: boolean
+      = innerWidth - offsetHeight - CONSTANT.offset < positionY
 
-    const posX: number =
-      isOverflowedX || isLargerThanScreenX
+    const posX: number
+      = isOverflowedX || isLargerThanScreenX
         ? positionX - offsetWidth - CONSTANT.mouseOffsetX
         : positionX + CONSTANT.mouseOffsetX
 
-    const posY: number =
-      isOverflowedY || isLargerThanScreenY
+    const posY: number
+      = isOverflowedY || isLargerThanScreenY
         ? positionY - offsetHeight - CONSTANT.mouseOffsetY
         : positionY + CONSTANT.mouseOffsetY
 
-    const root = document.querySelector('html')
-    root?.style.setProperty('--fukumi-tooltip-position-x', `${posX}px`)
-    root?.style.setProperty('--fukumi-tooltip-position-y', `${posY}px`)
+    const root = document.querySelector("html")
+    root?.style.setProperty("--fukumi-tooltip-position-x", `${posX}px`)
+    root?.style.setProperty("--fukumi-tooltip-position-y", `${posY}px`)
   },
   CONSTANT.throttle
 )

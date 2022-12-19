@@ -1,0 +1,35 @@
+{
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "no-unused-vars": [
+      "off"
+    ],
+    "camelcase": [
+      "warn"
+    ],
+    "arrow-spacing": "error",
+    "operator-linebreak": [
+      "error",
+      "before"
+    ],
+    "max-statements-per-line": [
+      "error",
+      {
+        "max": 2
+      }
+    ],
+    "react-hooks/exhaustive-deps": [
+      "warn",
+      {
+        "additionalHooks": "(useRenderEffect|useAsyncEffect)"
+      }
+    ]
+  }
+}
