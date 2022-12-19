@@ -1,31 +1,34 @@
 {
-    "ts-node": {
-        "transpileOnly": true,
-        "require": ["tsconfig-paths/register"]
-    },
-    "compilerOptions": {
-        // Libraries
-        "lib": [
-            "es2022",
-            "es7",
-            "WebWorker",
-            "dom",
-            "ES2015.Iterable",
-            "DOM.Iterable",
-            "esnext"
-        ],
-        // Options
-        "allowJs": false,
-        "allowSyntheticDefaultImports": true,
-        "alwaysStrict": true,
-        "exactOptionalPropertyTypes": true,
-        "jsx": "react-native",
-        "moduleResolution": "nodenext",
-        "strict": true,
-        "target": "ES2022",
-        // Alias paths
-        "baseUrl": ".",
-        "paths": { "@": ["./"], "@*": ["./*"] }
-    },
-    "exclude": ["node_modules"]
+  "ts-node": {
+    "transpileOnly": true,
+    "require": [
+      "tsconfig-paths/register"
+    ]
+  },
+  "compilerOptions": {
+    // Libraries
+    "lib": [
+      "es2022",
+      "es7",
+      "WebWorker",
+      "dom",
+      "ES2015.Iterable",
+      "DOM.Iterable",
+      "esnext"
+    ],
+    // Options
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "alwaysStrict": true,
+    "exactOptionalPropertyTypes": true,
+    "jsx": "react-native",
+    "moduleResolution": "nodenext",
+    "strict": true,
+    "target": "ES2022",
+    // Alias paths
+    "baseUrl": "."
+  },
+  "exclude": [
+    "node_modules"
+  ]
 }

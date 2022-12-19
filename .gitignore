@@ -1,2 +1,9 @@
 # node modules
 node_modules/
+
+# lock files
+**/package-lock.json
+*.lock
+
+# error/log files
+*.log

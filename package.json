@@ -1,43 +1,21 @@
 {
-    "name": "assets",
-    "version": "1.0.0",
-    "description": "This is my assets for almost anything 👾",
-    "directories": {
-        "doc": "docs"
-    },
-    "scripts": {},
-    "dependencies": {
-        "classnames": "^2.3.2",
-        "jquery": "^3.6.1",
-        "next": "13.0.0",
-        "react-custom-scrollbars-2": "^4.5.0",
-        "react-dom": "18.2.0",
-        "react": "18.2.0",
-        "zod": "^3.19.1",
-        "zustand": "^4.1.3"
-    },
-    "devDependencies": {
-        "@types/jquery": "^3.5.14",
-        "@types/node": "18.11.7",
-        "@types/react-dom": "18.0.8",
-        "@types/react": "18.0.24",
-        "eslint-config-next": "13.0.0",
-        "eslint": "8.26.0",
-        "sass": "^1.55.0",
-        "tsconfig-paths": "^4.1.0",
-        "typescript": "4.8.4"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/satoufukumi/assets.git"
-    },
-    "keywords": [
-        "typescript"
-    ],
-    "author": "Fukumi",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/satoufukumi/assets/issues"
-    },
-    "homepage": "https://github.com/satoufukumi/assets#readme"
+  "dependencies": {
+    "@fukumi/libraries": "^1.0.16",
+    "@fukumi/rhooks": "^1.0.9",
+    "next": "^13.0.7",
+    "zustand": "^4.1.5"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.17",
+    "@types/react": "^18.0.26",
+    "@types/react-dom": "^18.0.9"
+  },
+  "name": "@fukumi/assets.js",
+  "version": "1.0.0",
+  "description": "My assets for javascript-related works.",
+  "main": "index.js",
+  "repository": "https://github.com/satoufukumi/assets.js.git",
+  "author": "Fukumi <satoufukumii@gmail.com>",
+  "license": "MIT",
+  "private": false
 }
